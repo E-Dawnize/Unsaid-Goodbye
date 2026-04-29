@@ -3,7 +3,6 @@ using System;
 using Core.Architecture;
 using Core.Architecture.Interfaces;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 using Input.InputInterface;
 using Input.InputConfig;
 namespace Input.Manager
@@ -54,10 +53,10 @@ namespace Input.Manager
             if(IsReady)
                 _playerInputActions?.Gameplay.Disable();
         }
-        private void OnDestroy()
-        {
-            if (_playerInputActions != null)
-                Addressables.Release(_playerInputActions);
-        }
+        // private void OnDestroy()
+        // {
+        //     if (_playerInputActions != null)
+        //         Addressables.Release(_playerInputActions);
+        // }
     }
 }

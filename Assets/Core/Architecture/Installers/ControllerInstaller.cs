@@ -1,5 +1,4 @@
-﻿using Bridge;
-using Core.Architecture.Interfaces;
+﻿using Core.Architecture.Interfaces;
 using Core.DI;
 using MVVM.ViewModel;
 using MVVM.ViewModel.Interfaces;
@@ -17,7 +16,7 @@ namespace Core.Architecture.Installers
 
             
             container.RegisterScoped<IStartable, ControllerManager>();
-            container.RegisterScoped<IController, PlayerController>();
+            //container.RegisterScoped<IController, PlayerController>();
         }
     }
 }
