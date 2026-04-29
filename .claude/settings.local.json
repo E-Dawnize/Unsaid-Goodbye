@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -c \":*)",
+      "Bash(node -e \":*)",
+      "Bash(unzip -p 'D:/Unity Project/Unsaid Goodbye/Assets/V1.docx' word/document.xml)"
+    ]
+  }
+}
