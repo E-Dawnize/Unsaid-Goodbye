@@ -3,21 +3,7 @@
     "allow": [
       "Bash(python -c \":*)",
       "Bash(node -e \":*)",
-      "Bash(unzip -p 'D:/Unity Project/Unsaid Goodbye/Assets/V1.docx' word/document.xml)",
-      "Bash(grep -r BGMTrack 'D:/Unity Project/Unsaid Goodbye/Assets' --include=*.cs)",
-      "Bash(find 'D:/Unity Project/Unsaid Goodbye/Assets' -name *.cs -type f)",
-      "Bash(find 'D:/Unity Project/Unsaid Goodbye/Assets/Core' -name *.cs -type f)",
-      "Bash(find 'D:/Unity Project/Unsaid Goodbye/Assets/Gameplay' -name *.cs -type f)",
-      "Bash(find 'D:/Unity Project/Unsaid Goodbye/Assets/MVVM' -name *.cs -type f)",
-      "Bash(find 'D:/Unity Project/Unsaid Goodbye/Assets' -path */AddressableAssetsData/* -type f)",
-      "Bash(find 'D:/Unity Project/Unsaid Goodbye/Assets/Input' -name *.cs -type f)",
-      "Bash(grep -rni \"Zenject\\\\|VContainer\\\\|Extenject\\\\|DIContainer\\\\|\\\\[Inject\\\\]\\\\|InjectOptional\\\\|RegisterSingleton\\\\|RegisterScoped\\\\|RegisterTransient\\\\|InstallerAsset\\\\|InstallerConfig\" 'D:\\\\Unity Project\\\\Unsaid Goodbye\\\\Assets' --include=*.cs --include=*.asset)",
-      "Bash(grep -rni \"binding\\\\|Binding\\\\|_binding\\\\|_source\\\\|_target\\\\|GetComponent\\\\|FindObjectOfType\\\\|GameObject.Find\\\\|SerializedField\\\\|SerializeField\\\\]\" 'D:\\\\Unity Project\\\\Unsaid Goodbye\\\\Assets' --include=*.cs)",
-      "Bash(find 'D:\\\\Unity Project\\\\Unsaid Goodbye\\\\Assets' -name *.json -o -name *.txt)",
-      "Bash(ls \"D:/Unity Project/Unsaid Goodbye/Assets/Gameplay/SceneFlow/GameFlow\"*)",
-      "Bash(unzip -p \"Assets/内容大纲.docx\" word/document.xml)",
-      "Bash(sed 's/<[^>]*>//g')",
-      "Bash(unzip -p \"Assets/V1.docx\" word/document.xml)"
+      "Bash(unzip -p 'D:/Unity Project/Unsaid Goodbye/Assets/V1.docx' word/document.xml)"
     ]
   }
 }
