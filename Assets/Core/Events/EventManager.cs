@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Core.Events.EventInterfaces;
+using Core.Tools;
 using UnityEngine;
 
 namespace Core.Events
@@ -9,7 +10,7 @@ namespace Core.Events
     {
         //type为事件结构体
         private readonly Dictionary<Type, Delegate> _eventHandlers = new Dictionary<Type, Delegate>();
-        public void Initialize(){}
+
         public void Subscribe<T>(Action<T> handler) where T : struct
         {
             Type type = typeof(T);

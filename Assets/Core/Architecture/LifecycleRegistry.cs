@@ -16,7 +16,6 @@ namespace Core.Architecture
         #region 内部状态
         private static readonly List<IInitializable> _initializables = new();
         private static readonly List<IStartable> _startables = new();
-        private static readonly List<ITickable> _tickables = new();
         private static readonly List<object> _pendingInjection = new();
 
         private static bool _isInitializing = false;
@@ -30,16 +29,6 @@ namespace Core.Architecture
 
         private static DIContainer _container;
         private static IScope _projectScope;
-
-        /// <summary>
-        /// 动态 ITickable 注册回调（由 UpdateRunner 订阅，确保运行时注册的 Tickable 被驱动）
-        /// </summary>
-        public static event Action<ITickable> OnTickableRegistered;
-
-        /// <summary>
-        /// ITickable 注销回调（由 UpdateRunner 订阅，用于及时移除已销毁的组件）
-        /// </summary>
-        public static event Action<ITickable> OnTickableUnregistered;
         #endregion
 
         #region 公共API - 状态查询
@@ -74,25 +63,9 @@ namespace Core.Architecture
         public static int StartableCount => _startables.Count;
 
         /// <summary>
-        /// 获取当前注册的Tickable组件数量
-        /// </summary>
-        public static int TickableCount => _tickables.Count;
-
-        /// <summary>
-        /// 获取所有已注册的 ITickable 组件（供 UpdateRunner 使用）
-        /// </summary>
-        public static IReadOnlyList<ITickable> GetTickables()
-        {
-            lock (_initializables)
-            {
-                return _tickables.ToList();
-            }
-        }
-
-        /// <summary>
         /// 获取当前DI容器
         /// </summary>
-        //public static DIContainer GetContainer() => _container;
+        public static DIContainer GetContainer() => _container;
         #endregion
 
         #region 公共API - 核心功能
@@ -147,12 +120,6 @@ namespace Core.Architecture
                     }
                 }
 
-                // 注册 ITickable
-                if (component is ITickable tickable && !_tickables.Contains(tickable))
-                {
-                    _tickables.Add(tickable);
-                }
-
                 // 标记非MonoBehaviour、非生命周期接口的组件需要依赖注入
                 if (!(component is MonoBehaviour) && component is not IInitializable and not IStartable)
                 {
@@ -180,12 +147,6 @@ namespace Core.Architecture
                 if (component is IStartable startable)
                     _startables.Remove(startable);
 
-                if (component is ITickable tickable)
-                {
-                    if (_tickables.Remove(tickable))
-                        OnTickableUnregistered?.Invoke(tickable);
-                }
-
                 _pendingInjection.Remove(component);
             }
         }
@@ -199,7 +160,7 @@ namespace Core.Architecture
 
             _isInitializing = true;
             _initializationComplete = false;
-            Debug.Log($"[Lifecycle] === Initialize phase START ({_initializables.Count} components) ===");
+            Debug.Log($"[Lifecycle] Starting Initialize phase ({_initializables.Count} components)");
 
             try
             {
@@ -209,29 +170,19 @@ namespace Core.Architecture
                 // 2. 执行 Initialize
                 var componentsToInitialize = new List<IInitializable>(_initializables);
 
-                for (int idx = 0; idx < componentsToInitialize.Count; idx++)
+                foreach (var component in componentsToInitialize)
                 {
-                    var component = componentsToInitialize[idx];
-                    var name = GetComponentName(component);
-                    var typeName = component.GetType().FullName;
                     try
                     {
                         if (IsComponentReady(component))
                         {
-                            Debug.Log($"[Lifecycle] [{idx + 1}/{componentsToInitialize.Count}] Initializing: {name} ({typeName})");
                             component.Initialize();
-                            Debug.Log($"[Lifecycle] [{idx + 1}/{componentsToInitialize.Count}] ✓ {name}");
+                            Debug.Log($"[Lifecycle] Initialized: {GetComponentName(component)}");
                         }
                     }
                     catch (Exception ex)
                     {
-                        var innerStack = ex.InnerException != null
-                            ? $"\n  Inner: {ex.InnerException.GetType().Name}: {ex.InnerException.Message}"
-                            : "";
-                        Debug.LogError(
-                            $"[Lifecycle] [{idx + 1}/{componentsToInitialize.Count}] ✗ Initialize FAILED: {name} ({typeName})\n" +
-                            $"  Error: {ex.Message}{innerStack}\n" +
-                            $"  StackTrace: {ex.StackTrace}");
+                        Debug.LogError($"[Lifecycle] Initialize failed for {GetComponentName(component)}: {ex.Message}");
                     }
                 }
 
@@ -239,11 +190,11 @@ namespace Core.Architecture
                 ProcessPendingRegistrations();
 
                 _initializationComplete = true;
-                Debug.Log($"[Lifecycle] === Initialize phase DONE ({componentsToInitialize.Count} processed) ===");
             }
             finally
             {
                 _isInitializing = false;
+                Debug.Log("[Lifecycle] Initialize phase completed");
             }
         }
 
@@ -305,7 +256,6 @@ namespace Core.Architecture
             {
                 _initializables.Clear();
                 _startables.Clear();
-                _tickables.Clear();
                 _pendingInjection.Clear();
                 _pendingInitializables.Clear();
                 _pendingStartables.Clear();
@@ -337,13 +287,7 @@ namespace Core.Architecture
             }
             catch (Exception ex)
             {
-                // 注入失败（如 Scoped 服务尚未注册）→ 加入重试队列，ProcessDelayedInjection 再次尝试
-                lock (_initializables)
-                {
-                    if (!_pendingInjection.Contains(component))
-                        _pendingInjection.Add(component);
-                }
-                Debug.LogWarning($"[Lifecycle] Injection deferred for {GetComponentName(component)}: {ex.Message}");
+                Debug.LogError($"[Lifecycle] Dependency injection failed for {GetComponentName(component)}: {ex.Message}");
             }
         }
 
@@ -378,43 +322,6 @@ namespace Core.Architecture
         private static string GetComponentName(object component)
         {
             return component?.GetType().Name ?? "null";
-        }
-
-        /// <summary>
-        /// 打印当前注册表中所有组件及其状态，用于排查初始化卡住/缺失的问题
-        /// </summary>
-        public static void DumpState()
-        {
-            Debug.Log("=== LifecycleRegistry State ===");
-            Debug.Log($"  IsInitializing: {_isInitializing}");
-            Debug.Log($"  InitializationComplete: {_initializationComplete}");
-            Debug.Log($"  IsStarting: {_isStarting}");
-            Debug.Log($"  StartComplete: {_startComplete}");
-            Debug.Log($"  Container ready: {_container != null}");
-
-            lock (_initializables)
-            {
-                Debug.Log($"  IInitializable: {_initializables.Count} registered");
-                foreach (var c in _initializables)
-                    Debug.Log($"    [{c.GetType().FullName}]");
-
-                Debug.Log($"  IStartable: {_startables.Count} registered");
-                foreach (var c in _startables)
-                    Debug.Log($"    [{c.GetType().FullName}]");
-
-                Debug.Log($"  ITickable: {_tickables.Count} registered");
-                foreach (var c in _tickables)
-                    Debug.Log($"    [{c.GetType().FullName}]");
-
-                Debug.Log($"  Pending injection (retry): {_pendingInjection.Count}");
-                foreach (var c in _pendingInjection)
-                    Debug.Log($"    [{c.GetType().FullName}]");
-
-                Debug.Log($"  Pending initializables: {_pendingInitializables.Count}");
-                Debug.Log($"  Pending startables: {_pendingStartables.Count}");
-            }
-
-            Debug.Log("==============================");
         }
 
         private static void ProcessPendingRegistrations()
@@ -495,15 +402,6 @@ namespace Core.Architecture
                     {
                         Debug.LogError($"[Lifecycle] Immediate OnStart failed for dynamic component {GetComponentName(component)}: {ex.Message}");
                     }
-                }
-            }
-
-            if (component is ITickable tickable)
-            {
-                if (_startComplete && !_isStarting)
-                {
-                    OnTickableRegistered?.Invoke(tickable);
-                    Debug.Log($"[Lifecycle] Dynamic tickable registered: {GetComponentName(component)}");
                 }
             }
         }

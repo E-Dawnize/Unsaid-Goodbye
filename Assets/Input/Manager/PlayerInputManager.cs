@@ -1,44 +1,63 @@
+﻿using Core.Tools;
+using System;
+using Core.Architecture;
+using Core.Architecture.Interfaces;
+using UnityEngine;
+using UnityEngine.AddressableAssets;
 using Input.InputInterface;
 using Input.InputConfig;
-using UnityEngine;
-
 namespace Input.Manager
 {
     /// <summary>
-    /// 玩家输入实现 — 纯 C# 类，轮询 InputAction 当前值
-    /// 不依赖 MonoBehaviour，直接注册为 Singleton
+    /// 玩家输入系统实现，唯一输入入口
     /// </summary>
-    public class PlayerInputManager : IPlayerInput
+    public class PlayerInputManager:MonoBehaviour,IPlayerInput,IInitializable
     {
-        private PlayerInputActions _actions;
-        private bool _enabled;
+        public event Action OnAttackPerformed;
+        public event Action OnAttackCanceled;
+        public event Action OnJumpPerformed; 
+        public event Action<Vector2>  OnMovePerformed;
+        public event Action<Vector2> OnMoveCanceled;
+        
+        public bool IsReady { get;private set; }
+        private PlayerInputActions _playerInputActions;//inputAction C#类
 
-        public Vector2 MoveDirection => _enabled
-            ? _actions.Gameplay.Move.ReadValue<Vector2>()
-            : Vector2.zero;
-
-        public Vector2 MousePosition => _enabled
-            ? _actions.Gameplay.MousePosition.ReadValue<Vector2>()
-            : Vector2.zero;
-
-        public bool IsClickTriggered => _enabled
-            && _actions.Gameplay.Click.WasPressedThisFrame();
-
-        public PlayerInputManager()
+        public void Initialize()
         {
-            _actions = new PlayerInputActions();
+            if(IsReady)return;
+            _playerInputActions = new PlayerInputActions();
+            BindInputCallbacks();
+            IsReady = true;
+            if(isActiveAndEnabled)
+                _playerInputActions.Gameplay.Enable();
         }
 
-        public void Enable()
+        private void BindInputCallbacks()
         {
-            _actions.Gameplay.Enable();
-            _enabled = true;
+            _playerInputActions.Gameplay.Attack.performed += ctx => OnAttackPerformed?.Invoke();
+            _playerInputActions.Gameplay.Jump.performed+=ctx=>OnJumpPerformed?.Invoke();
+            _playerInputActions.Gameplay.Attack.canceled+=ctx=>OnAttackCanceled?.Invoke();
+            _playerInputActions.Gameplay.Move.performed += ctx => 
+                OnMovePerformed?.Invoke(ctx.ReadValue<Vector2>());
+            _playerInputActions.Gameplay.Move.canceled += ctx => 
+                OnMoveCanceled?.Invoke(Vector2.zero);
         }
 
-        public void Disable()
+        public void OnEnable()
         {
-            _actions.Gameplay.Disable();
-            _enabled = false;
+            if(IsReady)
+                _playerInputActions?.Gameplay.Enable();
+        }
+
+        public void OnDisable()
+        {
+            if(IsReady)
+                _playerInputActions?.Gameplay.Disable();
+        }
+        private void OnDestroy()
+        {
+            if (_playerInputActions != null)
+                Addressables.Release(_playerInputActions);
         }
     }
 }

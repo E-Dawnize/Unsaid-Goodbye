@@ -1,16 +1,9 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Core.Architecture;
 using Core.Architecture.Interfaces;
 using Core.DI;
-using Core.Events.EventInterfaces;
-using Gameplay.SceneFlow;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
-using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace Core.Boot
 {
@@ -25,10 +18,9 @@ namespace Core.Boot
     public class ProjectContext : MonoBehaviour
     {
         private static ProjectContext _instance;
-        [SerializeField] private DIContainer _globalContainer;
+        private DIContainer _globalContainer;
         private IScope _projectScope;
-        private InstallerConfig _loadedConfig;
-        readonly string _installerAssertLabel="BootConfig";
+
         /// <summary>
         /// 确保ProjectContext存在并已启动
         /// </summary>
@@ -46,19 +38,14 @@ namespace Core.Boot
         /// <summary>
         /// 获取当前DI容器（供其他系统使用）
         /// </summary>
-        //public static DIContainer GetContainer() => _instance?._globalContainer;
+        public static DIContainer GetContainer() => _instance?._globalContainer;
 
         /// <summary>
         /// 获取项目级Scope
         /// </summary>
         public static IScope GetProjectScope() => _instance?._projectScope;
 
-        public static void ResetStaticState()
-        {
-            _instance = null;
-        }
-
-        private async void Boot()
+        private void Boot()
         {
             Debug.Log("[ProjectContext] Starting boot sequence...");
 
@@ -66,27 +53,16 @@ namespace Core.Boot
             CreateDIContainer();
 
             // 阶段2: 注册全局安装器
-            await RegisterInstallers();
-
-            // 阶段2.5: 依赖图验证 — 提前暴露循环依赖/缺失注册等问题
-            ValidateDependencies();
+            RegisterInstallers();
 
             // 阶段3: 设置LifecycleRegistry
             SetupLifecycleRegistry();
-            SetupGlobalViews();
 
-            // 阶段4: 启动场景作用域管理 + 为初始场景预创建 Scope
-            // 必须在 ExecuteLifecycle 之前执行，确保 Scoped ViewModel 在 DI 注入时已注册
-            SetupSceneScoping();
-
-            // 阶段5: 执行生命周期初始化
+            // 阶段4: 执行生命周期初始化
             ExecuteLifecycle();
 
-            // 阶段6: 启动游戏循环
+            // 阶段5: 启动游戏循环
             StartGameLoop();
-
-            // 阶段7: 发布 GameReadyEvent — 通知所有系统启动就绪
-            PublishGameReady();
 
             Debug.Log("[ProjectContext] Boot sequence completed");
         }
@@ -99,33 +75,20 @@ namespace Core.Boot
             Debug.Log("[ProjectContext] DI container and project scope created");
         }
 
-        private async Task RegisterInstallers()
+        private void RegisterInstallers()
         {
-            var handle=Addressables.LoadAssetAsync<InstallerConfig>(_installerAssertLabel).Task;
-            _loadedConfig = await handle;
-            if (_loadedConfig != null)
+            var config = LoadInstallerConfig();
+            if (config != null)
             {
-                foreach (var installer in _loadedConfig.GlobalInstallersSorted)
+                foreach (var installer in config.GlobalInstallersSorted)
                 {
                     installer.Register(_globalContainer);
                 }
-                Debug.Log($"[ProjectContext] Registered {_loadedConfig.GlobalInstallersSorted.Count()} global installers");
+                Debug.Log($"[ProjectContext] Registered {config.GlobalInstallersSorted.Count()} global installers");
             }
             else
             {
                 Debug.LogWarning("[ProjectContext] No installer config found");
-            }
-        }
-
-        private void ValidateDependencies()
-        {
-            Debug.Log("[ProjectContext] Validating dependency graph...");
-            var result = _globalContainer.Validate();
-            if (!result.IsValid)
-            {
-                var msg = $"[ProjectContext] DI validation failed with {result.Errors.Count} error(s):\n" +
-                          string.Join("\n", result.Errors);
-                Debug.LogError(msg);
             }
         }
 
@@ -134,14 +97,6 @@ namespace Core.Boot
             // 设置LifecycleRegistry使用我们的DI容器
             LifecycleRegistry.SetContainer(_globalContainer, _projectScope);
             Debug.Log("[ProjectContext] LifecycleRegistry configured");
-        }
-
-        private void SetupGlobalViews()
-        {
-            var gameFlowViewObject = new GameObject("GameFlowView");
-            DontDestroyOnLoad(gameFlowViewObject);
-            gameFlowViewObject.AddComponent<GameFlowView>();
-            Debug.Log("[ProjectContext] Global GameFlowView created");
         }
 
         private void ExecuteLifecycle()
@@ -190,90 +145,34 @@ namespace Core.Boot
 
         private void StartGameLoop()
         {
+            // 注册ITickable组件到UpdateRunner
             var updateRunner = GetComponent<UpdateRunner>();
             if (updateRunner == null)
             {
                 updateRunner = gameObject.AddComponent<UpdateRunner>();
             }
 
-            // 1. 注册 DI 容器中的 ITickable 服务
+            // 获取所有ITickable服务并注册
             var tickables = _globalContainer.ResolveAll<ITickable>(_projectScope);
             foreach (var tickable in tickables)
             {
                 updateRunner.Register(tickable);
             }
 
-            // 2. 注册场景 MonoBehaviour 中的 ITickable（通过 Awake → LifecycleRegistry.Register 注册的）
-            var sceneTickables = LifecycleRegistry.GetTickables();
-            foreach (var tickable in sceneTickables)
-            {
-                updateRunner.Register(tickable);
-            }
-
-            Debug.Log($"[ProjectContext] Game loop started with {tickables.Count()} DI + {sceneTickables.Count} scene tickable components");
-        }
-
-        /// <summary>
-        /// 启动场景作用域管理系统
-        /// 1. 为即将加载的初始场景预创建 Scope（保证场景 Awake 时有 Scope 可用）
-        /// 2. 挂载 SceneScopeRunner 处理后续场景切换
-        /// </summary>
-        private void SetupSceneScoping()
-        {
-            if (_loadedConfig == null)
-            {
-                Debug.LogWarning("[ProjectContext] No InstallerConfig, skipping scene scoping");
-                return;
-            }
-
-            var scopeProvider = _globalContainer.GetService<IScopeProvider>();
-            if (scopeProvider == null)
-            {
-                Debug.LogWarning("[ProjectContext] IScopeProvider not registered, skipping scene scoping");
-                return;
-            }
-
-            // 为初始场景预创建 Scope
-            var initialScope = _globalContainer.CreateScope();
-            scopeProvider.CurrentScope = initialScope;
-
-            // 注入场景 Installer
-            foreach (var installer in _loadedConfig.SceneInstallersSorted)
-                installer.Register(_globalContainer);
-
-            // 初始化场景级 Scoped 服务
-            var scope = initialScope as DIContainer.Scope;
-            foreach (var init in _globalContainer.ResolveAll<IInitializable>(scope))
-                init.Initialize();
-
-            foreach (var start in _globalContainer.ResolveAll<IStartable>(scope))
-                start.OnStart();
-
-            // 挂载 SceneScopeRunner，处理后续场景切换
-            SceneScopeRunner.Attach(_loadedConfig, _globalContainer, scopeProvider);
-
-            Debug.Log("[ProjectContext] Scene scoping initialized — initial scope created for first scene");
+            Debug.Log($"[ProjectContext] Game loop started with {tickables.Count()} tickable components");
         }
         #endregion
 
-        private void PublishGameReady()
+        #region 辅助方法
+        private InstallerConfig LoadInstallerConfig()
         {
-            var events = _globalContainer.GetService<IEventCenter>();
-            if (events == null)
-            {
-                Debug.LogWarning("[ProjectContext] IEventCenter not registered, skipping GameReadyEvent");
-                return;
-            }
-            events.Publish(new GameReadyEvent());
-            Debug.Log("[ProjectContext] GameReadyEvent published");
+            return Resources.Load<InstallerConfig>("Configs/BootConfig");
         }
+        #endregion
 
         #region 清理
         private void OnDestroy()
         {
-            if (_instance == this)
-                _instance = null;
-
             // 清理LifecycleRegistry
             LifecycleRegistry.Clear();
 

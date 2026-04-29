@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Core.Architecture;
 using Core.Architecture.Interfaces;
 using UnityEngine;
 
@@ -7,25 +6,23 @@ namespace Core.Boot
 {
     public class UpdateRunner:MonoBehaviour
     {
+        private static UpdateRunner _instance;
         private readonly List<ITickable> _tickables = new List<ITickable>();
         private readonly object _lock = new object();
 
-        private void Awake()
+        
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+        private static void Initialize()
         {
-            LifecycleRegistry.OnTickableRegistered += OnTickableRegistered;
-            LifecycleRegistry.OnTickableUnregistered += OnTickableUnregistered;
+            if (_instance != null) return;
+            
+            var go = new GameObject("[UpdateRunner]");
+            _instance = go.AddComponent<UpdateRunner>();
+            DontDestroyOnLoad(go);
+            
+            Debug.Log("UpdateRunner initialized");
         }
-
-        private void OnTickableRegistered(ITickable tickable)
-        {
-            Register(tickable);
-        }
-
-        private void OnTickableUnregistered(ITickable tickable)
-        {
-            Unregister(tickable);
-        }
-
+        
         public void Register(ITickable tickable)
         {
             lock (_lock)
@@ -48,7 +45,7 @@ namespace Core.Boot
 
             lock (_lock)
             {
-                foreach (var tickable in _tickables.ToArray())
+                foreach (var tickable in _tickables.ToArray()) // 复制避免迭代修改
                 {
                     try
                     {
@@ -64,8 +61,6 @@ namespace Core.Boot
 
         private void OnDestroy()
         {
-            LifecycleRegistry.OnTickableRegistered -= OnTickableRegistered;
-            LifecycleRegistry.OnTickableUnregistered -= OnTickableUnregistered;
             lock (_lock)
             {
                 _tickables.Clear();
