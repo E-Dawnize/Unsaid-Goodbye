@@ -14,6 +14,7 @@ namespace Core.Boot
         private static void Boot()
         {
             if (!Application.isPlaying) return;
+            Debug.Log("Boot");
             ProjectContext.Ensure();
         }
 

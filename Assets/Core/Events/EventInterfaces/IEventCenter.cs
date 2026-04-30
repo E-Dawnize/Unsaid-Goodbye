@@ -1,12 +1,13 @@
 ﻿
 using System;
+using Core.Architecture.Interfaces;
 
 namespace Core.Events.EventInterfaces
 {
     /// <summary>
     /// 事件总线对外接口，T为事件类型封装接口，定义在EventDefinitions下
     /// </summary>
-    public interface IEventCenter
+    public interface IEventCenter:IInitializable
     {
         void Subscribe<T>(Action<T> handler) where T : struct;
         void Unsubscribe<T>(Action<T> handler) where T : struct;

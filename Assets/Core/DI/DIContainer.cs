@@ -7,6 +7,7 @@ using System.Threading;
 using Core.Architecture;
 using Core.Architecture.Interfaces;
 using JetBrains.Annotations;
+using UnityEngine;
 
 namespace Core.DI
 {
@@ -89,6 +90,7 @@ namespace Core.DI
         {
             var list=_serviceDescriptors.GetOrAdd(descriptor.ServiceType,_=>new List<ServiceDescriptor>());
             list.Add(descriptor);
+            Debug.Log(descriptor.ServiceType.FullName+" is registered");
         }
         
         public void RegisterTransient<TService, TImplementation>() where TImplementation : TService

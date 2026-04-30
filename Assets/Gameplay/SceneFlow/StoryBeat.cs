@@ -13,11 +13,11 @@ namespace Gameplay.SceneFlow
     [System.Serializable]
     public class StoryBeat
     {
-        public string beatID;
-        public StoryBeatType type;
-        public string targetID;
-        
-        [UnityEngine.TextArea(1, 2)]
-        public string description; 
+        public string BeatId;
+        public StoryBeatType Type;
+        public string TargetId;
+
+        [TextArea(1, 2)]
+        public string Description;
     }
 }

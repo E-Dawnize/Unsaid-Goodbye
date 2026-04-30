@@ -5,6 +5,7 @@ using Core.Architecture;
 using Core.DI;
 using MVVM.Binding.Interfaces;
 using UnityEngine;
+using Object = UnityEngine.Object;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
@@ -23,7 +24,7 @@ namespace MVVM.Binding
     public class CommandBinding:StrictLifecycleMonoBehaviour,ICommandBinding
     {
         [Header("绑定配置")]
-        [SerializeField] private MonoBehaviour _viewModel;
+        [SerializeField] private Object _source;  // UnityEngine.Object，支持 MonoBehaviour / ScriptableObject
         [SerializeField] private string _commandName;
         [SerializeField] private string _eventName = "onClick";
         [SerializeField] private Component _targetComponent;
@@ -73,7 +74,7 @@ namespace MVVM.Binding
         private void ValidateBindings()
         {
             #region 命令查找
-            if (_viewModel == null)
+            if (_source == null)
             {
                 Debug.LogError("CommandBinding: Cannot bind due to ViewModel null", this);
                 _validationResult = false;
@@ -89,13 +90,13 @@ namespace MVVM.Binding
                 Debug.LogError("CommandBinding: Command name is empty", this);
                 _validationResult = false;
             }
-            _propertyInfo = _viewModel.GetType().GetProperty(_commandName);
+            _propertyInfo = _source.GetType().GetProperty(_commandName);
             if (_propertyInfo != null)
             {
                 // 检查属性类型是否为ICommand
                 if (typeof(ICommand).IsAssignableFrom(_propertyInfo.PropertyType))
                 {
-                    _command = _propertyInfo.GetValue(_viewModel) as ICommand;
+                    _command = _propertyInfo.GetValue(_source) as ICommand;
                     if (_command == null)
                     {
                         Debug.LogError($"CommandBinding: Property '{_commandName}' exists but returns null ICommand", this);
@@ -111,11 +112,11 @@ namespace MVVM.Binding
             // 如果不是ICommand属性，查找方法
             if (_propertyInfo == null)
             {
-                _methodInfo = _viewModel.GetType().GetMethod(_commandName);
+                _methodInfo = _source.GetType().GetMethod(_commandName);
                 if (_methodInfo == null)
                 {
                     Debug.LogError($"CommandBinding: Could not find command property or method '" +
-                                   $"{_commandName}' on{_viewModel.GetType().Name}", this);
+                                   $"{_commandName}' on{_source.GetType().Name}", this);
                     _validationResult = false;
                 }
             }
@@ -260,11 +261,11 @@ namespace MVVM.Binding
                     var parameterInfo = _methodInfo.GetParameters();
                     if (parameterInfo.Length == 0)
                     {
-                        _methodInfo.Invoke(_viewModel,null);
+                        _methodInfo.Invoke(_source,null);
                     }
                     else if(parameterInfo.Length == 1)
                     {
-                        _methodInfo.Invoke(_viewModel,new []{parameter});
+                        _methodInfo.Invoke(_source,new []{parameter});
                     }
                     else
                     {
@@ -357,13 +358,13 @@ namespace MVVM.Binding
         }
         private object GetPropertyValue()
         {
-            if (_viewModel == null || string.IsNullOrEmpty(_parameterPropertyPath))
+            if (_source == null || string.IsNullOrEmpty(_parameterPropertyPath))
                 return null;
 
             // 使用缓存属性链（如果可用）
             if (_propertyPathCache != null && _propertyPathCache.Length > 0)
             {
-                object currentObj = _viewModel;
+                object currentObj = _source;
                 foreach (var propInfo in _propertyPathCache)
                 {
                     if (propInfo == null || currentObj == null)
@@ -376,7 +377,7 @@ namespace MVVM.Binding
             {
                 // 回退到动态解析
                 string[] pathParts = _parameterPropertyPath.Split('.');
-                object currentObj = _viewModel;
+                object currentObj = _source;
 
                 foreach (var part in pathParts)
                 {
@@ -469,13 +470,13 @@ namespace MVVM.Binding
         /// </summary>
         private void CachePropertyPath()
         {
-            if (string.IsNullOrEmpty(_parameterPropertyPath) || _viewModel == null)
+            if (string.IsNullOrEmpty(_parameterPropertyPath) || _source == null)
                 return;
 
             string[] pathParts = _parameterPropertyPath.Split('.');
             _propertyPathCache = new PropertyInfo[pathParts.Length];
 
-            Type currentType = _viewModel.GetType();
+            Type currentType = _source.GetType();
             for (int i = 0; i < pathParts.Length; i++)
             {
                 _propertyPathCache[i] = currentType.GetProperty(pathParts[i]);
