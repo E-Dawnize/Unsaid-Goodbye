@@ -9,8 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d730d61229d847b5bb8802e8e79643cf, type: 3}
-  m_Name: BootConfig
+  m_Script: {fileID: 11500000, guid: c372fde0da0a4f6692a6a6a426fda23d, type: 3}
+  m_Name: ControllerInstaller
   m_EditorClassIdentifier: 
-  globalInstallers: []
-  sceneInstallers: []
+  order: 0

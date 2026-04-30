@@ -39,22 +39,22 @@ namespace Input.InputConfig
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""Attack"",
+                    ""name"": ""Click"",
                     ""type"": ""Button"",
-                    ""id"": ""715071a0-95ea-4d4c-acf9-f643e23c2d9c"",
-                    ""expectedControlType"": """",
+                    ""id"": ""2affdabc-3b58-4530-8c88-1c40af2d4719"",
+                    ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Jump"",
-                    ""type"": ""Button"",
-                    ""id"": ""010bf525-984d-4daa-9f3b-56a42538db51"",
-                    ""expectedControlType"": """",
+                    ""name"": ""MousePosition"",
+                    ""type"": ""Value"",
+                    ""id"": ""2281dbbe-9b07-4575-9323-17669526d420"",
+                    ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -115,23 +115,23 @@ namespace Input.InputConfig
                 },
                 {
                     ""name"": """",
-                    ""id"": ""18a339fe-39c3-48e3-bf79-725e9ce4ab4e"",
-                    ""path"": ""<Keyboard>/j"",
+                    ""id"": ""bd22ddb5-4310-43dc-948c-df013973dac4"",
+                    ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Attack"",
+                    ""action"": ""Click"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""a6f3b2c0-6fa0-4faa-b963-23689cbdceb4"",
-                    ""path"": ""<Keyboard>/space"",
+                    ""id"": ""1b050321-d4ee-44eb-be7d-7750eb47db62"",
+                    ""path"": ""<Mouse>/position"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Jump"",
+                    ""action"": ""MousePosition"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -171,8 +171,8 @@ namespace Input.InputConfig
             // Gameplay
             m_Gameplay = asset.FindActionMap("Gameplay", throwIfNotFound: true);
             m_Gameplay_Move = m_Gameplay.FindAction("Move", throwIfNotFound: true);
-            m_Gameplay_Attack = m_Gameplay.FindAction("Attack", throwIfNotFound: true);
-            m_Gameplay_Jump = m_Gameplay.FindAction("Jump", throwIfNotFound: true);
+            m_Gameplay_Click = m_Gameplay.FindAction("Click", throwIfNotFound: true);
+            m_Gameplay_MousePosition = m_Gameplay.FindAction("MousePosition", throwIfNotFound: true);
             // Setting
             m_Setting = asset.FindActionMap("Setting", throwIfNotFound: true);
             m_Setting_Newaction = m_Setting.FindAction("New action", throwIfNotFound: true);
@@ -238,15 +238,15 @@ namespace Input.InputConfig
         private readonly InputActionMap m_Gameplay;
         private List<IGameplayActions> m_GameplayActionsCallbackInterfaces = new List<IGameplayActions>();
         private readonly InputAction m_Gameplay_Move;
-        private readonly InputAction m_Gameplay_Attack;
-        private readonly InputAction m_Gameplay_Jump;
+        private readonly InputAction m_Gameplay_Click;
+        private readonly InputAction m_Gameplay_MousePosition;
         public struct GameplayActions
         {
             private @PlayerInputActions m_Wrapper;
             public GameplayActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
             public InputAction @Move => m_Wrapper.m_Gameplay_Move;
-            public InputAction @Attack => m_Wrapper.m_Gameplay_Attack;
-            public InputAction @Jump => m_Wrapper.m_Gameplay_Jump;
+            public InputAction @Click => m_Wrapper.m_Gameplay_Click;
+            public InputAction @MousePosition => m_Wrapper.m_Gameplay_MousePosition;
             public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -259,12 +259,12 @@ namespace Input.InputConfig
                 @Move.started += instance.OnMove;
                 @Move.performed += instance.OnMove;
                 @Move.canceled += instance.OnMove;
-                @Attack.started += instance.OnAttack;
-                @Attack.performed += instance.OnAttack;
-                @Attack.canceled += instance.OnAttack;
-                @Jump.started += instance.OnJump;
-                @Jump.performed += instance.OnJump;
-                @Jump.canceled += instance.OnJump;
+                @Click.started += instance.OnClick;
+                @Click.performed += instance.OnClick;
+                @Click.canceled += instance.OnClick;
+                @MousePosition.started += instance.OnMousePosition;
+                @MousePosition.performed += instance.OnMousePosition;
+                @MousePosition.canceled += instance.OnMousePosition;
             }
 
             private void UnregisterCallbacks(IGameplayActions instance)
@@ -272,12 +272,12 @@ namespace Input.InputConfig
                 @Move.started -= instance.OnMove;
                 @Move.performed -= instance.OnMove;
                 @Move.canceled -= instance.OnMove;
-                @Attack.started -= instance.OnAttack;
-                @Attack.performed -= instance.OnAttack;
-                @Attack.canceled -= instance.OnAttack;
-                @Jump.started -= instance.OnJump;
-                @Jump.performed -= instance.OnJump;
-                @Jump.canceled -= instance.OnJump;
+                @Click.started -= instance.OnClick;
+                @Click.performed -= instance.OnClick;
+                @Click.canceled -= instance.OnClick;
+                @MousePosition.started -= instance.OnMousePosition;
+                @MousePosition.performed -= instance.OnMousePosition;
+                @MousePosition.canceled -= instance.OnMousePosition;
             }
 
             public void RemoveCallbacks(IGameplayActions instance)
@@ -344,8 +344,8 @@ namespace Input.InputConfig
         public interface IGameplayActions
         {
             void OnMove(InputAction.CallbackContext context);
-            void OnAttack(InputAction.CallbackContext context);
-            void OnJump(InputAction.CallbackContext context);
+            void OnClick(InputAction.CallbackContext context);
+            void OnMousePosition(InputAction.CallbackContext context);
         }
         public interface ISettingActions
         {

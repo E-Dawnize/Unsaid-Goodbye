@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Core.Events.EventInterfaces;
-using Core.Tools;
 using UnityEngine;
 
 namespace Core.Events

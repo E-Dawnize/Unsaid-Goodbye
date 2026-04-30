@@ -6,6 +6,7 @@ using MVVM.Binding.Interfaces;
 using UnityEngine;
 using UnityEngine.UI;
 using Component = UnityEngine.Component;
+using Object = System.Object;
 
 namespace MVVM.Binding
 {
@@ -17,7 +18,7 @@ namespace MVVM.Binding
         [SerializeField] private string _targetProperty;
 
         [Header("数据源")]
-        [SerializeField] private MonoBehaviour _viewModel;
+        [SerializeField] private Object _viewModel;
         [SerializeField] private Component _targetComponent;
 
         [Header("转换器")]

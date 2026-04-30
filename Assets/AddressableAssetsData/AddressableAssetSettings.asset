@@ -15,7 +15,7 @@ MonoBehaviour:
   m_DefaultGroup: b16048c5a625c3f4cbfbfa335d15bffe
   m_currentHash:
     serializedVersion: 2
-    Hash: 56175ea16d61e8e9c72127b56c686be1
+    Hash: 00000000000000000000000000000000
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 0
   m_BundleLocalCatalog: 0
@@ -87,9 +87,6 @@ MonoBehaviour:
   m_LabelTable:
     m_LabelNames:
     - default
-    - BootConfig
-    - GamePhaseConfig
-    - DialogueSequence
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 827bd652863e744478b488283ee3f344, type: 2}
