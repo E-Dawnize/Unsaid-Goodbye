@@ -6,7 +6,6 @@ using System.Reflection;
 using System.Threading;
 using Core.Architecture;
 using Core.Architecture.Interfaces;
-using Core.Tools;
 using JetBrains.Annotations;
 
 namespace Core.DI

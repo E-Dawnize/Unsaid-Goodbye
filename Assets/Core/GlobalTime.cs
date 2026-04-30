@@ -1,9 +1,8 @@
-﻿using Core.Tools;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Core
 {
-    public class GlobalTime:MonoSingleton<GlobalTime>
+    public class GlobalTime
     {
         
     }

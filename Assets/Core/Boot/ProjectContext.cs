@@ -1,9 +1,14 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Core.Architecture;
 using Core.Architecture.Interfaces;
 using Core.DI;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace Core.Boot
 {
@@ -164,9 +169,10 @@ namespace Core.Boot
         #endregion
 
         #region 辅助方法
+        string InstallerAssertPath="Configs/BootConfig";
         private InstallerConfig LoadInstallerConfig()
         {
-            return Resources.Load<InstallerConfig>("Configs/BootConfig");
+            return Addressables.LoadAssetAsync<InstallerConfig>(InstallerAssertPath).Result;
         }
         #endregion
 

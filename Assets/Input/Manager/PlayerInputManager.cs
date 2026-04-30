@@ -1,5 +1,4 @@
-﻿using Core.Tools;
-using System;
+﻿using System;
 using Core.Architecture;
 using Core.Architecture.Interfaces;
 using UnityEngine;
@@ -12,9 +11,7 @@ namespace Input.Manager
     /// </summary>
     public class PlayerInputManager:MonoBehaviour,IPlayerInput,IInitializable
     {
-        public event Action OnAttackPerformed;
-        public event Action OnAttackCanceled;
-        public event Action OnJumpPerformed; 
+        public event Action<Vector2> OnClickPerformed;
         public event Action<Vector2>  OnMovePerformed;
         public event Action<Vector2> OnMoveCanceled;
         
@@ -33,9 +30,8 @@ namespace Input.Manager
 
         private void BindInputCallbacks()
         {
-            _playerInputActions.Gameplay.Attack.performed += ctx => OnAttackPerformed?.Invoke();
-            _playerInputActions.Gameplay.Jump.performed+=ctx=>OnJumpPerformed?.Invoke();
-            _playerInputActions.Gameplay.Attack.canceled+=ctx=>OnAttackCanceled?.Invoke();
+            _playerInputActions.Gameplay.Click.performed += ctx
+                => OnClickPerformed?.Invoke(_playerInputActions.Gameplay.MousePosition.ReadValue<Vector2>());
             _playerInputActions.Gameplay.Move.performed += ctx => 
                 OnMovePerformed?.Invoke(ctx.ReadValue<Vector2>());
             _playerInputActions.Gameplay.Move.canceled += ctx => 
