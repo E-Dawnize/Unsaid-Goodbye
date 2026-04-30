@@ -11,5 +11,6 @@ namespace Gameplay.Interfaces
         public GamePhase CurrentPhase { get; }
         public event Action<GamePhase> OnPhaseChanged;
         public event Action<GamePhase> OnPhaseComplete;
+        void ConfirmTransition(GamePhase nextPhase);
     }
 }

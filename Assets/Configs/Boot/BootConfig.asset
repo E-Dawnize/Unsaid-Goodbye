@@ -12,5 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d730d61229d847b5bb8802e8e79643cf, type: 3}
   m_Name: BootConfig
   m_EditorClassIdentifier: 
-  globalInstallers: []
+  globalInstallers:
+  - {fileID: 11400000, guid: 1695b95040e56f3439ccf92ca43e88ad, type: 2}
+  - {fileID: 11400000, guid: ede049995d3b6da43bb371e61e3dcec7, type: 2}
+  - {fileID: 11400000, guid: f7bfd7260b61ae1479147dcd0937e5a2, type: 2}
+  - {fileID: 11400000, guid: 200f2d5415a52c54ab00ebaa1fb4c499, type: 2}
   sceneInstallers: []

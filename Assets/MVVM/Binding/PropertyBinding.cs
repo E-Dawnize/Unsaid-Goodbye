@@ -6,7 +6,7 @@ using MVVM.Binding.Interfaces;
 using UnityEngine;
 using UnityEngine.UI;
 using Component = UnityEngine.Component;
-using Object = System.Object;
+using Object = UnityEngine.Object;
 
 namespace MVVM.Binding
 {
@@ -18,7 +18,7 @@ namespace MVVM.Binding
         [SerializeField] private string _targetProperty;
 
         [Header("数据源")]
-        [SerializeField] private Object _viewModel;
+        [SerializeField] private Object _source;
         [SerializeField] private Component _targetComponent;
 
         [Header("转换器")]
@@ -64,9 +64,9 @@ namespace MVVM.Binding
         private bool ValidateBindings()
         {
             if(_validationResult != null)return _validationResult.Value;
-            if (_viewModel == null)
+            if (_source == null)
             {
-                Debug.LogError("View Model is null");
+                Debug.LogError("Source is null");
                 _validationResult = false;
                 return false;
             }
@@ -84,17 +84,17 @@ namespace MVVM.Binding
                 _validationResult = false;
                 return false;
             }
-            _sourcePropertyInfo = _viewModel.GetType().GetProperty(_sourceProperty);
+            _sourcePropertyInfo = _source.GetType().GetProperty(_sourceProperty);
             if (_sourcePropertyInfo == null)
             {
-                Debug.LogError("Property is null");
+                Debug.LogError($"Source property '{_sourceProperty}' not found on {_source.GetType().Name}");
                 _validationResult = false;
                 return false;
             }
-            _targetPropertyInfo = _viewModel.GetType().GetProperty(_targetProperty);
+            _targetPropertyInfo = _targetComponent.GetType().GetProperty(_targetProperty);
             if (_targetPropertyInfo == null)
             {
-                Debug.LogError("Property is null");
+                Debug.LogError($"Target property '{_targetProperty}' not found on {_targetComponent.GetType().Name}");
                 _validationResult = false;
                 return false;
             }
@@ -104,7 +104,7 @@ namespace MVVM.Binding
 
         public void Bind()
         {
-            _notifySource=_viewModel as INotifyPropertyChanged;
+            _notifySource=_source as INotifyPropertyChanged;
             if (_notifySource != null)
             {
                 _notifySource.PropertyChanged += OnSourcePropertyChanged;
@@ -140,7 +140,7 @@ namespace MVVM.Binding
             {
                 var targetValue = _targetPropertyInfo.GetValue(_targetComponent);
                 var sourceValue = _converter?.ConvertBack(targetValue, _sourcePropertyInfo.PropertyType) ?? targetValue;
-                _sourcePropertyInfo.SetValue(_viewModel, sourceValue);
+                _sourcePropertyInfo.SetValue(_source, sourceValue);
                 Debug.Log($"PropertyBinding: UI→ViewModel Update {_targetProperty} → {_sourceProperty} = {sourceValue}");
             }catch(Exception ex)
             {
@@ -156,7 +156,7 @@ namespace MVVM.Binding
             try
             {
                 // 获取ViewModel当前值
-                var sourceValue = _sourcePropertyInfo.GetValue(_viewModel);
+                var sourceValue = _sourcePropertyInfo.GetValue(_source);
 
                 // 应用转换器（如果有）
                 var targetValue = _converter?.Convert(sourceValue, _targetPropertyInfo.PropertyType) ?? sourceValue;

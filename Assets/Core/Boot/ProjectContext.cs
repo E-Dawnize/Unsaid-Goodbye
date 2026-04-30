@@ -25,7 +25,7 @@ namespace Core.Boot
         private static ProjectContext _instance;
         private DIContainer _globalContainer;
         private IScope _projectScope;
-
+        readonly string _installerAssertLabel="BootConfig";
         /// <summary>
         /// 确保ProjectContext存在并已启动
         /// </summary>
@@ -50,7 +50,7 @@ namespace Core.Boot
         /// </summary>
         public static IScope GetProjectScope() => _instance?._projectScope;
 
-        private void Boot()
+        private async void Boot()
         {
             Debug.Log("[ProjectContext] Starting boot sequence...");
 
@@ -58,7 +58,7 @@ namespace Core.Boot
             CreateDIContainer();
 
             // 阶段2: 注册全局安装器
-            RegisterInstallers();
+            await RegisterInstallers();
 
             // 阶段3: 设置LifecycleRegistry
             SetupLifecycleRegistry();
@@ -80,9 +80,11 @@ namespace Core.Boot
             Debug.Log("[ProjectContext] DI container and project scope created");
         }
 
-        private void RegisterInstallers()
+        private async Task RegisterInstallers()
         {
-            var config = LoadInstallerConfig();
+            InstallerConfig config=null;
+            var handle=Addressables.LoadAssetAsync<InstallerConfig>(_installerAssertLabel).Task;
+            config = await handle;
             if (config != null)
             {
                 foreach (var installer in config.GlobalInstallersSorted)
@@ -165,14 +167,6 @@ namespace Core.Boot
             }
 
             Debug.Log($"[ProjectContext] Game loop started with {tickables.Count()} tickable components");
-        }
-        #endregion
-
-        #region 辅助方法
-        string InstallerAssertPath="Configs/BootConfig";
-        private InstallerConfig LoadInstallerConfig()
-        {
-            return Addressables.LoadAssetAsync<InstallerConfig>(InstallerAssertPath).Result;
         }
         #endregion
 

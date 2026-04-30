@@ -18,17 +18,8 @@ namespace Core.Architecture
         /// </summary>
         private void Awake()
         {
-            // 1. 自动注册到生命周期系统
+            // Register() 内部会处理依赖注入 + 动态组件补调 Initialize/OnStart
             LifecycleRegistry.Register(this);
-
-            // 2. 自动尝试依赖注入
-            //    - 如果DI容器已就绪，立即注入
-            //    - 否则标记为延迟注入，在InitializeAll时处理
-
-            // 3. 根据当前生命周期阶段决定是否立即执行
-            //    - 如果系统已过Initialize阶段，立即调用Initialize()
-            //    - 如果系统已过OnStart阶段，立即调用OnStart()
-            HandleDynamicRegistration();
         }
 
         /// <summary>
@@ -94,44 +85,6 @@ namespace Core.Architecture
         }
         #endregion
 
-        #region 私有辅助方法
-        /// <summary>
-        /// 处理动态组件注册逻辑
-        /// 根据当前系统状态决定是否立即执行生命周期方法
-        /// </summary>
-        private void HandleDynamicRegistration()
-        {
-            // 如果系统已经过了Initialize阶段，立即调用Initialize()
-            if (LifecycleRegistry.IsInitializationComplete && !LifecycleRegistry.IsInitializing)
-            {
-                try
-                {
-                    // 直接调用接口实现，这会触发OnInitialize()
-                    ((IInitializable)this).Initialize();
-                    Debug.Log($"[Lifecycle] Dynamic component initialized immediately: {GetType().Name}");
-                }
-                catch (Exception ex)
-                {
-                    Debug.LogError($"[Lifecycle] Immediate Initialize failed for dynamic component {GetType().Name}: {ex.Message}");
-                }
-            }
-
-            // 如果系统已经过了OnStart阶段，立即调用OnStart()
-            if (LifecycleRegistry.IsStartComplete && !LifecycleRegistry.IsStarting && LifecycleRegistry.IsInitializationComplete)
-            {
-                try
-                {
-                    // 直接调用接口实现，这会触发OnStartExternal()
-                    ((IStartable)this).OnStart();
-                    Debug.Log($"[Lifecycle] Dynamic component started immediately: {GetType().Name}");
-                }
-                catch (Exception ex)
-                {
-                    Debug.LogError($"[Lifecycle] Immediate OnStart failed for dynamic component {GetType().Name}: {ex.Message}");
-                }
-            }
-        }
-        #endregion
 
         #region Unity生命周期
         /// <summary>

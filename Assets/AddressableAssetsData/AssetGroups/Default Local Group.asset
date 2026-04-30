@@ -16,7 +16,18 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: b16048c5a625c3f4cbfbfa335d15bffe
-  m_SerializeEntries: []
+  m_SerializeEntries:
+  - m_GUID: 8a859cde84c5fb848a708cddccd3b307
+    m_Address: Configs/GameSaveData.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6889c70cd30db6f4781ff1b1123ba213
+    m_Address: Configs/BootConfig
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - BootConfig
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 7c5bd9b7bb52d8241aa7765b96bcd1e5, type: 2}
   m_SchemaSet:

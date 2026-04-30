@@ -9,6 +9,7 @@ namespace Core.Events
     {
         //type为事件结构体
         private readonly Dictionary<Type, Delegate> _eventHandlers = new Dictionary<Type, Delegate>();
+        public void Initialize(){}
 
         public void Subscribe<T>(Action<T> handler) where T : struct
         {

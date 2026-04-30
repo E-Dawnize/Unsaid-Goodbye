@@ -3,7 +3,8 @@
     "allow": [
       "Bash(python -c \":*)",
       "Bash(node -e \":*)",
-      "Bash(unzip -p 'D:/Unity Project/Unsaid Goodbye/Assets/V1.docx' word/document.xml)"
+      "Bash(unzip -p 'D:/Unity Project/Unsaid Goodbye/Assets/V1.docx' word/document.xml)",
+      "Bash(grep -r BGMTrack 'D:/Unity Project/Unsaid Goodbye/Assets' --include=*.cs)"
     ]
   }
 }

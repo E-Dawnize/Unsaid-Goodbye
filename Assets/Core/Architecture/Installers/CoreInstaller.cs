@@ -1,4 +1,5 @@
-﻿using Core.Events;
+﻿using Core.Architecture.Interfaces;
+using Core.Events;
 using Core.Events.EventInterfaces;
 using Input.InputInterface;
 using Input.Manager;
@@ -14,6 +15,7 @@ namespace Core.Architecture.Installers
         public override void Register(DI.DIContainer container)
         {
             container.RegisterSingleton<IEventCenter>(new EventManager());
+            container.RegisterSingleton<IInitializable,IEventCenter>();
             container.RegisterSingleton<IPlayerInput>(sp =>
             {
                 var go = new GameObject("PlayerInputManager");
