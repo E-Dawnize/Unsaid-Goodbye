@@ -1,21 +1,19 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Gameplay.SceneFlow;
-using UnityEngine;
 
 namespace Gameplay.SO
 {
     /// <summary>
-    /// GameFlow 的 MVVM Model 层 — 纯数据 ScriptableObject，可作为 PropertyBinding 绑定源
-    /// Controller 写入，View 只读绑定
+    /// GameFlow 的 MVVM Model 层 — 运行时纯数据类
+    /// Controller 写入，View 通过 PropertyBinding 只读绑定
     /// </summary>
-    [CreateAssetMenu(menuName = "UnsaidGoodbye/GameFlowModel")]
-    public class GameFlowModel : ScriptableObject, INotifyPropertyChanged
+    public class GameFlowModel : INotifyPropertyChanged
     {
-        [field: SerializeField] public GamePhase CurrentPhase        { get; private set; }
-        [field: SerializeField] public bool      IsTransitioning      { get; private set; }
-        [field: SerializeField] public int       CompletedBeatCount   { get; private set; }
-        [field: SerializeField] public int       TotalBeatCount        { get; private set; }
+        public GamePhase CurrentPhase        { get; private set; }
+        public bool      IsTransitioning      { get; private set; }
+        public int       CompletedBeatCount   { get; private set; }
+        public int       TotalBeatCount        { get; private set; }
 
         /// <summary>阶段进度 0~1，可直接绑定到 Slider.value</summary>
         public float PhaseProgress => TotalBeatCount > 0

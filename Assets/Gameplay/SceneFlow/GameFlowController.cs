@@ -4,6 +4,7 @@ using System.Linq;
 using Core.DI;
 using Core.Events.EventInterfaces;
 using Gameplay.Interfaces;
+using Gameplay.Save;
 using Gameplay.SO;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -19,6 +20,7 @@ namespace Gameplay.SceneFlow
     {
         [Inject] private IEventCenter _events;
         [Inject] private GameFlowModel _model;
+        [Inject] private ISaveManager _saveManager;
 
         private const string PhaseConfigLabel = "GamePhaseConfig";
 
@@ -39,7 +41,7 @@ namespace Gameplay.SceneFlow
 
             try
             {
-                await LoadSaveData();
+                LoadSaveData();
                 await LoadPhaseConfigs();
             }
             catch (Exception e)
@@ -183,17 +185,16 @@ namespace Gameplay.SceneFlow
         {
             GameData.CurrentPhase = _model.CurrentPhase;
             GameData.CompletedBeatIds = new HashSet<string>(_completedBeats);
+            _saveManager.WriteSave(GameData.ToDto());
             return GameData;
         }
         #endregion
 
         #region 资源加载
-        private async System.Threading.Tasks.Task LoadSaveData()
+        private void LoadSaveData()
         {
-            var handle = Addressables.LoadAssetAsync<GameSaveData>("Configs/GameSaveData.asset");
-            var saveData = await handle.Task;
-            GameData = new GameSaveDataRuntime(saveData);
-            Addressables.Release(handle);
+            var dto = _saveManager.LoadSave(); // 有则读，无则自动创建默认存档
+            GameData = new GameSaveDataRuntime(dto);
         }
 
         private async System.Threading.Tasks.Task LoadPhaseConfigs()

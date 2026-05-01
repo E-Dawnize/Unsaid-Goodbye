@@ -10,8 +10,8 @@ namespace Gameplay.SceneFlow
         InteractWithObject, // 交互特定物体 → InteractionPerformedEvent
         EnterTrigger,       // 进入触发区域 → TriggerEnterEvent
     }
-    [System.Serializable]
-    public class StoryBeat
+    [CreateAssetMenu(fileName = "StoryBeat", menuName = "Gameplay/Story Beat")]
+    public class StoryBeat:ScriptableObject
     {
         public string BeatId;
         public StoryBeatType Type;

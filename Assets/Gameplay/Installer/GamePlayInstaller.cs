@@ -1,10 +1,10 @@
 ﻿using Core.Architecture;
 using Core.DI;
 using Gameplay.Interfaces;
+using Gameplay.Save;
 using Gameplay.SceneFlow;
 using Gameplay.SO;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 
 namespace Gameplay.Installer
 {
@@ -16,13 +16,11 @@ namespace Gameplay.Installer
             // Controller
             container.RegisterSingleton<IGameFlowController, GameFlowController>();
 
-            // Model — ScriptableObject 资产，通过 Addressables 加载后注册为单例
-            container.RegisterSingleton<GameFlowModel>(sp =>
-            {
-                var handle = Addressables.LoadAssetAsync<GameFlowModel>("Configs/GameFlowModel.asset");
-                var model = handle.WaitForCompletion();
-                return model;
-            });
+            // Save
+            container.RegisterSingleton<ISaveManager, SaveManager>();
+
+            // Model — 纯运行时类，Controller 在加载存档时填充数据
+            container.RegisterSingleton<GameFlowModel>(new GameFlowModel());
         }
     }
 }

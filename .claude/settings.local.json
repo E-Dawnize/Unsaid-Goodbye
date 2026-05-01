@@ -4,7 +4,13 @@
       "Bash(python -c \":*)",
       "Bash(node -e \":*)",
       "Bash(unzip -p 'D:/Unity Project/Unsaid Goodbye/Assets/V1.docx' word/document.xml)",
-      "Bash(grep -r BGMTrack 'D:/Unity Project/Unsaid Goodbye/Assets' --include=*.cs)"
+      "Bash(grep -r BGMTrack 'D:/Unity Project/Unsaid Goodbye/Assets' --include=*.cs)",
+      "Bash(find 'D:/Unity Project/Unsaid Goodbye/Assets' -name *.cs -type f)",
+      "Bash(find 'D:/Unity Project/Unsaid Goodbye/Assets/Core' -name *.cs -type f)",
+      "Bash(find 'D:/Unity Project/Unsaid Goodbye/Assets/Gameplay' -name *.cs -type f)",
+      "Bash(find 'D:/Unity Project/Unsaid Goodbye/Assets/MVVM' -name *.cs -type f)",
+      "Bash(find 'D:/Unity Project/Unsaid Goodbye/Assets' -path */AddressableAssetsData/* -type f)",
+      "Bash(find 'D:/Unity Project/Unsaid Goodbye/Assets/Input' -name *.cs -type f)"
     ]
   }
 }

@@ -25,6 +25,7 @@ namespace Core.Boot
         private static ProjectContext _instance;
         private DIContainer _globalContainer;
         private IScope _projectScope;
+        private InstallerConfig _loadedConfig;
         readonly string _installerAssertLabel="BootConfig";
         /// <summary>
         /// 确保ProjectContext存在并已启动
@@ -43,7 +44,7 @@ namespace Core.Boot
         /// <summary>
         /// 获取当前DI容器（供其他系统使用）
         /// </summary>
-        public static DIContainer GetContainer() => _instance?._globalContainer;
+        //public static DIContainer GetContainer() => _instance?._globalContainer;
 
         /// <summary>
         /// 获取项目级Scope
@@ -60,6 +61,9 @@ namespace Core.Boot
             // 阶段2: 注册全局安装器
             await RegisterInstallers();
 
+            // 阶段2.5: 依赖图验证 — 提前暴露循环依赖/缺失注册等问题
+            ValidateDependencies();
+
             // 阶段3: 设置LifecycleRegistry
             SetupLifecycleRegistry();
 
@@ -68,6 +72,10 @@ namespace Core.Boot
 
             // 阶段5: 启动游戏循环
             StartGameLoop();
+
+            // 阶段6: 启动场景作用域管理 + 为初始场景预创建 Scope
+            // 关键：必须在 Boot 完成（BeforeSceneLoad）时创建，确保场景 GameObject Awake 时有 Scope 可用
+            SetupSceneScoping();
 
             Debug.Log("[ProjectContext] Boot sequence completed");
         }
@@ -82,20 +90,31 @@ namespace Core.Boot
 
         private async Task RegisterInstallers()
         {
-            InstallerConfig config=null;
             var handle=Addressables.LoadAssetAsync<InstallerConfig>(_installerAssertLabel).Task;
-            config = await handle;
-            if (config != null)
+            _loadedConfig = await handle;
+            if (_loadedConfig != null)
             {
-                foreach (var installer in config.GlobalInstallersSorted)
+                foreach (var installer in _loadedConfig.GlobalInstallersSorted)
                 {
                     installer.Register(_globalContainer);
                 }
-                Debug.Log($"[ProjectContext] Registered {config.GlobalInstallersSorted.Count()} global installers");
+                Debug.Log($"[ProjectContext] Registered {_loadedConfig.GlobalInstallersSorted.Count()} global installers");
             }
             else
             {
                 Debug.LogWarning("[ProjectContext] No installer config found");
+            }
+        }
+
+        private void ValidateDependencies()
+        {
+            Debug.Log("[ProjectContext] Validating dependency graph...");
+            var result = _globalContainer.Validate();
+            if (!result.IsValid)
+            {
+                var msg = $"[ProjectContext] DI validation failed with {result.Errors.Count} error(s):\n" +
+                          string.Join("\n", result.Errors);
+                Debug.LogError(msg);
             }
         }
 
@@ -167,6 +186,48 @@ namespace Core.Boot
             }
 
             Debug.Log($"[ProjectContext] Game loop started with {tickables.Count()} tickable components");
+        }
+
+        /// <summary>
+        /// 启动场景作用域管理系统
+        /// 1. 为即将加载的初始场景预创建 Scope（保证场景 Awake 时有 Scope 可用）
+        /// 2. 挂载 SceneScopeRunner 处理后续场景切换
+        /// </summary>
+        private void SetupSceneScoping()
+        {
+            if (_loadedConfig == null)
+            {
+                Debug.LogWarning("[ProjectContext] No InstallerConfig, skipping scene scoping");
+                return;
+            }
+
+            var scopeProvider = _globalContainer.GetService<IScopeProvider>();
+            if (scopeProvider == null)
+            {
+                Debug.LogWarning("[ProjectContext] IScopeProvider not registered, skipping scene scoping");
+                return;
+            }
+
+            // 为初始场景预创建 Scope
+            var initialScope = _globalContainer.CreateScope();
+            scopeProvider.CurrentScope = initialScope;
+
+            // 注入场景 Installer
+            foreach (var installer in _loadedConfig.SceneInstallersSorted)
+                installer.Register(_globalContainer);
+
+            // 初始化场景级 Scoped 服务
+            var scope = initialScope as DIContainer.Scope;
+            foreach (var init in _globalContainer.ResolveAll<IInitializable>(scope))
+                init.Initialize();
+
+            foreach (var start in _globalContainer.ResolveAll<IStartable>(scope))
+                start.OnStart();
+
+            // 挂载 SceneScopeRunner，处理后续场景切换
+            SceneScopeRunner.Attach(_loadedConfig, _globalContainer, scopeProvider);
+
+            Debug.Log("[ProjectContext] Scene scoping initialized — initial scope created for first scene");
         }
         #endregion
 

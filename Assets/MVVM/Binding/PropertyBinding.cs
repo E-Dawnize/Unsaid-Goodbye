@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Reflection;
 using Core.Architecture;
+using Core.DI;
 using MVVM.Binding.Interfaces;
 using UnityEngine;
 using UnityEngine.UI;
@@ -21,8 +22,15 @@ namespace MVVM.Binding
         [SerializeField] private Object _source;
         [SerializeField] private Component _targetComponent;
 
+        [Header("DI绑定（与_source二选一）")]
+        [Tooltip("纯C# ViewModel的类型全名，如: MVVM.ViewModel.TestViewModel, Assembly-CSharp")]
+        [SerializeField] private string _sourceTypeName;
+
         [Header("转换器")]
         [SerializeField] private IValueConverter _converter;
+
+        [Inject] private IScopeProvider _scopeProvider;
+        [Inject] private IServiceProvider _serviceProvider;
 
         // 反射缓存
         private PropertyInfo _sourcePropertyInfo;
@@ -31,6 +39,9 @@ namespace MVVM.Binding
         
         // 在类字段区域添加
         private bool? _validationResult = null;
+        private object _diSource;              // DI解析的纯C# ViewModel
+
+        private object GetActualSource() => _diSource ?? (object)_source;
 
         // IPropertyBinding接口实现
         public string SourceProperty => _sourceProperty;
@@ -64,7 +75,14 @@ namespace MVVM.Binding
         private bool ValidateBindings()
         {
             if(_validationResult != null)return _validationResult.Value;
-            if (_source == null)
+
+            // DI解析通道：当_source未拖入时，从DI容器解析纯C# ViewModel
+            if (_source == null && !string.IsNullOrEmpty(_sourceTypeName))
+            {
+                _diSource = ResolveFromDI(_sourceTypeName);
+            }
+
+            if (GetActualSource() == null)
             {
                 Debug.LogError("Source is null");
                 _validationResult = false;
@@ -84,10 +102,10 @@ namespace MVVM.Binding
                 _validationResult = false;
                 return false;
             }
-            _sourcePropertyInfo = _source.GetType().GetProperty(_sourceProperty);
+            _sourcePropertyInfo = GetActualSource().GetType().GetProperty(_sourceProperty);
             if (_sourcePropertyInfo == null)
             {
-                Debug.LogError($"Source property '{_sourceProperty}' not found on {_source.GetType().Name}");
+                Debug.LogError($"Source property '{_sourceProperty}' not found on {GetActualSource().GetType().Name}");
                 _validationResult = false;
                 return false;
             }
@@ -104,7 +122,7 @@ namespace MVVM.Binding
 
         public void Bind()
         {
-            _notifySource=_source as INotifyPropertyChanged;
+            _notifySource=GetActualSource() as INotifyPropertyChanged;
             if (_notifySource != null)
             {
                 _notifySource.PropertyChanged += OnSourcePropertyChanged;
@@ -140,7 +158,7 @@ namespace MVVM.Binding
             {
                 var targetValue = _targetPropertyInfo.GetValue(_targetComponent);
                 var sourceValue = _converter?.ConvertBack(targetValue, _sourcePropertyInfo.PropertyType) ?? targetValue;
-                _sourcePropertyInfo.SetValue(_source, sourceValue);
+                _sourcePropertyInfo.SetValue(GetActualSource(), sourceValue);
                 Debug.Log($"PropertyBinding: UI→ViewModel Update {_targetProperty} → {_sourceProperty} = {sourceValue}");
             }catch(Exception ex)
             {
@@ -156,7 +174,7 @@ namespace MVVM.Binding
             try
             {
                 // 获取ViewModel当前值
-                var sourceValue = _sourcePropertyInfo.GetValue(_source);
+                var sourceValue = _sourcePropertyInfo.GetValue(GetActualSource());
 
                 // 应用转换器（如果有）
                 var targetValue = _converter?.Convert(sourceValue, _targetPropertyInfo.PropertyType) ?? sourceValue;
@@ -224,6 +242,41 @@ namespace MVVM.Binding
             {
                 UpdateTarget();
             }
+        }
+
+        /// <summary>
+        /// 从DI容器解析纯C# ViewModel（通过注入的 IServiceProvider，不走静态定位器）
+        /// </summary>
+        private object ResolveFromDI(string typeName)
+        {
+            var scope = _scopeProvider?.CurrentScope;
+            var provider = scope?.ServiceProvider ?? (IServiceProvider)_serviceProvider;
+
+            if (provider == null)
+            {
+                Debug.LogWarning("[PropertyBinding] 无可用 ServiceProvider");
+                return null;
+            }
+
+            var type = Type.GetType(typeName);
+            if (type == null)
+                type = Type.GetType($"{typeName}, Assembly-CSharp");
+
+            if (type == null)
+            {
+                Debug.LogError($"[PropertyBinding] 无法找到类型: {typeName}");
+                return null;
+            }
+
+            var instance = provider.GetService(type);
+            if (instance == null)
+            {
+                Debug.LogError($"[PropertyBinding] DI容器中未注册: {typeName}");
+                return null;
+            }
+
+            Debug.Log($"[PropertyBinding] DI解析成功: {typeName} (scope={scope != null})");
+            return instance;
         }
     }
 }

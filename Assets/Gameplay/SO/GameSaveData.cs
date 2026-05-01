@@ -1,55 +1,44 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using Gameplay.Save;
 using Gameplay.SceneFlow;
-using UnityEngine;
 
 namespace Gameplay.SO
 {
     /// <summary>
-    /// 存档SO
+    /// 运行时存档数据 — 用 HashSet 保证 O(1) 查找
+    /// 从 SaveManager 的 GameSaveDto 构造 / 导出
     /// </summary>
-    [CreateAssetMenu(fileName = "GameSaveData", menuName = "SO/GameSaveData")]
-    public class GameSaveData:ScriptableObject
-    {
-        public GamePhase currentPhase;
-        public string currentSceneId;
-        public List<string> completedBeatIds;          // 当前阶段已完成的Beat
-        public List<string> collectedItemIds;           // 全部已收集道具
-        public List<string> solvedPuzzleIds;            // 全部已解谜
-        public List<string> completedDialogueIds;       // 全部已完成对话
-        public float playTimeSeconds;
-        public string saveDateTime;
-    }
     public class GameSaveDataRuntime
     {
         public GamePhase CurrentPhase;
         public string CurrentSceneId;
-        public HashSet<string> CompletedBeatIds=new ();          // 当前阶段已完成的Beat
-        public HashSet<string> CollectedItemIds=new ();           // 全部已收集道具
-        public HashSet<string> SolvedPuzzleIds=new ();            // 全部已解谜
-        public HashSet<string> CompletedDialogueIds=new ();       // 全部已完成对话
-        public GameSaveDataRuntime(GameSaveData gameSaveData)
+        public HashSet<string> CompletedBeatIds = new();
+        public HashSet<string> CollectedItemIds = new();
+        public HashSet<string> SolvedPuzzleIds = new();
+        public HashSet<string> CompletedDialogueIds = new();
+
+        public GameSaveDataRuntime(GameSaveDto dto)
         {
-            CurrentPhase = gameSaveData.currentPhase;
-            CurrentSceneId=gameSaveData.currentSceneId;
-            foreach (var completedBeatId in gameSaveData.completedBeatIds)
-            {
-                CompletedBeatIds.Add(completedBeatId);
-            }
+            CurrentPhase = dto.currentPhase;
+            CurrentSceneId = dto.currentSceneId;
+            CompletedBeatIds = new HashSet<string>(dto.completedBeatIds ?? Enumerable.Empty<string>());
+            CollectedItemIds = new HashSet<string>(dto.collectedItemIds ?? Enumerable.Empty<string>());
+            SolvedPuzzleIds = new HashSet<string>(dto.solvedPuzzleIds ?? Enumerable.Empty<string>());
+            CompletedDialogueIds = new HashSet<string>(dto.completedDialogueIds ?? Enumerable.Empty<string>());
+        }
 
-            foreach (var completedDialogueId in gameSaveData.completedDialogueIds)
+        public GameSaveDto ToDto()
+        {
+            return new GameSaveDto
             {
-                CompletedDialogueIds.Add(completedDialogueId);
-            }
-
-            foreach (var solvedPuzzleId in gameSaveData.solvedPuzzleIds)
-            {
-                SolvedPuzzleIds.Add(solvedPuzzleId);
-            }
-
-            foreach (var collectedItemId in gameSaveData.collectedItemIds)
-            {
-                CollectedItemIds.Add(collectedItemId);
-            }
+                currentPhase = CurrentPhase,
+                currentSceneId = CurrentSceneId,
+                completedBeatIds = CompletedBeatIds.ToList(),
+                collectedItemIds = CollectedItemIds.ToList(),
+                solvedPuzzleIds = SolvedPuzzleIds.ToList(),
+                completedDialogueIds = CompletedDialogueIds.ToList()
+            };
         }
     }
 }
