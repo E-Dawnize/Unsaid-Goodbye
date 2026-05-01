@@ -69,8 +69,8 @@ namespace MVVM.ViewModel.Base
             OnPropertyChanged(propertyName);
             return true;
         }
-        
-        public virtual void Initialize() { }
+
+        public abstract void Initialize();
         public void OnStart() { }
         public virtual void Dispose() { }
     }

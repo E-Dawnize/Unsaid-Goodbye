@@ -342,7 +342,7 @@ namespace Core.DI
         }
         #endregion
 
-        #region 资源释放
+    #region 资源释放
         public void Dispose()
         {
             if(_disposed)return;
@@ -357,7 +357,87 @@ namespace Core.DI
             _serviceDescriptors.Clear();
         }
         #endregion
-        
+
+        #region 依赖图验证
+
+        /// <summary>
+        /// 遍历所有已注册的 Singleton 服务，尝试解析并报告所有错误
+        /// 在 Boot 阶段调用，确保 DI 配置正确后再进入游戏
+        /// </summary>
+        public ValidationResult Validate()
+        {
+            var result = new ValidationResult();
+
+            foreach (var kv in _serviceDescriptors)
+            {
+                var serviceType = kv.Key;
+
+                // 跳过生命周期基础设施
+                if (serviceType == typeof(IInitializable) ||
+                    serviceType == typeof(IStartable) ||
+                    serviceType == typeof(ITickable))
+                    continue;
+
+                // 开放泛型无法直接解析，跳过
+                if (serviceType.IsGenericTypeDefinition)
+                    continue;
+
+                foreach (var desc in kv.Value)
+                {
+                    // 实例注册 / 工厂注册 由开发者保证正确性
+                    if (desc.ImplementationInstance != null || desc.ImplementationFactory != null)
+                        continue;
+
+                    // 抽象类型无实现可解析
+                    if (desc.ImplementationType == null)
+                        continue;
+
+                    // 只验证 Singleton（Transient/Scoped 依赖运行时 Scope，不适合 Boot 验证）
+                    if (desc.Lifetime != ServiceLifetime.Singleton)
+                        continue;
+
+                    try
+                    {
+                        ResolveService(serviceType, null);
+                        result.CheckedCount++;
+                        Debug.Log($"[DI Validate] OK: {serviceType.Name}");
+                    }
+                    catch (Exception ex)
+                    {
+                        var msg = $"{serviceType.Name} → {desc.ImplementationType.Name}: {Unwrap(ex).Message}";
+                        result.Errors.Add(msg);
+                        Debug.LogError($"[DI Validate] FAIL: {msg}");
+                    }
+                }
+            }
+
+            if (result.IsValid)
+                Debug.Log($"[DI Validate] All {result.CheckedCount} services passed");
+            else
+                Debug.LogError($"[DI Validate] {result.Errors.Count}/{result.CheckedCount + result.Errors.Count} failed");
+
+            return result;
+        }
+
+        /// <summary>
+        /// 展开反射调用包装的异常，拿到真正的根因
+        /// </summary>
+        private static Exception Unwrap(Exception ex)
+        {
+            while (ex is TargetInvocationException && ex.InnerException != null)
+                ex = ex.InnerException;
+            return ex;
+        }
+
+        public class ValidationResult
+        {
+            public readonly List<string> Errors = new();
+            public int CheckedCount;
+            public bool IsValid => Errors.Count == 0;
+        }
+
+        #endregion
+
         #region 作用域实现
 
         public IScope CreateScope(IScope parentScope = null)=>new Scope(this,parentScope as Scope);

@@ -29,11 +29,17 @@ namespace MVVM.Binding
         [SerializeField] private string _eventName = "onClick";
         [SerializeField] private Component _targetComponent;
 
+        [Header("DI绑定（与_source二选一）")]
+        [Tooltip("纯C# ViewModel的类型全名，如: MVVM.ViewModel.MainMenuViewModel, Assembly-CSharp")]
+        [SerializeField] private string _sourceTypeName;
+
         [Header("命令参数")]
         [SerializeField] private BindingParameterType _parameterType = BindingParameterType.None;
         [SerializeField] private string _parameterPropertyPath;
         [SerializeField] private string _parameterValue;
         
+        [Inject] private IScopeProvider _scopeProvider;
+        [Inject] private IServiceProvider _serviceProvider;
         [Inject]private IValueConverter _valueConverter;
         private ICommand _command;              // ICommand实例缓存
         private MethodInfo _methodInfo;         // 普通方法缓存
@@ -45,6 +51,12 @@ namespace MVVM.Binding
         private Type _commandParameterType;     // 命令参数类型缓存
         private PropertyInfo[] _propertyPathCache; // PropertyPath属性链缓存
         private bool? _validationResult;
+        private object _diSource;              // DI解析的纯C# ViewModel
+
+        /// <summary>
+        /// 统一获取绑定源：优先 Inspector 拖入的 UnityEngine.Object，其次 DI 解析的纯 C# 对象
+        /// </summary>
+        private object GetActualSource() => _diSource ?? (object)_source;
         
         public string CommandName => _commandName;
         public string EventName => _eventName;
@@ -74,7 +86,13 @@ namespace MVVM.Binding
         private void ValidateBindings()
         {
             #region 命令查找
-            if (_source == null)
+            // DI解析通道：当_source未拖入时，尝试从DI容器按类型名解析纯C# ViewModel
+            if (_source == null && !string.IsNullOrEmpty(_sourceTypeName))
+            {
+                _diSource = ResolveFromDI(_sourceTypeName);
+            }
+
+            if (GetActualSource() == null)
             {
                 Debug.LogError("CommandBinding: Cannot bind due to ViewModel null", this);
                 _validationResult = false;
@@ -90,13 +108,13 @@ namespace MVVM.Binding
                 Debug.LogError("CommandBinding: Command name is empty", this);
                 _validationResult = false;
             }
-            _propertyInfo = _source.GetType().GetProperty(_commandName);
+            _propertyInfo = GetActualSource().GetType().GetProperty(_commandName);
             if (_propertyInfo != null)
             {
                 // 检查属性类型是否为ICommand
                 if (typeof(ICommand).IsAssignableFrom(_propertyInfo.PropertyType))
                 {
-                    _command = _propertyInfo.GetValue(_source) as ICommand;
+                    _command = _propertyInfo.GetValue(GetActualSource()) as ICommand;
                     if (_command == null)
                     {
                         Debug.LogError($"CommandBinding: Property '{_commandName}' exists but returns null ICommand", this);
@@ -112,11 +130,11 @@ namespace MVVM.Binding
             // 如果不是ICommand属性，查找方法
             if (_propertyInfo == null)
             {
-                _methodInfo = _source.GetType().GetMethod(_commandName);
+                _methodInfo = GetActualSource().GetType().GetMethod(_commandName);
                 if (_methodInfo == null)
                 {
                     Debug.LogError($"CommandBinding: Could not find command property or method '" +
-                                   $"{_commandName}' on{_source.GetType().Name}", this);
+                                   $"{_commandName}' on{GetActualSource().GetType().Name}", this);
                     _validationResult = false;
                 }
             }
@@ -261,11 +279,11 @@ namespace MVVM.Binding
                     var parameterInfo = _methodInfo.GetParameters();
                     if (parameterInfo.Length == 0)
                     {
-                        _methodInfo.Invoke(_source,null);
+                        _methodInfo.Invoke(GetActualSource(),null);
                     }
                     else if(parameterInfo.Length == 1)
                     {
-                        _methodInfo.Invoke(_source,new []{parameter});
+                        _methodInfo.Invoke(GetActualSource(),new []{parameter});
                     }
                     else
                     {
@@ -358,13 +376,14 @@ namespace MVVM.Binding
         }
         private object GetPropertyValue()
         {
-            if (_source == null || string.IsNullOrEmpty(_parameterPropertyPath))
+            var source = GetActualSource();
+            if (source == null || string.IsNullOrEmpty(_parameterPropertyPath))
                 return null;
 
             // 使用缓存属性链（如果可用）
             if (_propertyPathCache != null && _propertyPathCache.Length > 0)
             {
-                object currentObj = _source;
+                object currentObj = source;
                 foreach (var propInfo in _propertyPathCache)
                 {
                     if (propInfo == null || currentObj == null)
@@ -377,7 +396,7 @@ namespace MVVM.Binding
             {
                 // 回退到动态解析
                 string[] pathParts = _parameterPropertyPath.Split('.');
-                object currentObj = _source;
+                object currentObj = source;
 
                 foreach (var part in pathParts)
                 {
@@ -466,17 +485,54 @@ namespace MVVM.Binding
         }
 
         /// <summary>
+        /// 从DI容器解析纯C# ViewModel（通过注入的 IServiceProvider，不走静态定位器）
+        /// </summary>
+        private object ResolveFromDI(string typeName)
+        {
+            // 优先使用当前场景 Scope 的 ServiceProvider（保证 Scoped 服务正确解析）
+            var scope = _scopeProvider?.CurrentScope;
+            var provider = scope?.ServiceProvider ?? (IServiceProvider)_serviceProvider;
+
+            if (provider == null)
+            {
+                Debug.LogWarning("[CommandBinding] 无可用 ServiceProvider");
+                return null;
+            }
+
+            var type = Type.GetType(typeName);
+            if (type == null)
+                type = Type.GetType($"{typeName}, Assembly-CSharp");
+
+            if (type == null)
+            {
+                Debug.LogError($"[CommandBinding] 无法找到类型: {typeName}");
+                return null;
+            }
+
+            var instance = provider.GetService(type);
+            if (instance == null)
+            {
+                Debug.LogError($"[CommandBinding] DI容器中未注册: {typeName}");
+                return null;
+            }
+
+            Debug.Log($"[CommandBinding] DI解析成功: {typeName} (scope={scope != null})");
+            return instance;
+        }
+
+        /// <summary>
         /// 缓存PropertyPath属性链
         /// </summary>
         private void CachePropertyPath()
         {
-            if (string.IsNullOrEmpty(_parameterPropertyPath) || _source == null)
+            var source = GetActualSource();
+            if (string.IsNullOrEmpty(_parameterPropertyPath) || source == null)
                 return;
 
             string[] pathParts = _parameterPropertyPath.Split('.');
             _propertyPathCache = new PropertyInfo[pathParts.Length];
 
-            Type currentType = _source.GetType();
+            Type currentType = source.GetType();
             for (int i = 0; i < pathParts.Length; i++)
             {
                 _propertyPathCache[i] = currentType.GetProperty(pathParts[i]);
