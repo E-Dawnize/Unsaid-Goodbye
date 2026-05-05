@@ -171,21 +171,27 @@ namespace Core.Boot
 
         private void StartGameLoop()
         {
-            // 注册ITickable组件到UpdateRunner
             var updateRunner = GetComponent<UpdateRunner>();
             if (updateRunner == null)
             {
                 updateRunner = gameObject.AddComponent<UpdateRunner>();
             }
 
-            // 获取所有ITickable服务并注册
+            // 1. 注册 DI 容器中的 ITickable 服务
             var tickables = _globalContainer.ResolveAll<ITickable>(_projectScope);
             foreach (var tickable in tickables)
             {
                 updateRunner.Register(tickable);
             }
 
-            Debug.Log($"[ProjectContext] Game loop started with {tickables.Count()} tickable components");
+            // 2. 注册场景 MonoBehaviour 中的 ITickable（通过 Awake → LifecycleRegistry.Register 注册的）
+            var sceneTickables = LifecycleRegistry.GetTickables();
+            foreach (var tickable in sceneTickables)
+            {
+                updateRunner.Register(tickable);
+            }
+
+            Debug.Log($"[ProjectContext] Game loop started with {tickables.Count()} DI + {sceneTickables.Count} scene tickable components");
         }
 
         /// <summary>
