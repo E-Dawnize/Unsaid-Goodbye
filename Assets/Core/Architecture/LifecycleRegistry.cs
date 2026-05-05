@@ -16,6 +16,7 @@ namespace Core.Architecture
         #region 内部状态
         private static readonly List<IInitializable> _initializables = new();
         private static readonly List<IStartable> _startables = new();
+        private static readonly List<ITickable> _tickables = new();
         private static readonly List<object> _pendingInjection = new();
 
         private static bool _isInitializing = false;
@@ -29,6 +30,11 @@ namespace Core.Architecture
 
         private static DIContainer _container;
         private static IScope _projectScope;
+
+        /// <summary>
+        /// 动态 ITickable 注册回调（由 UpdateRunner 订阅，确保运行时注册的 Tickable 被驱动）
+        /// </summary>
+        public static event Action<ITickable> OnTickableRegistered;
         #endregion
 
         #region 公共API - 状态查询
@@ -63,9 +69,25 @@ namespace Core.Architecture
         public static int StartableCount => _startables.Count;
 
         /// <summary>
+        /// 获取当前注册的Tickable组件数量
+        /// </summary>
+        public static int TickableCount => _tickables.Count;
+
+        /// <summary>
+        /// 获取所有已注册的 ITickable 组件（供 UpdateRunner 使用）
+        /// </summary>
+        public static IReadOnlyList<ITickable> GetTickables()
+        {
+            lock (_initializables)
+            {
+                return _tickables.ToList();
+            }
+        }
+
+        /// <summary>
         /// 获取当前DI容器
         /// </summary>
-        public static DIContainer GetContainer() => _container;
+        //public static DIContainer GetContainer() => _container;
         #endregion
 
         #region 公共API - 核心功能
@@ -120,6 +142,12 @@ namespace Core.Architecture
                     }
                 }
 
+                // 注册 ITickable
+                if (component is ITickable tickable && !_tickables.Contains(tickable))
+                {
+                    _tickables.Add(tickable);
+                }
+
                 // 标记非MonoBehaviour、非生命周期接口的组件需要依赖注入
                 if (!(component is MonoBehaviour) && component is not IInitializable and not IStartable)
                 {
@@ -146,6 +174,9 @@ namespace Core.Architecture
 
                 if (component is IStartable startable)
                     _startables.Remove(startable);
+
+                if (component is ITickable tickable)
+                    _tickables.Remove(tickable);
 
                 _pendingInjection.Remove(component);
             }
@@ -266,6 +297,7 @@ namespace Core.Architecture
             {
                 _initializables.Clear();
                 _startables.Clear();
+                _tickables.Clear();
                 _pendingInjection.Clear();
                 _pendingInitializables.Clear();
                 _pendingStartables.Clear();
@@ -362,6 +394,10 @@ namespace Core.Architecture
                 foreach (var c in _startables)
                     Debug.Log($"    [{c.GetType().FullName}]");
 
+                Debug.Log($"  ITickable: {_tickables.Count} registered");
+                foreach (var c in _tickables)
+                    Debug.Log($"    [{c.GetType().FullName}]");
+
                 Debug.Log($"  Pending injection (retry): {_pendingInjection.Count}");
                 foreach (var c in _pendingInjection)
                     Debug.Log($"    [{c.GetType().FullName}]");
@@ -451,6 +487,15 @@ namespace Core.Architecture
                     {
                         Debug.LogError($"[Lifecycle] Immediate OnStart failed for dynamic component {GetComponentName(component)}: {ex.Message}");
                     }
+                }
+            }
+
+            if (component is ITickable tickable)
+            {
+                if (_startComplete && !_isStarting)
+                {
+                    OnTickableRegistered?.Invoke(tickable);
+                    Debug.Log($"[Lifecycle] Dynamic tickable registered: {GetComponentName(component)}");
                 }
             }
         }
