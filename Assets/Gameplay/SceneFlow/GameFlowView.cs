@@ -13,12 +13,12 @@ namespace Gameplay.SceneFlow
 {
     /// <summary>
     /// 剧情流程 View — 表现层
-    /// 订阅 Controller 事件，执行转场动画、场景加载、BGM、对话
+    /// 订阅 Manager 事件，执行转场动画、场景加载、BGM、对话
     /// 自身不暴露属性给 PropertyBinding（UI 绑定直接挂 GameFlowModel.asset 作为 _source）
     /// </summary>
-    public class SceneFlowView : StrictLifecycleMonoBehaviour
+    public class GameFlowView : StrictLifecycleMonoBehaviour
     {
-        [Inject] private IGameFlowController _controller;
+        [Inject] private IGameFlowManager _manager;
         private AsyncOperationHandle<SceneInstance> _sceneHandle;
 
         // TODO: 待子系统就绪后注入
@@ -29,16 +29,16 @@ namespace Gameplay.SceneFlow
 
         protected override void OnStartExternal()
         {
-            _controller.OnPhaseComplete += HandlePhaseComplete;
-            _controller.OnPhaseChanged += HandlePhaseChanged;
+            _manager.OnPhaseComplete += HandlePhaseComplete;
+            _manager.OnPhaseChanged += HandlePhaseChanged;
 
-            Debug.Log("[SceneFlowView] Subscribed to GameFlow events");
+            Debug.Log("[GameFlowView] Subscribed to GameFlow events");
         }
 
         protected override void OnShutdown()
         {
-            _controller.OnPhaseComplete -= HandlePhaseComplete;
-            _controller.OnPhaseChanged -= HandlePhaseChanged;
+            _manager.OnPhaseComplete -= HandlePhaseComplete;
+            _manager.OnPhaseChanged -= HandlePhaseChanged;
 
             if (_sceneHandle.IsValid())
                 Addressables.Release(_sceneHandle);
@@ -49,7 +49,7 @@ namespace Gameplay.SceneFlow
             var config = await LoadPhaseConfig(nextPhase);
             if (config == null) return;
 
-            Debug.Log($"[SceneFlowView] Phase complete, transitioning: {_controller.CurrentPhase} → {nextPhase}");
+            Debug.Log($"[GameFlowView] Phase complete, transitioning: {_manager.CurrentPhase} → {nextPhase}");
 
             // 1. 播放离开对话
             if (!string.IsNullOrEmpty(config.ExitDialogueId))
@@ -60,7 +60,7 @@ namespace Gameplay.SceneFlow
 
             // 2. 黑屏淡入
             // TODO: await FadeToBlack(config.TransitionDuration);
-            Debug.Log($"[SceneFlowView] Fade to black ({config.TransitionDuration}s)");
+            Debug.Log($"[GameFlowView] Fade to black ({config.TransitionDuration}s)");
 
             // 3. 加载场景
             if (!string.IsNullOrEmpty(config.SceneAssetPath))
@@ -69,16 +69,16 @@ namespace Gameplay.SceneFlow
                 if (_sceneHandle.IsValid())
                     Addressables.Release(_sceneHandle);
 
-                Debug.Log($"[SceneFlowView] Loading scene: {config.SceneAssetPath}");
+                Debug.Log($"[GameFlowView] Loading scene: {config.SceneAssetPath}");
                 _sceneHandle = Addressables.LoadSceneAsync(config.SceneAssetPath, LoadSceneMode.Single);
                 await _sceneHandle.Task;
 
                 if (_sceneHandle.Status != AsyncOperationStatus.Succeeded)
-                    Debug.LogError($"[SceneFlowView] Failed to load scene: {config.SceneAssetPath}");
+                    Debug.LogError($"[GameFlowView] Failed to load scene: {config.SceneAssetPath}");
             }
 
-            // 4. 通知 Controller 状态切换完成
-            _controller.ConfirmTransition(nextPhase);
+            // 4. 通知 Manager 状态切换完成
+            _manager.ConfirmTransition(nextPhase);
         }
 
         private async void HandlePhaseChanged(GamePhase newPhase)
@@ -86,14 +86,14 @@ namespace Gameplay.SceneFlow
             var config = await LoadPhaseConfig(newPhase);
             if (config == null) return;
 
-            Debug.Log($"[SceneFlowView] Phase changed to: {newPhase} ({config.DisplayName})");
+            Debug.Log($"[GameFlowView] Phase changed to: {newPhase} ({config.DisplayName})");
 
             // 5. 切换 BGM
             // TODO: _audio.PlayBGM(config.BackgroundMusic);
 
             // 6. 黑屏淡出
             // TODO: await FadeFromBlack(config.TransitionDuration);
-            Debug.Log($"[SceneFlowView] Fade from black ({config.TransitionDuration}s)");
+            Debug.Log($"[GameFlowView] Fade from black ({config.TransitionDuration}s)");
 
             // 7. 播放进入对话
             if (!string.IsNullOrEmpty(config.EntryDialogueId))
@@ -114,7 +114,7 @@ namespace Gameplay.SceneFlow
 
             if (handle.Status != AsyncOperationStatus.Succeeded)
             {
-                Debug.LogError($"[SceneFlowView] Failed to load PhaseConfig for {phase}");
+                Debug.LogError($"[GameFlowView] Failed to load PhaseConfig for {phase}");
                 return null;
             }
 
@@ -128,7 +128,7 @@ namespace Gameplay.SceneFlow
             }
 
             Addressables.Release(handle);
-            Debug.LogError($"[SceneFlowView] PhaseConfig not found for {phase}");
+            Debug.LogError($"[GameFlowView] PhaseConfig not found for {phase}");
             return null;
         }
 

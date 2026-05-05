@@ -32,40 +32,40 @@ namespace Core.DI
         public ServiceLifetime Lifetime;
         public int Order;
         public Type ImplementationType;
-        [CanBeNull] public object ImplementationInstance;
         [CanBeNull] public Func<IServiceProvider, object> ImplementationFactory;
 
-        private ServiceDescriptor(int id, Type serviceType,ServiceLifetime lifetime, int order = 0)
+        private ServiceDescriptor(int id, Type serviceType, ServiceLifetime lifetime, int order = 0)
         {
             Id = id;
             ServiceType = serviceType;
             Order = order;
             Lifetime = lifetime;
         }
-        public ServiceDescriptor(int id,Type serviceType, Type implementationType,ServiceLifetime lifetime,int order=0)
-            :this(id,serviceType,lifetime,order)
+        public ServiceDescriptor(int id, Type serviceType, Type implementationType, ServiceLifetime lifetime, int order = 0)
+            : this(id, serviceType, lifetime, order)
         {
             ImplementationType = implementationType;
         }
-        public ServiceDescriptor(int id,Type serviceType, object implementationInstance,int order=0)
-            :this(id,serviceType,ServiceLifetime.Singleton,order)
-        {
-            ImplementationInstance = implementationInstance;
-        }
-        public ServiceDescriptor(int id,Type serviceType,Func<IServiceProvider, object> implementationFactory,ServiceLifetime lifetime,int order=0)
-            :this(id,serviceType,lifetime,order)
+        public ServiceDescriptor(int id, Type serviceType, Func<IServiceProvider, object> implementationFactory, ServiceLifetime lifetime, int order = 0)
+            : this(id, serviceType, lifetime, order)
         {
             ImplementationFactory = implementationFactory;
         }
     }
     public partial class DIContainer:IServiceProvider,IDisposable
     {
-        private readonly ConcurrentDictionary<Type, List<ServiceDescriptor>> _serviceDescriptors = new();//服务描述符
-        private readonly ConcurrentDictionary<int, object> _singletonInstances = new();//实现实例
+        private readonly ConcurrentDictionary<Type, List<ServiceDescriptor>> _serviceDescriptors = new();
+        /// <summary>单例存储 — key = 具体实现类型（typeof(ConcreteClass)），保证同一实例通过不同接口解析时命中同一槽位</summary>
+        private readonly ConcurrentDictionary<Type, object> _singletonInstances = new();
+        /// <summary>纯工厂单例的ID备用存储（无 ImplementationType 时使用）</summary>
+        private readonly ConcurrentDictionary<int, object> _singletonFactoryResults = new();
         private readonly ConcurrentBag<IDisposable> _disposables = new();//待释放服务
         private readonly ThreadLocal<Stack<Type>> _resolveStack = new(() => new Stack<Type>());//递归依赖检测栈
         private bool _disposed;
         private static int _globalServiceId;
+
+        /// <summary>开启后打印每个实例创建的完整链路（构造函数参数、注入字段等）</summary>
+        public static bool VerboseDebug = false;
 
         private int NextId() => Interlocked.Increment(ref _globalServiceId);
         private DIContainer _parentContainer;
@@ -94,16 +94,40 @@ namespace Core.DI
         }
         
         public void RegisterTransient<TService, TImplementation>() where TImplementation : TService
-            =>Register(new ServiceDescriptor(NextId(),typeof(TService), typeof(TImplementation), ServiceLifetime.Transient));
-        public void RegisterSingleton<TService, TImplementation>() where TImplementation : TService 
-            =>Register(new ServiceDescriptor(NextId(),typeof(TService), typeof(TImplementation), ServiceLifetime.Singleton));
+        {
+            ValidateConcreteType(typeof(TImplementation));
+            Register(new ServiceDescriptor(NextId(), typeof(TService), typeof(TImplementation), ServiceLifetime.Transient));
+        }
+        public void RegisterSingleton<TService, TImplementation>() where TImplementation : TService
+        {
+            ValidateConcreteType(typeof(TImplementation));
+            Register(new ServiceDescriptor(NextId(), typeof(TService), typeof(TImplementation), ServiceLifetime.Singleton));
+        }
         public void RegisterScoped<TService, TImplementation>() where TImplementation : TService
-            =>Register(new ServiceDescriptor(NextId(),typeof(TService), typeof(TImplementation), ServiceLifetime.Scoped));
-        
+        {
+            ValidateConcreteType(typeof(TImplementation));
+            Register(new ServiceDescriptor(NextId(), typeof(TService), typeof(TImplementation), ServiceLifetime.Scoped));
+        }
 
+        private static void ValidateConcreteType(Type type)
+        {
+            if (type.IsInterface || type.IsAbstract)
+                throw new InvalidOperationException(
+                    $"DI requires concrete implementation type, but {type.Name} is {(type.IsInterface ? "an interface" : "abstract")}. " +
+                    $"Use RegisterSingleton<T>(instance) or RegisterSingleton<T>(factory) instead.");
+        }
+
+        /// <summary>
+        /// 注册预构建实例为单例 — 实例统一存入 _singletonInstances，描述符仅记录创建策略
+        /// </summary>
         public void RegisterSingleton<TService>(TService implementationInstance) where TService:class
-            =>Register(new ServiceDescriptor(NextId(),typeof(TService), implementationInstance));
-        
+        {
+            var concreteType = implementationInstance.GetType();
+            _singletonInstances[concreteType] = implementationInstance;
+            if (implementationInstance is IDisposable d) _disposables.Add(d);
+            Register(new ServiceDescriptor(NextId(), typeof(TService), concreteType, ServiceLifetime.Singleton));
+        }
+
         public void RegisterTransient<TService>(Func<IServiceProvider, object> implementationFactory) where TService:class
             =>Register(new ServiceDescriptor(NextId(),typeof(TService), sp=>implementationFactory(sp)!, ServiceLifetime.Transient));
         public void RegisterSingleton<TService>(Func<IServiceProvider, object> implementationFactory) where TService:class
@@ -200,40 +224,60 @@ namespace Core.DI
         }
         private object ResolveSingleton(ServiceDescriptor descriptor)
         {
-            if (_singletonInstances.TryGetValue(descriptor.Id, out var instance))
+            // 有具体实现类型 → 用 Type 作为 key，保证同一实例通过不同接口解析时命中
+            if (descriptor.ImplementationType != null)
             {
-                return instance;
+                if (_singletonInstances.TryGetValue(descriptor.ImplementationType, out var instance))
+                    return instance;
+
+                lock (_singletonInstances)
+                {
+                    if (_singletonInstances.TryGetValue(descriptor.ImplementationType, out instance))
+                        return instance;
+                    instance = CreateInstance(descriptor, null);
+                    _singletonInstances[descriptor.ImplementationType] = instance;
+                    if (instance is IDisposable disposable) _disposables.Add(disposable);
+                    return instance;
+                }
             }
 
-            lock (_singletonInstances)
+            // 纯工厂注册（无 ImplementationType）→ 用 descriptor.Id 作为备用 key
+            if (_singletonFactoryResults.TryGetValue(descriptor.Id, out var factoryInstance))
+                return factoryInstance;
+
+            lock (_singletonFactoryResults)
             {
-                if (_singletonInstances.TryGetValue(descriptor.Id, out instance))
-                {
-                    return instance;
-                }
-                instance = CreateInstance(descriptor, null);
-                _singletonInstances[descriptor.Id] = instance;
-                if(instance is  IDisposable disposable)_disposables.Add(disposable);
-                return instance;
+                if (_singletonFactoryResults.TryGetValue(descriptor.Id, out factoryInstance))
+                    return factoryInstance;
+                factoryInstance = CreateInstance(descriptor, null);
+                _singletonFactoryResults[descriptor.Id] = factoryInstance;
+                if (factoryInstance is IDisposable disposable) _disposables.Add(disposable);
+                return factoryInstance;
             }
-            
         }
-        private object ResolveScope(ServiceDescriptor descriptor,Scope scope)
+        private object ResolveScope(ServiceDescriptor descriptor, Scope scope)
         {
             if (scope == null) throw new InvalidOperationException("Scoped service requires a scope.");
-            Scope currentScope = scope;
-            object instance;
-            while(currentScope!=null){    
-                if (scope.ScopedInstances.TryGetValue(descriptor.Id, out instance))
+
+            if (descriptor.ImplementationType != null)
+            {
+                Scope currentScope = scope;
+                while (currentScope != null)
                 {
-                    return instance;
+                    if (currentScope.ScopedInstances.TryGetValue(descriptor.ImplementationType, out var instance))
+                        return instance;
+                    currentScope = currentScope._parent;
                 }
-                currentScope = currentScope._parent;
+                var newInstance = CreateInstance(descriptor, scope);
+                scope.ScopedInstances[descriptor.ImplementationType] = newInstance;
+                if (newInstance is IDisposable disposable) scope.Disposables.Add(disposable);
+                return newInstance;
             }
-            instance = CreateInstance(descriptor, scope);
-            scope.ScopedInstances[descriptor.Id] = instance;
-            if(instance is IDisposable disposable) scope.Disposables.Add(disposable);
-            return instance;
+
+            // 纯工厂 Scoped（无 ImplementationType）→ 工厂自行管理生命周期
+            var factoryInstance = CreateInstance(descriptor, scope);
+            if (factoryInstance is IDisposable d) scope.Disposables.Add(d);
+            return factoryInstance;
         }
 
         private object ResolveTransient(ServiceDescriptor descriptor,[CanBeNull] Scope scope)
@@ -248,47 +292,100 @@ namespace Core.DI
             return instance;
         }
         private readonly ConcurrentDictionary<Type,ConstructorInfo> _constructorsCache = new ConcurrentDictionary<Type, ConstructorInfo>();
+        private readonly ConcurrentDictionary<Type, string> _ctorSignatureCache = new();
+
         private object CreateInstance(ServiceDescriptor descriptor, [CanBeNull] Scope scope)
         {
             if (descriptor.ImplementationFactory != null)
             {
-                return descriptor.ImplementationFactory(scope!=null?scope.ServiceProvider:this);
+                var factoryInstance = descriptor.ImplementationFactory(scope != null ? scope.ServiceProvider : this);
+                if (VerboseDebug)
+                    Debug.Log($"[DI] Factory → {descriptor.ServiceType.Name} ({factoryInstance?.GetType().Name ?? "null"})");
+                return factoryInstance;
             }
 
-            if (descriptor.ImplementationInstance != null)
-            {
-                return descriptor.ImplementationInstance;
-            }
-            
             var implementationType = descriptor.ImplementationType;
-            var ctor=_constructorsCache.GetOrAdd(implementationType,type=>
+            var ctor= _constructorsCache.GetOrAdd(implementationType, type =>
             {
-                var constructors=type.GetConstructors();
+                var constructors = type.GetConstructors();
                 return constructors.FirstOrDefault(c
-                           => c.GetCustomAttributes(typeof(InjectAttribute), false).Length != 0) ??
-                       constructors.OrderByDescending(c => c.GetParameters().Length).First();
+                    => c.GetCustomAttributes(typeof(InjectAttribute), false).Length != 0) ??
+                    constructors.OrderByDescending(c => c.GetParameters().Length).First();
             });
+            
+            var ctorSig = _ctorSignatureCache.GetOrAdd(implementationType,
+                _ => $"{implementationType.Name}({string.Join(", ", ctor.GetParameters().Select(p => $"{p.ParameterType.Name} {p.Name}"))})");
+
+            if (VerboseDebug)
+                Debug.Log($"[DI] Creating {ctorSig}  (lifetime: {descriptor.Lifetime})");
+
             var parameters = ctor.GetParameters();
             var paramValues = new object?[parameters.Length];
             for (int i = 0; i < parameters.Length; i++)
             {
                 var paramType = parameters[i].ParameterType;
-                var val=TryResolveEnumerable(paramType, scope, out var enumerableValue)?enumerableValue:ResolveService(paramType, scope);
-                val=val!=null?
-                    val:
-                    parameters[i].HasDefaultValue?
-                        parameters[i].DefaultValue:null;
-                if(val==null) throw new InvalidOperationException($"Missing dependency: {paramType}");
-                paramValues[i] = val;
+                try
+                {
+                    var val = TryResolveEnumerable(paramType, scope, out var enumerableValue)
+                        ? enumerableValue
+                        : ResolveService(paramType, scope);
+                    val = val != null
+                        ? val
+                        : parameters[i].HasDefaultValue
+                            ? parameters[i].DefaultValue
+                            : null;
+                    if (val == null)
+                        throw new InvalidOperationException(
+                            $"Missing dependency: {paramType.Name} {parameters[i].Name}  " +
+                            $"while creating {implementationType.Name}");
+                    paramValues[i] = val;
+
+                    if (VerboseDebug)
+                        Debug.Log($"[DI]   └─ {paramType.Name} {parameters[i].Name} = {val.GetType().Name}");
+                }
+                catch (Exception ex) when (ex is not InvalidOperationException)
+                {
+                    throw new InvalidOperationException(
+                        $"Failed to resolve parameter '{parameters[i].Name}' ({paramType.Name}) " +
+                        $"while creating {implementationType.Name}: {ex.Message}", ex);
+                }
             }
-            
-            var instance=ctor.Invoke(paramValues);
-            Inject(instance, scope);
-            // 改为注册到LifecycleRegistry
+
+            object instance;
+            try
+            {
+                instance = ctor.Invoke(paramValues);
+                if (VerboseDebug)
+                    Debug.Log($"[DI] ✓ Created {implementationType.Name}");
+            }
+            catch (TargetInvocationException ex)
+            {
+                var inner = ex.InnerException ?? ex;
+                throw new InvalidOperationException(
+                    $"Constructor threw in {implementationType.Name}: {inner.Message}\n" +
+                    $"  Constructor: {ctorSig}\n" +
+                    $"  Inner: {inner.GetType().Name}", inner);
+            }
+
+            try
+            {
+                Inject(instance, scope);
+                if (VerboseDebug)
+                    Debug.Log($"[DI] ✓ Injected {implementationType.Name}");
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException(
+                    $"Field/property injection failed for {implementationType.Name}: {ex.Message}", ex);
+            }
+
             if (instance is IInitializable or IStartable)
             {
                 LifecycleRegistry.Register(instance);
+                if (VerboseDebug)
+                    Debug.Log($"[DI]   → Registered to Lifecycle: {implementationType.Name}");
             }
+
             return instance;
         }
 
@@ -353,6 +450,7 @@ namespace Core.DI
             }
             _disposables.Clear();
             _singletonInstances.Clear();
+            _singletonFactoryResults.Clear();
             _constructorsCache.Clear();
             _serviceDescriptors.Clear();
         }
@@ -384,8 +482,8 @@ namespace Core.DI
 
                 foreach (var desc in kv.Value)
                 {
-                    // 实例注册 / 工厂注册 由开发者保证正确性
-                    if (desc.ImplementationInstance != null || desc.ImplementationFactory != null)
+                    // 工厂注册由开发者保证正确性
+                    if (desc.ImplementationFactory != null)
                         continue;
 
                     // 抽象类型无实现可解析
@@ -445,7 +543,7 @@ namespace Core.DI
         {
             private readonly DIContainer _container;
             public readonly Scope _parent;
-            public ConcurrentDictionary<int, object> ScopedInstances { get; } = new();
+            public ConcurrentDictionary<Type, object> ScopedInstances { get; } = new();
             public ConcurrentBag<IDisposable> Disposables { get; } = new();
             public IServiceProvider ServiceProvider { get; }
             private bool _disposed;

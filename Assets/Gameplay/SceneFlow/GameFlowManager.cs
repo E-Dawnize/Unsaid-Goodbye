@@ -13,10 +13,10 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 namespace Gameplay.SceneFlow
 {
     /// <summary>
-    /// 剧情流程 Controller — 纯业务逻辑，不碰表现层
+    /// 剧情流程 Manager — 纯业务逻辑，不碰表现层
     /// Beat 匹配、阶段判定、写入 Model、通知 View
     /// </summary>
-    public class GameFlowController : IGameFlowController
+    public class GameFlowManager : IGameFlowManager
     {
         [Inject] private IEventCenter _events;
         [Inject] private GameFlowModel _model;

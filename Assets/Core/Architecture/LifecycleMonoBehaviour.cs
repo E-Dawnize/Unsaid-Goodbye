@@ -9,9 +9,10 @@ namespace Core.Architecture
     /// 严格的生命周期MonoBehaviour基类
     /// 强制使用DI生命周期接口，封存Unity原生Awake/Start方法
     /// </summary>
-    public class StrictLifecycleMonoBehaviour : MonoBehaviour, IInitializable, IStartable
+    public abstract class StrictLifecycleMonoBehaviour : MonoBehaviour, IInitializable, IStartable, ITickable
     {
         #region Unity原生方法封存
+
         /// <summary>
         /// 密封Unity Awake方法，防止子类误用
         /// 使用private确保子类无法override
@@ -30,9 +31,11 @@ namespace Core.Architecture
             // 空实现，防止子类使用
             // 所有逻辑应迁移到OnStartExternal()
         }
+
         #endregion
 
         #region DI生命周期接口实现
+
         /// <summary>
         /// IInitializable.Initialize实现
         /// 调用受保护的OnInitialize()供子类重写
@@ -52,9 +55,16 @@ namespace Core.Architecture
             // 保证所有组件已Initialize（通过LifecycleRegistry）
             OnStartExternal();
         }
-        #endregion
+
+        void ITickable.Tick(float deltaTime)
+        {
+            Tick(deltaTime);
+        }
+
+    #endregion
 
         #region 受保护的生命周期方法（供子类重写）
+
         /// <summary>
         /// 内部初始化阶段 - 组件自身状态准备
         /// 保证：依赖已注入完成
@@ -62,7 +72,12 @@ namespace Core.Architecture
         /// </summary>
         protected virtual void OnInitialize()
         {
-            // 子类可重写此方法实现内部初始化逻辑
+            
+        }
+
+        protected virtual void Tick(float deltaTime)
+        {
+            
         }
 
         /// <summary>
@@ -72,7 +87,7 @@ namespace Core.Architecture
         /// </summary>
         protected virtual void OnStartExternal()
         {
-            // 子类可重写此方法实现外部初始化逻辑
+            
         }
 
         /// <summary>
@@ -81,7 +96,7 @@ namespace Core.Architecture
         /// </summary>
         protected virtual void OnShutdown()
         {
-            // 子类可重写此方法实现清理逻辑
+            
         }
         #endregion
 

@@ -5,7 +5,7 @@ using Gameplay.SO;
 
 namespace Gameplay.Interfaces
 {
-    public interface IGameFlowController:IInitializable,IDisposable
+    public interface IGameFlowManager : IInitializable, IDisposable
     {
         GameSaveDataRuntime GameData{get;}
         public GamePhase CurrentPhase { get; }

@@ -1,14 +1,15 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Gameplay.SceneFlow;
+using MVVM.Model;
 
 namespace Gameplay.SO
 {
     /// <summary>
     /// GameFlow 的 MVVM Model 层 — 运行时纯数据类
-    /// Controller 写入，View 通过 PropertyBinding 只读绑定
+    /// Manager 写入，View 通过 PropertyBinding 只读绑定
     /// </summary>
-    public class GameFlowModel : INotifyPropertyChanged
+    public class GameFlowModel : ModelBase
     {
         public GamePhase CurrentPhase        { get; private set; }
         public bool      IsTransitioning      { get; private set; }
@@ -22,7 +23,7 @@ namespace Gameplay.SO
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        /// <summary>Controller 调用：Beat 进度更新</summary>
+        /// <summary>Manager 调用：Beat 进度更新</summary>
         public void ApplyBeatProgress(int completed, int total)
         {
             CompletedBeatCount = completed;
@@ -32,7 +33,7 @@ namespace Gameplay.SO
             OnChanged(nameof(PhaseProgress));
         }
 
-        /// <summary>Controller 调用：阶段切换完成</summary>
+        /// <summary>Manager 调用：阶段切换完成</summary>
         public void ApplyPhase(GamePhase phase, int completed, int total)
         {
             CurrentPhase = phase;
@@ -42,7 +43,7 @@ namespace Gameplay.SO
             OnChanged(string.Empty);
         }
 
-        /// <summary>Controller 调用：转场中</summary>
+        /// <summary>Manager 调用：转场中</summary>
         public void SetTransitioning(bool value)
         {
             IsTransitioning = value;

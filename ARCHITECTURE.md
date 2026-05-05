@@ -1102,10 +1102,7 @@ ISceneFlowController.AdvancePhase()
 | `Assets/Configs/BuffConfig.cs` | Buff配置 |
 | `Assets/Common/Enums/BuffEnums.cs` | Buff枚举 |
 | `Assets/Common/Enums/DamageEnum.cs` | 伤害枚举 |
-| `Assets/MVVM/ViewModel/CombatController.cs` | 战斗控制器空壳 |
-| `Assets/MVVM/ViewModel/GameFlowController.cs` | 空壳(将用新SceneFlowController替代) |
-| `Assets/MVVM/ViewModel/HudController.cs` | 空壳(将用新HUDViewModel替代) |
-| `Assets/MVVM/ViewModel/PlayerController.cs` | 已注释的旧战斗代码 |
+
 | `Assets/MVVM/ViewModel/TestViewModel.cs` | 测试代码 |
 | `Assets/MVVM/View/PlayerView.cs` | 空壳(将用新UI替代) |
 | `Assets/MVVM/Model/ModelBase.cs` | 旧Model基类(不再需要) |

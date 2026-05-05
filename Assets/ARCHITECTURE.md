@@ -869,26 +869,17 @@ PuzzleUI (内嵌在场景中，非独立UI)
 从战斗输入改为第一人称探索输入：
 
 ```csharp
-// Input/InputInterface/IPlayerInput.cs (重写)
+// Input/InputInterface/IPlayerInput.cs
 namespace Input.InputInterface
 {
     public interface IPlayerInput
     {
-        // 移动
-        event Action<Vector2> OnMovePerformed;
-        event Action<Vector2> OnMoveCanceled;
+        Vector2 MoveDirection { get; }    // 当前帧 WASD 方向，未按下时 Vector2.zero
+        Vector2 MousePosition { get; }    // 当前鼠标位置
+        bool IsClickTriggered { get; }    // 当前帧是否点击（WasPressedThisFrame）
 
-        // 视角 (鼠标)
-        event Action<Vector2> OnLookPerformed;
-
-        // 交互
-        event Action OnInteractPerformed;    // 调查/拾取/使用
-
-        // 菜单
-        event Action OnMenuPerformed;        // 打开/关闭菜单
-
-        void OnEnable();
-        void OnDisable();
+        void Enable();
+        void Disable();
     }
 }
 ```
@@ -1102,10 +1093,7 @@ ISceneFlowController.AdvancePhase()
 | `Assets/Configs/BuffConfig.cs` | Buff配置 |
 | `Assets/Common/Enums/BuffEnums.cs` | Buff枚举 |
 | `Assets/Common/Enums/DamageEnum.cs` | 伤害枚举 |
-| `Assets/MVVM/ViewModel/CombatController.cs` | 战斗控制器空壳 |
-| `Assets/MVVM/ViewModel/GameFlowController.cs` | 空壳(将用新SceneFlowController替代) |
-| `Assets/MVVM/ViewModel/HudController.cs` | 空壳(将用新HUDViewModel替代) |
-| `Assets/MVVM/ViewModel/PlayerController.cs` | 已注释的旧战斗代码 |
+
 | `Assets/MVVM/ViewModel/TestViewModel.cs` | 测试代码 |
 | `Assets/MVVM/View/PlayerView.cs` | 空壳(将用新UI替代) |
 | `Assets/MVVM/Model/ModelBase.cs` | 旧Model基类(不再需要) |

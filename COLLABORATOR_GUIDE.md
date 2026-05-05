@@ -1,7 +1,15 @@
 # Unsaid Goodbye — 协作者上手指南
 
-> 本文档基于 **2026-05-01 实际代码状态**，描述已实现的框架、游戏全流程、外部接口和待完成模块。
+> 本文档基于 **2026-05-05 实际代码状态**，描述已实现的框架、游戏全流程、外部接口和待完成模块。
 > 另有一份早期设计文档 `ARCHITECTURE.md`（2026-04-29），部分内容与当前实现有出入，以本文档为准。
+>
+> **近期更新**（2026-05-05）：
+> - **DI 容器重构**：单例存储 key 从 `int`(descriptor ID) 改为 `Type`(具体实现类型)，同一实例注册为多个接口时正确命中同一槽位。`Register*<T,Impl>()` 新增具体类型校验，防止接口/抽象类作为实现类型。`ResolveScope` 修复父 Scope 查找 bug
+> - 修复启动时序：`SetupSceneScoping` 移到 `ExecuteLifecycle` 之前，Scoped ViewModel 可在初始化阶段正确注入
+> - 修复 `LifecycleRegistry` 注入失败重试机制
+> - 新建 `MainMenuView.cs`，UI 绑定从 Inspector 反射改为代码直连（MVVM View 模式）
+> - `StartSceneInstaller` 已添加到 `BootConfig.sceneInstallers`
+> - 场景加载 API 从 `SceneManager` 切换为 `Addressables.LoadSceneAsync`
 
 ---
 
@@ -27,9 +35,10 @@
 
 **已跑通的核心链路**：
 ```
-引擎启动 → DI容器初始化 → 服务注册 → 生命周期执行
-→ GameFlowController就绪 → 玩家点击场景物体
-→ 事件发布
+引擎启动 → DI容器初始化 → 全局+场景服务注册 → 时序保证的注入
+→ 生命周期执行（Initialize → Start）→ GameFlowManager就绪
+→ 玩家点击场景物体 → 事件发布 → Beat匹配
+→ 阶段推进 → Addressables场景加载 → 存档
 ```
 
 ---
@@ -41,8 +50,8 @@
 │  Scenes: Start / OutterWorld /           │
 │          InnerWorld_Park                  │
 ├──────────────────────────────────────────┤
-│  Gameplay: GameFlowController /          │
-│            SceneFlowView /               │
+│  Gameplay: GameFlowManager /          │
+│            GameFlowView /               │
 │            InteractableObject /          │
 │            SaveManager / SO Configs      │
 ├──────────────────────────────────────────┤
@@ -61,16 +70,16 @@
 
 | 文件 | 一句话职责 |
 |------|-----------|
-| `Core/DI/DIContainer.cs` | 自研 IoC 容器：Singleton/Scoped/Transient，构造器+字段+属性注入，循环依赖检测，启动时依赖图验证 |
+| `Core/DI/DIContainer.cs` | 自研 IoC 容器：Singleton/Scoped/Transient，构造器+字段+属性注入，循环依赖检测，启动时依赖图验证。**单例 key = 具体实现 Type**（非 descriptor ID），同一实例注册为多接口时命中同一槽位 |
 | `Core/DI/Inject.cs` | `[Inject]` / `[InjectOptional]` 标记 + DIContainer.Inject() 反射注入逻辑 |
-| `Core/Architecture/LifecycleRegistry.cs` | 静态全局注册表，保证 所有 `IInitializable.Initialize()` 完成后才执行 `IStartable.OnStart()` |
+| `Core/Architecture/LifecycleRegistry.cs` | 静态全局注册表，保证 所有 `IInitializable.Initialize()` 完成后才执行 `IStartable.OnStart()`。注入失败自动加入重试队列，在 `ProcessDelayedInjection()` 中重新尝试 |
 | `Core/Architecture/LifecycleMonoBehaviour.cs` | **继承此类而非普通 MonoBehaviour**：封存 Awake/Start，子类重写 `OnInitialize()` / `OnStartExternal()` / `OnShutdown()` |
 | `Core/Architecture/InstallerAsset.cs` | Installer 基类（ScriptableObject），重写 `Register(DIContainer)` 注册服务 |
 | `Core/Architecture/InstallerConfig.cs` | 总配置 SO：`globalInstallers` 列表 + `sceneInstallers` 列表，按 order 排序执行 |
 | `Core/Events/EventManager.cs` | 事件总线：`Subscribe<T>` / `Unsubscribe<T>` / `Publish<T>`，T 必须是 struct |
 | `Core/Events/EventDefinitions/EventStructs.cs` | 已定义的事件：ItemCollected / PuzzleSolved / DialogueEnded / InteractionPerformed / TriggerEnter / StoryBeatCompleted |
 | `Core/Boot/ProjectBootstrap.cs` | `[RuntimeInitializeOnLoadMethod]` 钩子：BeforeSceneLoad → ProjectContext.Ensure() |
-| `Core/Boot/ProjectContext.cs` | 启动主流程：创建DI容器→加载InstallerConfig→验证依赖→执行生命周期→设置场景管理 |
+| `Core/Boot/ProjectContext.cs` | 启动主流程：创建DI容器→加载InstallerConfig→验证依赖→**SetupSceneScoping（在生命周期之前）**→执行生命周期→StartGameLoop |
 | `Core/Boot/SceneScopeRunner.cs` | 监听 `SceneManager.sceneLoaded/Unloaded`，自动创建/销毁场景级 Scope |
 | `Core/Boot/UpdateRunner.cs` | 驱动所有 `ITickable` 的 MonoBehaviour Update |
 | `Core/Architecture/ScopeProvider.cs` | 全局单例，追踪"当前活跃场景"的 DI Scope |
@@ -80,20 +89,21 @@
 | 文件 | 一句话职责 |
 |------|-----------|
 | `MVVM/ViewModel/Base/ViewModelBase.cs` | ViewModel 基类：`INotifyPropertyChanged` + `SetProperty<T>()` + 内建 Command 工厂方法 |
-| `MVVM/Binding/PropertyBinding.cs` | 挂 GameObject 上，Inspector 配置 ViewModel 属性 → UI 组件属性的单向/双向绑定 |
-| `MVVM/Binding/CommandBinding.cs` | 挂 GameObject 上，Inspector 配置 UI 事件（onClick等）→ ViewModel 的 ICommand/方法 |
+| `MVVM/View/MainMenuView.cs` | **主菜单 View（新建）**：继承 `StrictLifecycleMonoBehaviour`，`[Inject]` 注入 ViewModel，`OnStartExternal` 中代码绑定 UI 事件，替代 Inspector 字符串反射方式 |
+| `MVVM/ViewModel/MainMenuViewModel.cs` | 主菜单 ViewModel：`StartGameCommand`（AsyncCommand）+ `Volume` 属性，通过 `Addressables.LoadSceneAsync` 加载游戏场景 |
+| `MVVM/Binding/PropertyBinding.cs` | 旧方式：挂 GameObject 上，Inspector 填字符串反射绑定（**新 UI 开发不再使用，改用 View 模式**） |
+| `MVVM/Binding/CommandBinding.cs` | 旧方式：挂 GameObject 上，Inspector 填字符串反射绑定（**新 UI 开发不再使用，改用 View 模式**） |
 | `MVVM/Commands/RelayCommand.cs` | 同步 ICommand（`RelayCommand` / `RelayCommand<T>`） |
 | `MVVM/Commands/AsyncCommand.cs` | 异步 ICommand（`AsyncCommand` / `AsyncCommand<T>`），执行中自动禁用按钮 |
 | `MVVM/ViewModel/Factory/ViewModelFactory.cs` | 通过 DI 容器创建 Scoped/Transient/Singleton ViewModel |
-| `MVVM/ViewModel/MainMenuViewModel.cs` | 主菜单 ViewModel（**已完整实现**：StartGameCommand → 读档/新游戏 → 加载场景） |
-| `MVVM/Binding/BindingManager.cs` | 绑定管理器（完整实现，但 PropertyBinding/CommandBinding 自己管理生命周期，此管理器暂未接入） |
+| `MVVM/Binding/BindingManager.cs` | 绑定管理器（完整实现，但 View 模式直接管理绑定，此管理器暂未接入） |
 
 ### Gameplay 层关键文件
 
 | 文件 | 一句话职责 |
 |------|-----------|
-| `Gameplay/SceneFlow/GameFlowController.cs` | **核心剧情控制器**：订阅事件→Beat匹配→阶段推进→触发转场 |
-| `Gameplay/SceneFlow/SceneFlowView.cs` | **表现层**：监听 Controller 事件，执行转场动画/场景加载/TODO(BGM/对话) |
+| `Gameplay/SceneFlow/GameFlowManager.cs` | **核心剧情控制器**：订阅事件→Beat匹配→阶段推进→触发转场 |
+| `Gameplay/SceneFlow/GameFlowView.cs` | **表现层**：监听 Controller 事件，执行转场动画、`Addressables.LoadSceneAsync` 场景加载、TODO(BGM/对话) |
 | `Gameplay/SceneFlow/StoryBeat.cs` | SO：一个节拍 = Type(收集/解谜/对话/交互/触发) + TargetId + Description |
 | `Gameplay/SceneFlow/GamePhase.cs` | 枚举：Phase1~Phase7 + Epilogue A/B，共 10 个阶段 |
 | `Gameplay/SO/GamePhaseConfig.cs` | SO：阶段配置 = 场景路径 + RequiredBeats 列表 + 下一阶段 + 转场参数 |
@@ -102,7 +112,7 @@
 | `Gameplay/Save/SaveManager.cs` | JSON 文件读写：`Application.persistentDataPath/save.json` |
 | `Gameplay/Save/GameSaveDto.cs` | [Serializable] 存档 DTO |
 | `Gameplay/Interactions/InteractableObject.cs` | 挂场景物体上：OnMouseDown(点击)/OnTriggerEnter2D(触发区) → 发布事件到 EventCenter |
-| `Gameplay/Installer/GamePlayInstaller.cs` | 注册 IGameFlowController / ISaveManager / GameFlowModel |
+| `Gameplay/Installer/GamePlayInstaller.cs` | 注册 IGameFlowManager / ISaveManager / GameFlowModel |
 | `Gameplay/Installer/StartSceneInstaller.cs` | 注册 MainMenuViewModel (Scoped) |
 
 ---
@@ -125,9 +135,9 @@ Unity 引擎启动
       ├── 2. RegisterInstallers()  [await Addressables.LoadAssetAsync<InstallerConfig>("BootConfig")]
       │      加载 BootConfig.asset → 遍历 GlobalInstallersSorted (按order排序):
       │        ├─ CoreInstaller        → EventManager, PlayerInput, ViewModelFactory, ScopeProvider
-      │        ├─ ControllerInstaller   → ControllerManager (Scoped)
-      │        ├─ GamePlayInstaller     → GameFlowController, SaveManager, GameFlowModel
-      │        └─ InputInstaller        → PlayerInputManager (重复注册，需清理)
+      │        └─ GamePlayInstaller     → GameFlowManager, PlayerManager, SaveManager, GameFlowModel
+      │      此时场景加载，GameObject Awake() 触发 [Inject]，
+      │      若依赖的 Scoped 服务未注册 → 加入 _pendingInjection 重试队列
       │
       ├── 3. ValidateDependencies()
       │      遍历所有 Singleton 注册 → 逐一尝试解析 → 报告循环依赖/缺失
@@ -135,31 +145,34 @@ Unity 引擎启动
       ├── 4. SetupLifecycleRegistry()
       │      LifecycleRegistry.SetContainer(container, _projectScope)
       │
-      ├── 5. ExecuteLifecycle()
+      ├── 5. SetupSceneScoping()        ← 在生命周期之前执行！
+      │      ├─ 为初始场景预创建 Scope
+      │      ├─ 注入 sceneInstallers → StartSceneInstaller 注册 MainMenuViewModel (Scoped)
+      │      ├─ 初始化 Scoped 服务的 IInitializable + IStartable
+      │      └─ SceneScopeRunner.Attach() → 监听后续场景加载/卸载
+      │
+      ├── 6. ExecuteLifecycle()
       │      ├─ PreRegisterLifecycleServices()
       │      │    ResolveAll<IInitializable>() → 触发 DI 构造 → 自动注册到 LifecycleRegistry
       │      │    ResolveAll<IStartable>()
+      │      ├─ ProcessDelayedInjection()     ← 重试 Awake 时失败的 [Inject]
       │      ├─ LifecycleRegistry.InitializeAll()  ← 所有 IInitializable.Initialize()
-      │      │    ├─ GameFlowController.Initialize()
+      │      │    ├─ GameFlowManager.Initialize()
       │      │    │    ├─ LoadSaveData() → SaveManager
       │      │    │    ├─ await LoadPhaseConfigs() → Addressables (label="GamePhaseConfig")
       │      │    │    ├─ SubscribeEvents() → 5种事件
       │      │    │    └─ StartPhase(Phase1) 或 RestoreFromSave()
-      │      │    ├─ PlayerInputManager.Initialize()
       │      │    └─ EventManager.Initialize()
       │      └─ LifecycleRegistry.StartAll()    ← 所有 IStartable.OnStart()
+      │           └─ MainMenuView.OnStartExternal() → 代码绑定 UI 事件
       │
-      ├── 6. StartGameLoop()
-      │      ResolveAll<ITickable>() → UpdateRunner.Register()
-      │
-      └── 7. SetupSceneScoping()
-             ├─ 为初始场景预创建 Scope
-             ├─ 注入 sceneInstallers (当前为空列表[])
-             ├─ 初始化 Scoped 服务的 IInitializable + IStartable
-             └─ SceneScopeRunner.Attach() → 监听后续场景加载/卸载
+      └── 7. StartGameLoop()
+             ResolveAll<ITickable>() → UpdateRunner.Register()
 ```
 
-**关键点**：启动完成后，DI 容器已就绪、所有服务已初始化、GameFlowController 处于 Phase1、等待玩家交互。
+**关键点**：启动完成后，DI 容器已就绪、所有服务已初始化（包括 Scoped ViewModel）、GameFlowManager 处于 Phase1、等待玩家交互。
+
+**时序保证**：`SetupSceneScoping()` 在 `ExecuteLifecycle()` 之前执行，确保场景 Installer 注册的 Scoped 服务在 `[Inject]` 和 `OnInitialize` 阶段可用。若 Awake 时注入失败（Scoped 服务尚未注册），`LifecycleRegistry` 会将组件加入 `_pendingInjection` 队列，在 `ProcessDelayedInjection()` 中重试。
 
 ---
 
@@ -194,7 +207,7 @@ EnterTrigger         // → TriggerEnterEvent
       │    Interactive   → new InteractionPerformedEvent { InteractableID = _targetId }
       │    TriggerZone   → new TriggerEnterEvent { TriggerID = _targetId }
       │
-3. GameFlowController.TryCompleteBeat(beatType, targetId)
+3. GameFlowManager.TryCompleteBeat(beatType, targetId)
       │  遍历 _currentConfig.RequiredBeats，匹配 Type + TargetId
       │  匹配成功 → _completedBeats.Add(beatId)
       │           → _model.ApplyBeatProgress()  — UI 进度条自动更新
@@ -207,18 +220,18 @@ EnterTrigger         // → TriggerEnterEvent
       │    结局分支 → TODO: IEndingDeterminer (目前返回 DefaultNextPhase)
       │  OnPhaseComplete?.Invoke(nextPhase)
       │
-5. SceneFlowView.HandlePhaseComplete(nextPhase)  [async]
+5. GameFlowView.HandlePhaseComplete(nextPhase)  [async]
       │  ├─ 播放离开对话  (TODO: IDialogueManager)
       │  ├─ 黑屏淡入      (TODO: FadeToBlack)
       │  ├─ SceneManager.LoadSceneAsync(config.SceneAssetPath)
       │  └─ _controller.ConfirmTransition(nextPhase)
       │
-6. GameFlowController.ConfirmTransition(newPhase)
+6. GameFlowManager.ConfirmTransition(newPhase)
       │  切换 _currentConfig，清空 _completedBeats
       │  _model.ApplyPhase(newPhase)  — UI 进度条重置
       │  OnPhaseChanged?.Invoke(newPhase)
       │
-7. SceneFlowView.HandlePhaseChanged(newPhase)  [async]
+7. GameFlowView.HandlePhaseChanged(newPhase)  [async]
       │  ├─ 切换 BGM       (TODO: IAudioManager)
       │  ├─ 黑屏淡出       (TODO: FadeFromBlack)
       │  └─ 播放进入对话    (TODO: IDialogueManager)
@@ -231,7 +244,7 @@ EnterTrigger         // → TriggerEnterEvent
 - **文件位置**：`Application.persistentDataPath/save.json`
 - **格式**：JSON（Unity JsonUtility 序列化 GameSaveDto）
 - **保存内容**：currentPhase / currentSceneId / completedBeatIds / collectedItemIds / solvedPuzzleIds / completedDialogueIds / playTimeSeconds
-- **触发时机**：`GameFlowController.GetSaveState()` 由外部调用（目前未自动触发，需在主菜单/暂停菜单中调用）
+- **触发时机**：`GameFlowManager.GetSaveState()` 由外部调用（目前未自动触发，需在主菜单/暂停菜单中调用）
 
 ---
 
@@ -299,6 +312,14 @@ public class MySceneComponent : StrictLifecycleMonoBehaviour
 
 DI 容器自动选择构造函数（优先 `[Inject]` 标记的，否则选参数最多的），构造函数参数 + 标记了 `[Inject]` 的字段/属性都会被注入。
 
+**单例存储设计**：容器用 `ConcurrentDictionary<Type, object>` 存储单例，key = 具体实现类型（`typeof(ConcreteClass)`），而非 descriptor ID。这意味着同一个实例通过不同接口注册时（如 `RegisterSingleton<DIContainer>(container)` + `RegisterSingleton<IServiceProvider>(container)`），两个描述符的 `ImplementationType` 都是 `typeof(DIContainer)`，解析任一接口都命中同一槽位。
+
+**解析路径**：
+- `ImplementationType != null`（类型注册 / 实例注册）→ `_singletonInstances[ImplementationType]`
+- `ImplementationType == null`（纯工厂注册）→ `_singletonFactoryResults[descriptor.Id]`（ID 备用）
+
+`RegisterSingleton<T, Impl>()` 会校验 `typeof(Impl)` 必须是具体类（非接口/抽象类）。Scoped 同理，`Scope.ScopedInstances` 也是 `ConcurrentDictionary<Type, object>`。
+
 ### 5.3 安装器系统
 
 ```csharp
@@ -362,17 +383,18 @@ _events.Unsubscribe<MyCustomEvent>(handler);
 - `TriggerEnterEvent { TriggerID }`
 - `StoryBeatCompletedEvent { StoryBeatID }`
 
-### 5.5 ViewModel 创建与数据绑定
+### 5.5 ViewModel 创建与 View 代码绑定
+
+**ViewModel（纯 C#，DI 注册）**：
 
 ```csharp
-// 创建 ViewModel
 public class MyViewModel : ViewModelBase
 {
     private string _displayText;
     public string DisplayText
     {
         get => _displayText;
-        set => SetProperty(ref _displayText, value);  // 自动触发 PropertyChanged
+        set => SetProperty(ref _displayText, value);
     }
 
     public ICommand DoSomethingCommand { get; private set; }
@@ -386,15 +408,50 @@ public class MyViewModel : ViewModelBase
 }
 ```
 
-**Inspector 中的绑定步骤**：
+**View（MonoBehaviour，挂场景 Canvas 上）**：
 
-1. 在 GameObject 上添加 `PropertyBinding` 或 `CommandBinding` 组件
-2. 选择绑定源：
-   - **方式 A**：如果 ViewModel 是 MonoBehaviour，直接拖到 `_source` 字段
-   - **方式 B**：如果 ViewModel 是纯 C# 类（DI 注册），在 `_sourceTypeName` 填入 `"命名空间.类名, Assembly-CSharp"`（如 `"MVVM.ViewModel.MainMenuViewModel, Assembly-CSharp"`）
-3. 配置属性名/命令名 和 目标 UI 组件
+```csharp
+public class MyView : StrictLifecycleMonoBehaviour
+{
+    [Inject] private MyViewModel _viewModel;
 
-支持的 UI 组件事件：Button.onClick / Toggle.onValueChanged / InputField.onEndEdit / Slider.onValueChanged / Dropdown.onValueChanged
+    [Header("UI 引用")]
+    [SerializeField] private Button _doSomethingButton;
+    [SerializeField] private Text _displayText;
+
+    protected override void OnStartExternal()
+    {
+        _doSomethingButton.onClick.AddListener(() => _viewModel.DoSomethingCommand.Execute(null));
+
+        _viewModel.PropertyChanged += (_, e) =>
+        {
+            if (e.PropertyName == nameof(MyViewModel.DisplayText))
+                _displayText.text = _viewModel.DisplayText;
+        };
+    }
+
+    protected override void OnShutdown()
+    {
+        _doSomethingButton.onClick.RemoveAllListeners();
+    }
+}
+```
+
+**场景中的操作**：
+1. Canvas 根节点挂 `MyView` 组件
+2. 把 Button / Text 拖到 Inspector 中对应的 `[SerializeField]` slot
+3. **不需要**挂 `PropertyBinding` / `CommandBinding`，不填任何字符串
+
+**和旧 Inspector 反射方式对比**：
+
+| | Inspector 字符串绑定 | 代码 View 绑定 |
+|---|---|---|
+| 场景操作 | 挂 Binding 组件 + 填类型名字符串 + 填属性名字符串 | 拖 Button / Text 到 slot |
+| 编译期安全 | 字符串拼错 → 运行时崩 | 改名 → 编译器报错 |
+| 调试 | 反射链路上排查 | 断点打在 AddListener 上 |
+| 适用场景 | 大型团队 / 策划调整绑定 | 本项目（小型团队） |
+
+> **现有 `PropertyBinding` / `CommandBinding` 保留但不再作为主要开发路径。新 UI 一律使用 View 模式。**
 
 ### 5.6 存档接口
 
@@ -416,16 +473,18 @@ public interface ISaveManager
 ### 5.7 输入接口
 
 ```csharp
-// IPlayerInput — 已实现
+// IPlayerInput — 已实现，基于轮询（polling）
 public interface IPlayerInput
 {
-    event Action<Vector2> OnClickPerformed;   // 鼠标点击 + 位置
-    event Action<Vector2> OnMovePerformed;    // WASD (Vector2 方向)
-    event Action<Vector2> OnMoveCanceled;     // 按键松开
+    Vector2 MoveDirection { get; }  // 当前帧 WASD 方向，未按下时 Vector2.zero
+    Vector2 MousePosition { get; }  // 当前鼠标位置
+    bool IsClickTriggered { get; }  // 当前帧是否点击（WasPressedThisFrame）
+    void Enable();
+    void Disable();
 }
 ```
 
-通过 `[Inject] private IPlayerInput _input;` 获取，当前键位：WASD 移动 + 鼠标左键点击。
+通过 `[Inject] private IPlayerInput _input;` 获取，PlayerView 在 Update 中每帧轮询。当前键位：WASD 移动 + 鼠标左键点击。
 
 ### 5.8 场景交互接口（InteractableObject）
 
@@ -436,7 +495,7 @@ public interface IPlayerInput
 - `InteractOnce`：是否仅触发一次
 - `PlayerTag`：触发区域模式下的玩家 Tag
 
-**自动行为**：发布对应事件到 EventCenter → GameFlowController 接收 → Beat 匹配。
+**自动行为**：发布对应事件到 EventCenter → GameFlowManager 接收 → Beat 匹配。
 
 ---
 
@@ -449,25 +508,21 @@ public interface IPlayerInput
 ```
 globalInstallers:
   1. CoreInstaller.asset       → EventCenter, PlayerInput, ViewModelFactory, ScopeProvider
-  2. ControllerInstaller.asset  → ControllerManager (Scoped)
-  3. GamePlayInstaller.asset    → GameFlowController, SaveManager, GameFlowModel
-  4. InputInstaller.asset       → PlayerInputManager (与 CoreInstaller 重复!)
+  2. GamePlayInstaller.asset    → GameFlowManager, PlayerManager, SaveManager, GameFlowModel
 
 sceneInstallers:
-  (空列表 — StartSceneInstaller 尚未被引用)
+  1. StartSceneInstaller.asset  → MainMenuViewModel (Scoped)
 ```
-
-**已知问题**：`CoreInstaller` 和 `InputInstaller` 都注册了 `IPlayerInput`，存在重复注册。需清理其中一处。
 
 ### 6.2 已创建的配置资产状态
 
 | 文件 | 用途 | 填充状态 |
 |------|------|---------|
-| `Configs/Boot/BootConfig.asset` | Installer 总配置 | ✅ 4个global已配置，scene列表为空 |
+| `Configs/Boot/BootConfig.asset` | Installer 总配置 | ✅ 4个global + 1个scene (StartSceneInstaller) 已配置 |
+| `Configs/Boot/StartSceneInstaller.asset` | Start 场景 Installer | ✅ 已创建并添加到 BootConfig.sceneInstallers |
 | `Configs/Boot/CoreInstaller.asset` | Core 服务注册 | ✅ 已配置 |
 | `Configs/Boot/GamePlayInstaller.asset` | Gameplay 服务注册 | ✅ 已配置 |
-| `Configs/Boot/ControllerInstaller.asset` | Controller 注册 | ✅ 已配置 |
-| `Configs/Boot/InputInstaller.asset` | 输入注册 | ✅ 但与 CoreInstaller 重复 |
+
 | `Configs/Game Flow Model.asset` | 运行时 Model | ✅ 已创建 |
 | `Configs/GameSaveData.asset` | 存档 SO（可能未使用） | ✅ 已创建 |
 | `Configs/StoryBeats/Intro.asset` | 示例 StoryBeat | ❌ 所有字段为空 |
@@ -499,7 +554,7 @@ sceneInstallers:
 3. 后续场景切换时，`SceneScopeRunner.OnSceneLoaded()` 自动创建新 Scope 并运行 sceneInstallers
 4. 场景卸载时 `SceneScopeRunner.OnSceneUnloaded()` 自动清理 Scope（释放所有 Scoped 服务）
 
-**目前**：`sceneInstallers` 为空列表。需要将 `StartSceneInstaller.asset` 添加到 `BootConfig.sceneInstallers` 中，主菜单的 `MainMenuViewModel` 才能通过 DI 解析。
+`StartSceneInstaller.asset` 已添加到 `BootConfig.sceneInstallers`，场景加载时自动运行。
 
 ---
 
@@ -521,10 +576,12 @@ sceneInstallers:
 | PropertyBinding / CommandBinding（反射属性绑定 + UI 事件绑定 + DI 解析 ViewModel） | ✅ 完整 |
 | ViewModelBase（INotifyPropertyChanged + SetProperty + Command 工厂） | ✅ 完整 |
 | RelayCommand / AsyncCommand（同步/异步 ICommand） | ✅ 完整 |
-| GameFlowController（事件订阅 → Beat 匹配 → 阶段推进 → 存档恢复） | ✅ 核心逻辑完整 |
-| SceneFlowView（转场 + 场景加载，但 BGM/对话/Fade 是 TODO） | ⚠️ 骨架完整 |
+| GameFlowManager（事件订阅 → Beat 匹配 → 阶段推进 → 存档恢复） | ✅ 核心逻辑完整 |
+| GameFlowView（转场 + 场景加载，但 BGM/对话/Fade 是 TODO） | ⚠️ 骨架完整 |
 | InteractableObject（点击交互 + 触发区域 + 事件发布 + 视觉反馈） | ✅ 完整 |
-| MainMenuViewModel（新游戏/继续游戏 → 场景加载） | ✅ 完整 |
+| MainMenuViewModel（新游戏/继续游戏 → Addressables 加载场景） | ✅ 完整 |
+| MainMenuView（代码绑定 UI，[Inject] ViewModel → OnStartExternal 连线） | ✅ 新建 |
+| 启动时序修复（SetupSceneScoping 移到 ExecuteLifecycle 之前 + 注入失败重试） | ✅ 已修复 |
 | GameFlowModel（MVVM Model，PhaseProgress 可绑定 Slider） | ✅ 完整 |
 | GamePhase 枚举（10个阶段全部定义） | ✅ 完整 |
 
@@ -536,33 +593,28 @@ sceneInstallers:
 |------|---------|-----------|
 | **音频管理器** (`IAudioManager`) | 不存在 | 创建接口 + 实现（BGM/SFX），注册到 CoreInstaller |
 | **对话系统** (`IDialogueManager`) | 不存在 | 创建接口 + 实现（逐行显示/选项分支/自动推进），注册到 DI |
-| **转场动画** (FadeToBlack/FadeFromBlack) | SceneFlowView 中为 TODO | 在 SceneFlowView 中实现 Canvas 黑屏淡入淡出 |
+| **转场动画** (FadeToBlack/FadeFromBlack) | GameFlowView 中为 TODO | 在 GameFlowView 中实现 Canvas 黑屏淡入淡出 |
 | **GamePhaseConfig 数据填充** | 只有空白的 StartPhase.asset | 为每个 GamePhase 创建 SO 并填充场景路径/Beats/下一阶段 |
 | **StoryBeat 数据填充** | 只有空白的 Intro.asset | 为每个阶段创建所有 StoryBeat SO |
 | **Addressables label 配置** | 资源未打 label | 给 GamePhaseConfig SO 打上 "GamePhaseConfig" label |
-| **BootConfig.sceneInstallers** | 空列表 | 添加 StartSceneInstaller.asset |
 
 #### 完善游戏体验（中优先级）
 
 | 模块 | 当前状态 | 需要做什么 |
 |------|---------|-----------|
 | **背包/道具系统** (`IInventoryManager`) | 不存在 | 创建接口 + 实现（收集/查询/分类），接入存档 |
-| **结局判定** (`IEndingDeterminer`) | GameFlowController 中有 TODO 注释 | 创建判定逻辑（根据收集的道具决定结局 A/B） |
-| **ControllerManager 集成** | 已注册为 Scoped，但 `_controllers` 的 `[Inject]` 注入未验证 | 验证 DI 注入 List<IController> 可行性 |
+| **结局判定** (`IEndingDeterminer`) | GameFlowManager 中有 TODO 注释 | 创建判定逻辑（根据收集的道具决定结局 A/B） |
 | **场景搭建** | 3个场景都是空的 | 放置背景、交互物、UI Canvas |
-| **主菜单 UI** | MainMenuViewModel 已就绪，缺 UI | 用 Canvas 或 UI Toolkit 搭建主菜单界面 |
-| **HUD** | HudController 是空壳 | 创建 HUDViewModel + HUDView（进度条/道具提示） |
+| **主菜单场景搭建** | MainMenuViewModel + MainMenuView 代码已就绪 | 在 Start.unity 中建 Canvas，挂 MainMenuView，拖 Button/Slider 到 slot |
+| **HUD** | 尚未实现 | 创建 HUDViewModel + HUDView（进度条/道具提示） |
 
 #### 技术债务/优化（低优先级）
 
 | 问题 | 说明 |
 |------|------|
-| **CoreInstaller 与 InputInstaller 重复注册 IPlayerInput** | 两个 Installer 都注册了 IPlayerInput，需合并 |
-| **PlayerController.cs 整文件被注释** | 引用了不存在的 IEcsInputBridge / EntityModel，可能需要删除 |
-| **CombatController / HudController 空壳** | 空类文件 |
 | **GlobalTime 空壳** | 空类文件 |
 | **BindingManager 未被使用** | PropertyBinding/CommandBinding 自己管理生命周期，BindingManager 是死代码或为未来准备 |
-| **SceneFlowView 对话集成** | EntryDialogueId / ExitDialogueId 的播放逻辑全是 TODO |
+| **GameFlowView 对话集成** | EntryDialogueId / ExitDialogueId 的播放逻辑全是 TODO |
 | **单元测试** | 无 |
 
 ---
@@ -581,13 +633,13 @@ sceneInstallers:
 
 6. 创建 IDialogueManager 接口 + DialogueManager 实现（最简版本：Text 组件显示+隐藏）
 7. 注册到 DI（GamePlayInstaller 或新建 DialogueInstaller）
-8. 接入 SceneFlowView 的 EntryDialogueId/ExitDialogueId 播放
+8. 接入 GameFlowView 的 EntryDialogueId/ExitDialogueId 播放
 
 ### 第三步：实现转场 + 音频
 
 9. 实现 FadeToBlack / FadeFromBlack（Canvas 遮罩 + 协程/async）
 10. 创建 IAudioManager + AudioManager（最简版本：AudioSource.PlayOneShot）
-11. 接入 SceneFlowView
+11. 接入 GameFlowView
 
 ### 第四步：完善所有阶段 + UI
 
@@ -628,23 +680,16 @@ Assets/
 │   ├── Architecture/Interfaces/IStartable.cs
 │   ├── Architecture/Interfaces/ITickable.cs
 │   ├── Architecture/Installers/CoreInstaller.cs
-│   ├── Architecture/Installers/ControllerInstaller.cs
-│   ├── Architecture/Installers/InputInstaller.cs
 │   ├── Events/EventManager.cs
 │   ├── Events/EventInterfaces/IEventCenter.cs
 │   ├── Events/EventDefinitions/EventStructs.cs
 │   └── GlobalTime.cs                 # 空壳
 ├── MVVM/
+│   ├── View/                      # View 层（代码绑定 UI）
+│   │   └── MainMenuView.cs        # 主菜单 View
 │   ├── ViewModel/Base/ViewModelBase.cs
 │   ├── ViewModel/MainMenuViewModel.cs
 │   ├── ViewModel/Factory/ViewModelFactory.cs
-│   ├── ViewModel/PlayerController.cs    # 整文件注释
-│   ├── ViewModel/CombatController.cs    # 空壳
-│   ├── ViewModel/HudController.cs       # 空壳
-│   ├── ViewModel/ControllerBase.cs
-│   ├── ViewModel/Manager/ControllerManager.cs
-│   ├── ViewModel/Interfaces/IController.cs
-│   ├── ViewModel/Interfaces/IControllerManager.cs
 │   ├── ViewModel/Interfaces/IViewModelFactory.cs
 │   ├── Binding/PropertyBinding.cs
 │   ├── Binding/CommandBinding.cs
@@ -653,8 +698,8 @@ Assets/
 │   ├── Commands/AsyncCommand.cs
 │   └── Interfaces/IViewModel.cs
 ├── Gameplay/
-│   ├── SceneFlow/GameFlowController.cs
-│   ├── SceneFlow/SceneFlowView.cs
+│   ├── SceneFlow/GameFlowManager.cs
+│   ├── SceneFlow/GameFlowView.cs
 │   ├── SceneFlow/GamePhase.cs
 │   ├── SceneFlow/StoryBeat.cs
 │   ├── SO/GamePhaseConfig.cs
@@ -664,19 +709,17 @@ Assets/
 │   ├── Save/GameSaveDto.cs
 │   ├── Save/ISaveManager.cs
 │   ├── Interactions/InteractableObject.cs
-│   ├── Interfaces/IGameFlowController.cs
+│   ├── Interfaces/IGameFlowManager.cs
 │   ├── Installer/GamePlayInstaller.cs
 │   └── Installer/StartSceneInstaller.cs
 ├── Input/
-│   ├── Manager/PlayerInputManager.cs
-│   ├── InputConfig/PlayerInput.cs      # 自动生成
+│   ├── Manager/PlayerInputManager.cs    # 纯 C# 类，轮询 InputAction
+│   ├── InputConfig/PlayerInput.cs       # 自动生成
 │   └── InputInterface/IPlayerInput.cs
 ├── Configs/
 │   ├── Boot/BootConfig.asset
 │   ├── Boot/CoreInstaller.asset
 │   ├── Boot/GamePlayInstaller.asset
-│   ├── Boot/ControllerInstaller.asset
-│   ├── Boot/InputInstaller.asset
 │   ├── StoryBeats/Intro.asset          # 空白
 │   └── StoryPhase/StartPhase.asset     # 空白
 └── Scenes/
@@ -687,4 +730,4 @@ Assets/
 
 ---
 
-*文档生成日期：2026-05-01 | 基于 main 分支实际代码状态 | 最近提交：3ccd234*
+*文档更新日期：2026-05-05 | 基于 main 分支实际代码状态 | 最近提交：3ccd234*
