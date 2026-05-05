@@ -67,15 +67,15 @@ namespace Core.Boot
             // 阶段3: 设置LifecycleRegistry
             SetupLifecycleRegistry();
 
-            // 阶段4: 执行生命周期初始化
+            // 阶段4: 启动场景作用域管理 + 为初始场景预创建 Scope
+            // 必须在 ExecuteLifecycle 之前执行，确保 Scoped ViewModel 在 DI 注入时已注册
+            SetupSceneScoping();
+
+            // 阶段5: 执行生命周期初始化
             ExecuteLifecycle();
 
-            // 阶段5: 启动游戏循环
+            // 阶段6: 启动游戏循环
             StartGameLoop();
-
-            // 阶段6: 启动场景作用域管理 + 为初始场景预创建 Scope
-            // 关键：必须在 Boot 完成（BeforeSceneLoad）时创建，确保场景 GameObject Awake 时有 Scope 可用
-            SetupSceneScoping();
 
             Debug.Log("[ProjectContext] Boot sequence completed");
         }

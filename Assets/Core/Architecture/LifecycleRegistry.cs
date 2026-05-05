@@ -287,7 +287,13 @@ namespace Core.Architecture
             }
             catch (Exception ex)
             {
-                Debug.LogError($"[Lifecycle] Dependency injection failed for {GetComponentName(component)}: {ex.Message}");
+                // 注入失败（如 Scoped 服务尚未注册）→ 加入重试队列，ProcessDelayedInjection 再次尝试
+                lock (_initializables)
+                {
+                    if (!_pendingInjection.Contains(component))
+                        _pendingInjection.Add(component);
+                }
+                Debug.LogWarning($"[Lifecycle] Injection deferred for {GetComponentName(component)}: {ex.Message}");
             }
         }
 
