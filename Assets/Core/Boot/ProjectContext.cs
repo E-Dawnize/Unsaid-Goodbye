@@ -23,7 +23,7 @@ namespace Core.Boot
     public class ProjectContext : MonoBehaviour
     {
         private static ProjectContext _instance;
-        private DIContainer _globalContainer;
+        [SerializeField] private DIContainer _globalContainer;
         private IScope _projectScope;
         private InstallerConfig _loadedConfig;
         readonly string _installerAssertLabel="BootConfig";

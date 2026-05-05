@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Reflection;
+using UnityEngine;
 
 namespace Core.DI
 {
@@ -42,8 +43,12 @@ namespace Core.DI
             // Unity 对象被销毁时会 == null
             if (target is UnityEngine.Object uo && uo == null) return;
 
-            var provider = scope?.ServiceProvider ?? (IServiceProvider)this;//依托作用域
-            var members = _injectMembersCache.GetOrAdd(target.GetType(), BuildInjectMembers);//得到对象对应需要注入的字段
+            var provider = scope?.ServiceProvider ?? (IServiceProvider)this;
+            var targetType = target.GetType();
+            var members = _injectMembersCache.GetOrAdd(targetType, BuildInjectMembers);
+
+            if (DIContainer.VerboseDebug && members.Length > 0)
+                Debug.Log($"[DI Inject] {targetType.Name} has {members.Length} injectable members");
 
             foreach (var m in members)
             {
@@ -52,9 +57,12 @@ namespace Core.DI
                 {
                     if (m.Optional) continue;
                     throw new InvalidOperationException(
-                        $"Missing dependency: {m.MemberType} for {target.GetType().Name}.{m.Name}");
+                        $"Missing dependency: {m.MemberType.Name} {m.Name}  " +
+                        $"for {targetType.Name}  (lifetime mismatch? Scoped service needs active Scope)");
                 }
-                m.Setter(target, dep);//注入，m为字段info，实际注入引用根据传参target得到
+                if (DIContainer.VerboseDebug)
+                    Debug.Log($"[DI Inject]   {targetType.Name}.{m.Name} ← {dep.GetType().Name}");
+                m.Setter(target, dep);
             }
         }
         /// <summary>

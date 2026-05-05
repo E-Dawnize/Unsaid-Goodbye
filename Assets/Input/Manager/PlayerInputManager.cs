@@ -1,58 +1,44 @@
-﻿using System;
-using Core.Architecture;
-using Core.Architecture.Interfaces;
-using UnityEngine;
 using Input.InputInterface;
 using Input.InputConfig;
+using UnityEngine;
+
 namespace Input.Manager
 {
     /// <summary>
-    /// 玩家输入系统实现，唯一输入入口
+    /// 玩家输入实现 — 纯 C# 类，轮询 InputAction 当前值
+    /// 不依赖 MonoBehaviour，直接注册为 Singleton
     /// </summary>
-    public class PlayerInputManager:MonoBehaviour,IPlayerInput,IInitializable
+    public class PlayerInputManager : IPlayerInput
     {
-        public event Action<Vector2> OnClickPerformed;
-        public event Action<Vector2>  OnMovePerformed;
-        public event Action<Vector2> OnMoveCanceled;
-        
-        public bool IsReady { get;private set; }
-        private PlayerInputActions _playerInputActions;//inputAction C#类
+        private PlayerInputActions _actions;
+        private bool _enabled;
 
-        public void Initialize()
+        public Vector2 MoveDirection => _enabled
+            ? _actions.Gameplay.Move.ReadValue<Vector2>()
+            : Vector2.zero;
+
+        public Vector2 MousePosition => _enabled
+            ? _actions.Gameplay.MousePosition.ReadValue<Vector2>()
+            : Vector2.zero;
+
+        public bool IsClickTriggered => _enabled
+            && _actions.Gameplay.Click.WasPressedThisFrame();
+
+        public PlayerInputManager()
         {
-            if(IsReady)return;
-            _playerInputActions = new PlayerInputActions();
-            BindInputCallbacks();
-            IsReady = true;
-            if(isActiveAndEnabled)
-                _playerInputActions.Gameplay.Enable();
+            _actions = new PlayerInputActions();
         }
 
-        private void BindInputCallbacks()
+        public void Enable()
         {
-            _playerInputActions.Gameplay.Click.performed += ctx
-                => OnClickPerformed?.Invoke(_playerInputActions.Gameplay.MousePosition.ReadValue<Vector2>());
-            _playerInputActions.Gameplay.Move.performed += ctx => 
-                OnMovePerformed?.Invoke(ctx.ReadValue<Vector2>());
-            _playerInputActions.Gameplay.Move.canceled += ctx => 
-                OnMoveCanceled?.Invoke(Vector2.zero);
+            _actions.Gameplay.Enable();
+            _enabled = true;
         }
 
-        public void OnEnable()
+        public void Disable()
         {
-            if(IsReady)
-                _playerInputActions?.Gameplay.Enable();
+            _actions.Gameplay.Disable();
+            _enabled = false;
         }
-
-        public void OnDisable()
-        {
-            if(IsReady)
-                _playerInputActions?.Gameplay.Disable();
-        }
-        // private void OnDestroy()
-        // {
-        //     if (_playerInputActions != null)
-        //         Addressables.Release(_playerInputActions);
-        // }
     }
 }

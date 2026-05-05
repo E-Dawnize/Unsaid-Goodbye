@@ -21,16 +21,10 @@ namespace Core.Architecture.Installers
             container.RegisterSingleton<IServiceProvider>(container);
             // 作用域追踪器 — 全局单例，SceneScopeRunner 动态设置当前场景 Scope
             container.RegisterSingleton<IScopeProvider, ScopeProvider>();
-            container.RegisterSingleton<IEventCenter>(new EventManager());
-            container.RegisterSingleton<IInitializable,IEventCenter>();
-            container.RegisterSingleton<IPlayerInput>(sp =>
-            {
-                var go = new GameObject("PlayerInputManager");
-                DontDestroyOnLoad(go);
-                var mgr = go.AddComponent<PlayerInputManager>();
-                mgr.Initialize();
-                return mgr;
-            });
+            var eventManager = new EventManager();
+            container.RegisterSingleton<IEventCenter>(eventManager);
+            container.RegisterSingleton<IInitializable>(eventManager);
+            container.RegisterSingleton<IPlayerInput>(new PlayerInputManager());
             container.RegisterSingleton<IViewModelFactory, ViewModelFactory>();
         }
     }

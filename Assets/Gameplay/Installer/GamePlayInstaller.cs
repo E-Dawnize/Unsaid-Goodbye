@@ -1,6 +1,7 @@
 ﻿using Core.Architecture;
 using Core.DI;
 using Gameplay.Interfaces;
+using Gameplay.Player;
 using Gameplay.Save;
 using Gameplay.SceneFlow;
 using Gameplay.SO;
@@ -13,13 +14,16 @@ namespace Gameplay.Installer
     {
         public override void Register(DIContainer container)
         {
-            // Controller
-            container.RegisterSingleton<IGameFlowController, GameFlowController>();
+            // GameFlow Manager
+            container.RegisterSingleton<IGameFlowManager, GameFlowManager>();
+
+            // Player
+            container.RegisterSingleton<IPlayerManager, PlayerManager>();
 
             // Save
             container.RegisterSingleton<ISaveManager, SaveManager>();
 
-            // Model — 纯运行时类，Controller 在加载存档时填充数据
+            // Model — 纯运行时类，Manager 在加载存档时填充数据
             container.RegisterSingleton<GameFlowModel>(new GameFlowModel());
         }
     }

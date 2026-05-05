@@ -160,7 +160,7 @@ namespace Core.Architecture
 
             _isInitializing = true;
             _initializationComplete = false;
-            Debug.Log($"[Lifecycle] Starting Initialize phase ({_initializables.Count} components)");
+            Debug.Log($"[Lifecycle] === Initialize phase START ({_initializables.Count} components) ===");
 
             try
             {
@@ -170,19 +170,29 @@ namespace Core.Architecture
                 // 2. 执行 Initialize
                 var componentsToInitialize = new List<IInitializable>(_initializables);
 
-                foreach (var component in componentsToInitialize)
+                for (int idx = 0; idx < componentsToInitialize.Count; idx++)
                 {
+                    var component = componentsToInitialize[idx];
+                    var name = GetComponentName(component);
+                    var typeName = component.GetType().FullName;
                     try
                     {
                         if (IsComponentReady(component))
                         {
+                            Debug.Log($"[Lifecycle] [{idx + 1}/{componentsToInitialize.Count}] Initializing: {name} ({typeName})");
                             component.Initialize();
-                            Debug.Log($"[Lifecycle] Initialized: {GetComponentName(component)}");
+                            Debug.Log($"[Lifecycle] [{idx + 1}/{componentsToInitialize.Count}] ✓ {name}");
                         }
                     }
                     catch (Exception ex)
                     {
-                        Debug.LogError($"[Lifecycle] Initialize failed for {GetComponentName(component)}: {ex.Message}");
+                        var innerStack = ex.InnerException != null
+                            ? $"\n  Inner: {ex.InnerException.GetType().Name}: {ex.InnerException.Message}"
+                            : "";
+                        Debug.LogError(
+                            $"[Lifecycle] [{idx + 1}/{componentsToInitialize.Count}] ✗ Initialize FAILED: {name} ({typeName})\n" +
+                            $"  Error: {ex.Message}{innerStack}\n" +
+                            $"  StackTrace: {ex.StackTrace}");
                     }
                 }
 
@@ -190,11 +200,11 @@ namespace Core.Architecture
                 ProcessPendingRegistrations();
 
                 _initializationComplete = true;
+                Debug.Log($"[Lifecycle] === Initialize phase DONE ({componentsToInitialize.Count} processed) ===");
             }
             finally
             {
                 _isInitializing = false;
-                Debug.Log("[Lifecycle] Initialize phase completed");
             }
         }
 
@@ -328,6 +338,39 @@ namespace Core.Architecture
         private static string GetComponentName(object component)
         {
             return component?.GetType().Name ?? "null";
+        }
+
+        /// <summary>
+        /// 打印当前注册表中所有组件及其状态，用于排查初始化卡住/缺失的问题
+        /// </summary>
+        public static void DumpState()
+        {
+            Debug.Log("=== LifecycleRegistry State ===");
+            Debug.Log($"  IsInitializing: {_isInitializing}");
+            Debug.Log($"  InitializationComplete: {_initializationComplete}");
+            Debug.Log($"  IsStarting: {_isStarting}");
+            Debug.Log($"  StartComplete: {_startComplete}");
+            Debug.Log($"  Container ready: {_container != null}");
+
+            lock (_initializables)
+            {
+                Debug.Log($"  IInitializable: {_initializables.Count} registered");
+                foreach (var c in _initializables)
+                    Debug.Log($"    [{c.GetType().FullName}]");
+
+                Debug.Log($"  IStartable: {_startables.Count} registered");
+                foreach (var c in _startables)
+                    Debug.Log($"    [{c.GetType().FullName}]");
+
+                Debug.Log($"  Pending injection (retry): {_pendingInjection.Count}");
+                foreach (var c in _pendingInjection)
+                    Debug.Log($"    [{c.GetType().FullName}]");
+
+                Debug.Log($"  Pending initializables: {_pendingInitializables.Count}");
+                Debug.Log($"  Pending startables: {_pendingStartables.Count}");
+            }
+
+            Debug.Log("==============================");
         }
 
         private static void ProcessPendingRegistrations()
