@@ -17,4 +17,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ede049995d3b6da43bb371e61e3dcec7, type: 2}
   - {fileID: 11400000, guid: f7bfd7260b61ae1479147dcd0937e5a2, type: 2}
   - {fileID: 11400000, guid: 200f2d5415a52c54ab00ebaa1fb4c499, type: 2}
-  sceneInstallers: []
+  sceneInstallers:
+  - {fileID: 11400000, guid: a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6, type: 2}

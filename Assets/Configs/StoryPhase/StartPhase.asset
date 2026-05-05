@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PhaseId: 1
   DisplayName: 
-  SceneAssetPath: 
+  SceneAssetPath: Scenes/OutterWorld
   EntryDialogueId: 0
   ExitDialogueId: 0
   RequiredBeats: []

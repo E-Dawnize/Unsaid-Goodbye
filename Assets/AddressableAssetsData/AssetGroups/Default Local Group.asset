@@ -28,16 +28,16 @@ MonoBehaviour:
     m_SerializedLabels:
     - BootConfig
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 831d34d3ccb7228408faafa5526329f3
-    m_Address: Scenes/Start
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f039510b9a0b6664a94d763213824342
     m_Address: Assets/Configs/StoryPhase/StartPhase.asset
     m_ReadOnly: 0
     m_SerializedLabels:
     - GamePhaseConfig
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 94dd06c6542b22b4499e0966bc77eb66
+    m_Address: Scenes/OutterWorld
+    m_ReadOnly: 0
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 7c5bd9b7bb52d8241aa7765b96bcd1e5, type: 2}

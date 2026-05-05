@@ -10,7 +10,10 @@
       "Bash(find 'D:/Unity Project/Unsaid Goodbye/Assets/Gameplay' -name *.cs -type f)",
       "Bash(find 'D:/Unity Project/Unsaid Goodbye/Assets/MVVM' -name *.cs -type f)",
       "Bash(find 'D:/Unity Project/Unsaid Goodbye/Assets' -path */AddressableAssetsData/* -type f)",
-      "Bash(find 'D:/Unity Project/Unsaid Goodbye/Assets/Input' -name *.cs -type f)"
+      "Bash(find 'D:/Unity Project/Unsaid Goodbye/Assets/Input' -name *.cs -type f)",
+      "Bash(grep -rni \"Zenject\\\\|VContainer\\\\|Extenject\\\\|DIContainer\\\\|\\\\[Inject\\\\]\\\\|InjectOptional\\\\|RegisterSingleton\\\\|RegisterScoped\\\\|RegisterTransient\\\\|InstallerAsset\\\\|InstallerConfig\" 'D:\\\\Unity Project\\\\Unsaid Goodbye\\\\Assets' --include=*.cs --include=*.asset)",
+      "Bash(grep -rni \"binding\\\\|Binding\\\\|_binding\\\\|_source\\\\|_target\\\\|GetComponent\\\\|FindObjectOfType\\\\|GameObject.Find\\\\|SerializedField\\\\|SerializeField\\\\]\" 'D:\\\\Unity Project\\\\Unsaid Goodbye\\\\Assets' --include=*.cs)",
+      "Bash(find 'D:\\\\Unity Project\\\\Unsaid Goodbye\\\\Assets' -name *.json -o -name *.txt)"
     ]
   }
 }

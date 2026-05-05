@@ -6,6 +6,7 @@ using Gameplay.SO;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.ResourceManagement.ResourceProviders;
 using UnityEngine.SceneManagement;
 
 namespace Gameplay.SceneFlow
@@ -18,6 +19,7 @@ namespace Gameplay.SceneFlow
     public class SceneFlowView : StrictLifecycleMonoBehaviour
     {
         [Inject] private IGameFlowController _controller;
+        private AsyncOperationHandle<SceneInstance> _sceneHandle;
 
         // TODO: 待子系统就绪后注入
         // [Inject] private IAudioManager _audio;
@@ -37,6 +39,9 @@ namespace Gameplay.SceneFlow
         {
             _controller.OnPhaseComplete -= HandlePhaseComplete;
             _controller.OnPhaseChanged -= HandlePhaseChanged;
+
+            if (_sceneHandle.IsValid())
+                Addressables.Release(_sceneHandle);
         }
 
         private async void HandlePhaseComplete(GamePhase nextPhase)
@@ -60,13 +65,16 @@ namespace Gameplay.SceneFlow
             // 3. 加载场景
             if (!string.IsNullOrEmpty(config.SceneAssetPath))
             {
-                var asyncOp = SceneManager.LoadSceneAsync(config.SceneAssetPath);
-                if (asyncOp != null)
-                {
-                    asyncOp.allowSceneActivation = true;
-                    while (!asyncOp.isDone)
-                        await System.Threading.Tasks.Task.Yield();
-                }
+                // 释放上一场景的 handle
+                if (_sceneHandle.IsValid())
+                    Addressables.Release(_sceneHandle);
+
+                Debug.Log($"[SceneFlowView] Loading scene: {config.SceneAssetPath}");
+                _sceneHandle = Addressables.LoadSceneAsync(config.SceneAssetPath, LoadSceneMode.Single);
+                await _sceneHandle.Task;
+
+                if (_sceneHandle.Status != AsyncOperationStatus.Succeeded)
+                    Debug.LogError($"[SceneFlowView] Failed to load scene: {config.SceneAssetPath}");
             }
 
             // 4. 通知 Controller 状态切换完成

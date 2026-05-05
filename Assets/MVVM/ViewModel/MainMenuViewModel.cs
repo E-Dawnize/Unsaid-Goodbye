@@ -10,22 +10,27 @@ using MVVM.ViewModel.Base;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.ResourceManagement.ResourceProviders;
 using UnityEngine.SceneManagement;
 
 namespace MVVM.ViewModel
 {
     /// <summary>
-    /// 主菜单 ViewModel — 挂载到 Start 场景的 GameObject 上
-    /// 暴露 StartGameCommand 供 CommandBinding 绑定到 Button.onClick
+    /// 主菜单 ViewModel — 由 MainMenuView 通过 [Inject] 注入后在代码中绑定
     /// </summary>
     public class MainMenuViewModel : ViewModelBase
     {
         [Inject] private ISaveManager _saveManager;
+        private AsyncOperationHandle<SceneInstance> _sceneHandle;
 
-        /// <summary>
-        /// 开始游戏命令 — CommandBinding 通过反射找到此属性并绑定到 Button.onClick
-        /// </summary>
         public ICommand StartGameCommand { get; private set; }
+
+        private float _volume = 1f;
+        public float Volume
+        {
+            get => _volume;
+            set => SetProperty(ref _volume, value);
+        }
 
         public override void Initialize()
         {
@@ -58,12 +63,12 @@ namespace MVVM.ViewModel
 
             // 3. 加载游戏场景
             Debug.Log($"[MainMenu] 加载场景: {scenePath}");
-            var asyncOp = SceneManager.LoadSceneAsync(scenePath);
-            if (asyncOp != null)
+            _sceneHandle = Addressables.LoadSceneAsync(scenePath, LoadSceneMode.Single);
+            await _sceneHandle.Task;
+
+            if (_sceneHandle.Status != AsyncOperationStatus.Succeeded)
             {
-                asyncOp.allowSceneActivation = true;
-                while (!asyncOp.isDone)
-                    await Task.Yield();
+                Debug.LogError($"[MainMenu] 场景加载失败: {scenePath}");
             }
         }
 
@@ -92,6 +97,13 @@ namespace MVVM.ViewModel
             Addressables.Release(handle);
             Debug.LogError($"[MainMenu] 未找到阶段 {phase} 的配置");
             return null;
+        }
+
+        public override void Dispose()
+        {
+            if (_sceneHandle.IsValid())
+                Addressables.Release(_sceneHandle);
+            base.Dispose();
         }
     }
 }
