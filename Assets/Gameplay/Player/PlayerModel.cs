@@ -41,6 +41,8 @@ namespace Gameplay.Player
             }
         }
 
+        public bool IsMoving => Direction != Vector2.zero;
+
         public PlayerModel(float initSpeed, Vector3 initPosition)
         {
             Direction = Vector2.zero;

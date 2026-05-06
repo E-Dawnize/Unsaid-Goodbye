@@ -28,6 +28,7 @@ namespace Gameplay.Dialogue
         private readonly List<GameObject> _choiceObjects = new();
         private int _selectedChoiceIndex = -1;
         private bool _isPlaying;
+        public bool IsPlaying => _isPlaying;
 
         public void Initialize()
         {
@@ -67,8 +68,6 @@ namespace Gameplay.Dialogue
         {
             EnsureDialogueView();
 
-            _input?.Disable();
-
             _dialogueGroup.alpha = 1f;
             _dialogueGroup.blocksRaycasts = true;
             _isPlaying = true;
@@ -103,7 +102,6 @@ namespace Gameplay.Dialogue
             _dialogueGroup.alpha = 0f;
             _dialogueGroup.blocksRaycasts = false;
 
-            _input?.Enable();
             _isPlaying = false;
 
             if (data.CompletionId != null)

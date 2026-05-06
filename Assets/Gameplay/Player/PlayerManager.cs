@@ -9,6 +9,7 @@ namespace Gameplay.Player
 
         public Vector3 Position => _model.Position;
         public Vector2 Direction => _model.Direction;
+        public bool IsMoving => _model.IsMoving;
 
         public PlayerManager()
         {
@@ -17,7 +18,6 @@ namespace Gameplay.Player
 
         public void Move(Vector2 direction, float deltaTime)
         {
-            if (direction == Vector2.zero) return;
             _model.ApplyMovement(direction, deltaTime);
         }
     }
