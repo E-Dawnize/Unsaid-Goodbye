@@ -89,6 +89,7 @@ MonoBehaviour:
     - default
     - BootConfig
     - GamePhaseConfig
+    - DialogueSequence
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 827bd652863e744478b488283ee3f344, type: 2}

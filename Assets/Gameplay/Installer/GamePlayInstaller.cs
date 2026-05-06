@@ -1,5 +1,6 @@
 ﻿using Core.Architecture;
 using Core.DI;
+using Gameplay.Dialogue;
 using Gameplay.Interfaces;
 using Gameplay.Player;
 using Gameplay.Save;
@@ -22,6 +23,9 @@ namespace Gameplay.Installer
 
             // Save
             container.RegisterSingleton<ISaveManager, SaveManager>();
+
+            // Dialogue
+            container.RegisterSingleton<IDialogueManager, DialogueManager>();
 
             // Model — 纯运行时类，Manager 在加载存档时填充数据
             container.RegisterSingleton<GameFlowModel>(new GameFlowModel());
