@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Core.Architecture;
 using Core.Architecture.Interfaces;
 using Core.DI;
+using Core.Events.EventInterfaces;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -76,6 +77,9 @@ namespace Core.Boot
 
             // 阶段6: 启动游戏循环
             StartGameLoop();
+
+            // 阶段7: 发布 GameReadyEvent — 通知所有系统启动就绪
+            PublishGameReady();
 
             Debug.Log("[ProjectContext] Boot sequence completed");
         }
@@ -236,6 +240,18 @@ namespace Core.Boot
             Debug.Log("[ProjectContext] Scene scoping initialized — initial scope created for first scene");
         }
         #endregion
+
+        private void PublishGameReady()
+        {
+            var events = _globalContainer.GetService<IEventCenter>();
+            if (events == null)
+            {
+                Debug.LogWarning("[ProjectContext] IEventCenter not registered, skipping GameReadyEvent");
+                return;
+            }
+            events.Publish(new GameReadyEvent());
+            Debug.Log("[ProjectContext] GameReadyEvent published");
+        }
 
         #region 清理
         private void OnDestroy()

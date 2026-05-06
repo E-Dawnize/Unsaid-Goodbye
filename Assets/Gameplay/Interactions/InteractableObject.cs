@@ -1,6 +1,7 @@
 using Core.Architecture;
 using Core.DI;
 using Core.Events.EventInterfaces;
+using Core.Identity;
 using UnityEngine;
 
 namespace Gameplay.Interactions
@@ -28,7 +29,7 @@ namespace Gameplay.Interactions
 
         [Header("交互定义")]
         [SerializeField] private InteractableType _type;
-        [SerializeField] private string _targetId;
+        [SerializeField] private InteractableId _targetId;
 
         [Header("交互模式")]
         [Tooltip("true=仅作触发区域(OnTriggerEnter)；false=点击交互(OnMouseDown)")]

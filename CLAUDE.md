@@ -82,6 +82,7 @@ Manager (纯 C#)       →  业务逻辑协调，注入 IEventCenter / ISaveMana
 - 在 `OnStartExternal()` 中做代码绑定（`onClick.AddListener` / `PropertyChanged +=`）
 - 在 `OnShutdown()` 中解绑（`RemoveAllListeners` / `PropertyChanged -=`）
 - **不新建 `PropertyBinding` / `CommandBinding` 组件**（旧的 Inspector 字符串绑定模式已废弃）
+- **会修改 Transform 的 View**（如 PlayerView）：在 `OnInitialize()` 记录原始位置，`OnShutdown()` 恢复。防止 Play 模式退出后误保存将运行时坐标写回场景文件
 
 ### 3.3 ViewModel
 
@@ -103,6 +104,7 @@ Manager (纯 C#)       →  业务逻辑协调，注入 IEventCenter / ISaveMana
 
 - 所有事件 **必须是 struct**（`IEventCenter` 是强类型事件总线）
 - 定义在 `Core/Events/EventDefinitions/` 目录
+- 事件中引用交互物使用 **`InteractableId`**（ScriptableObject），不用 string。匹配走引用相等，杜绝拼写错误
 - 订阅方在 `OnShutdown()` 或 `Dispose()` 中取消订阅，避免内存泄漏和幽灵调用
 - 发布：`_events.Publish(new MyEvent { ... })`
 - 订阅：`_events.Subscribe<MyEvent>(handler)`

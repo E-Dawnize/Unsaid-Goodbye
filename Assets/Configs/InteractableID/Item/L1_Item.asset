@@ -9,9 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b9a74939c734897b962f069a16d5a8c, type: 3}
-  m_Name: Intro
+  m_Script: {fileID: 11500000, guid: afd97b3d1808db944bfe0a9184016727, type: 3}
+  m_Name: L1_Item
   m_EditorClassIdentifier: 
-  Type: 4
-  TargetId: {fileID: 11400000, guid: 486826347ee8923458090694cb4e59f8, type: 2}
-  Description: "\u8FDB\u5165\u6E38\u620F"
+  _description: "L1\u7269\u54C1"

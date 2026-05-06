@@ -15,6 +15,13 @@ namespace Gameplay.Player
         [Inject] private IPlayerInput _input;
         [Inject] private IPlayerManager _manager;
 
+        private Vector3 _originalPosition;
+
+        protected override void OnInitialize()
+        {
+            _originalPosition = transform.position;
+        }
+
         protected override void OnStartExternal()
         {
             _input.Enable();
@@ -34,6 +41,8 @@ namespace Gameplay.Player
         protected override void OnShutdown()
         {
             _input?.Disable();
+            // 恢复编辑器中的原始位置，避免 Play 模式退出后场景被标记为脏
+            transform.position = _originalPosition;
         }
     }
 }

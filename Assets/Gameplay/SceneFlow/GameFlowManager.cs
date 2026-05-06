@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Core.DI;
 using Core.Events.EventInterfaces;
+using Core.Identity;
 using Gameplay.Interfaces;
 using Gameplay.Save;
 using Gameplay.SO;
@@ -26,7 +27,7 @@ namespace Gameplay.SceneFlow
 
         private Dictionary<GamePhase, GamePhaseConfig> _configs;
         private GamePhaseConfig _currentConfig;
-        private HashSet<string> _completedBeats = new();
+        private HashSet<StoryBeat> _completedBeats = new();
         private AsyncOperationHandle<IList<GamePhaseConfig>> _loadHandle;
 
         public GameSaveDataRuntime GameData { get; private set; }
@@ -85,7 +86,7 @@ namespace Gameplay.SceneFlow
         #endregion
 
         #region Beat 匹配（纯逻辑）
-        private void TryCompleteBeat(StoryBeatType beatType, string targetId)
+        private void TryCompleteBeat(StoryBeatType beatType, InteractableId targetId)
         {
             if (_model.IsTransitioning || _currentConfig == null) return;
 
@@ -94,11 +95,11 @@ namespace Gameplay.SceneFlow
             {
                 if (beat.Type == beatType && beat.TargetId == targetId)
                 {
-                    if (_completedBeats.Add(beat.BeatId))
+                    if (_completedBeats.Add(beat))
                     {
                         changed = true;
-                        Debug.Log($"[GameFlow] Beat 完成: {beat.BeatId} ({beat.Description})");
-                        _events.Publish(new StoryBeatCompletedEvent { StoryBeatID = beat.BeatId });
+                        Debug.Log($"[GameFlow] Beat 完成: {beat.name} ({beat.Description})");
+                        _events.Publish(new StoryBeatCompletedEvent { StoryBeatID = beat.name });
                     }
                 }
             }
@@ -117,7 +118,7 @@ namespace Gameplay.SceneFlow
         }
 
         private bool AllBeatsDone()
-            => _currentConfig.RequiredBeats.All(b => _completedBeats.Contains(b.BeatId));
+            => _currentConfig.RequiredBeats.All(b => _completedBeats.Contains(b));
         #endregion
 
         #region 阶段判定
@@ -175,7 +176,12 @@ namespace Gameplay.SceneFlow
             if (!_configs.TryGetValue(phase, out var config)) return;
 
             _currentConfig = config;
-            _completedBeats = new HashSet<string>(GameData.CompletedBeatIds ?? Enumerable.Empty<string>());
+            // 从 save 的 string ID (beat.name) 还原为 StoryBeat 引用
+            var beatByName = config.RequiredBeats.ToDictionary(b => b.name, b => b);
+            _completedBeats = new HashSet<StoryBeat>(
+                (GameData.CompletedBeatIds ?? Enumerable.Empty<string>())
+                    .Select(id => beatByName.TryGetValue(id, out var b) ? b : null)
+                    .Where(b => b != null));
             _model.ApplyPhase(phase, _completedBeats.Count, config.RequiredBeats.Count);
 
             Debug.Log($"[GameFlow] 从存档恢复: {phase}");
@@ -184,7 +190,7 @@ namespace Gameplay.SceneFlow
         public GameSaveDataRuntime GetSaveState()
         {
             GameData.CurrentPhase = _model.CurrentPhase;
-            GameData.CompletedBeatIds = new HashSet<string>(_completedBeats);
+            GameData.CompletedBeatIds = new HashSet<string>(_completedBeats.Select(b => b.name));
             _saveManager.WriteSave(GameData.ToDto());
             return GameData;
         }
