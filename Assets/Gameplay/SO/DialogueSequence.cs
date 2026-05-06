@@ -38,7 +38,7 @@ namespace Gameplay.SO
     public class DialogueSequence : ScriptableObject
     {
         public string DialogueId;
-        public InteractableId CompletionId;
+        public InteractionDef CompletionId;
 
         [TextArea(2, 4)]
         public List<string> Lines = new();

@@ -1,9 +1,11 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Core.Architecture.Interfaces;
 using Core.DI;
 using Core.Events.EventInterfaces;
 using Core.Identity;
 using Gameplay.SO;
+using Input.InputInterface;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -11,11 +13,12 @@ using UnityEngine.UI;
 
 namespace Gameplay.Dialogue
 {
-    public class DialogueManager : IDialogueManager
+    public class DialogueManager : IDialogueManager, IInitializable, System.IDisposable
     {
         private const string DialogueLabel = "DialogueSequence";
 
         [Inject] private IEventCenter _events;
+        [Inject] private IPlayerInput _input;
 
         private CanvasGroup _dialogueGroup;
         private Image _panelImage;
@@ -24,6 +27,23 @@ namespace Gameplay.Dialogue
         private RectTransform _choiceRoot;
         private readonly List<GameObject> _choiceObjects = new();
         private int _selectedChoiceIndex = -1;
+        private bool _isPlaying;
+
+        public void Initialize()
+        {
+            _events.Subscribe<InteractionEvent>(OnInteraction);
+        }
+
+        public void Dispose()
+        {
+            _events?.Unsubscribe<InteractionEvent>(OnInteraction);
+        }
+
+        private void OnInteraction(InteractionEvent e)
+        {
+            if (e.Def == null || e.Def.Dialogue == null || _isPlaying) return;
+            _ = PlayAndWait(e.Def.Dialogue);
+        }
 
         public async Task PlayAndWait(string dialogueId)
         {
@@ -37,12 +57,21 @@ namespace Gameplay.Dialogue
             await PlayAndWait(data);
         }
 
+        public async Task PlayAndWait(DialogueSequence sequence)
+        {
+            if (sequence == null) return;
+            await PlayAndWait(DialoguePlaybackData.From(sequence));
+        }
+
         private async Task PlayAndWait(DialoguePlaybackData data)
         {
             EnsureDialogueView();
 
+            _input?.Disable();
+
             _dialogueGroup.alpha = 1f;
             _dialogueGroup.blocksRaycasts = true;
+            _isPlaying = true;
 
             foreach (var entry in data.Entries)
             {
@@ -74,8 +103,11 @@ namespace Gameplay.Dialogue
             _dialogueGroup.alpha = 0f;
             _dialogueGroup.blocksRaycasts = false;
 
+            _input?.Enable();
+            _isPlaying = false;
+
             if (data.CompletionId != null)
-                _events?.Publish(new global::DialogueEndedEvent { DialogueID = data.CompletionId });
+                _events?.Publish(new DialogueEndedEvent { Def = data.CompletionId });
         }
 
         private static async Task<DialoguePlaybackData> LoadDialogueData(string dialogueId)
@@ -279,11 +311,11 @@ namespace Gameplay.Dialogue
             _selectedChoiceIndex = -1;
         }
 
-        private static async Task WaitForAdvance()
+        private async Task WaitForAdvance()
         {
             await Task.Yield();
 
-            while (!UnityEngine.Input.GetMouseButtonDown(0) && !UnityEngine.Input.GetKeyDown(KeyCode.Space))
+            while (!_input.IsClickTriggered)
                 await Task.Yield();
         }
 
@@ -299,7 +331,7 @@ namespace Gameplay.Dialogue
 
         private class DialoguePlaybackData
         {
-            public InteractableId CompletionId;
+            public InteractionDef CompletionId;
             public readonly List<DialogueEntryData> Entries = new();
 
             public static DialoguePlaybackData From(DialogueSequence sequence)

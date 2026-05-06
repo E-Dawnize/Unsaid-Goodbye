@@ -12,6 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b9a74939c734897b962f069a16d5a8c, type: 3}
   m_Name: GetItemL1
   m_EditorClassIdentifier: 
-  Type: 0
-  TargetId: {fileID: 11400000, guid: c247f5e7d7bf69f4f846011d722907d7, type: 2}
+  Def: {fileID: 11400000, guid: c247f5e7d7bf69f4f846011d722907d7, type: 2}
   Description: "\u83B7\u5F97\u9053\u5177L1"
