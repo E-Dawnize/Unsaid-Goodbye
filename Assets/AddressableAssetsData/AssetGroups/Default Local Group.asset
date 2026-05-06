@@ -45,6 +45,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - DialogueSequence
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4f32857b2b77d4a4bbec26e6f2be9339
+    m_Address: Assets/Configs/Dialogue/Phase1Wakeup.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - DialogueSequence
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 7c5bd9b7bb52d8241aa7765b96bcd1e5, type: 2}
   m_SchemaSet:

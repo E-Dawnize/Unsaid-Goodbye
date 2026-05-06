@@ -15,8 +15,8 @@ MonoBehaviour:
   PhaseId: 1
   DisplayName: 
   SceneAssetPath: Scenes/OutterWorld
-  EntryDialogueId: 0
-  ExitDialogueId: 0
+  EntryDialogueId: dialogue_phase1_wakeup
+  ExitDialogueId:
   RequiredBeats: []
   DefaultNextPhase: 0
   AltNextPhase: 0
