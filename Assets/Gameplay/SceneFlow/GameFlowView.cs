@@ -1,6 +1,7 @@
 using System;
 using Core.Architecture;
 using Core.DI;
+using Gameplay.Dialogue;
 using Gameplay.Interfaces;
 using Gameplay.SO;
 using UnityEngine;
@@ -8,6 +9,7 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceProviders;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace Gameplay.SceneFlow
 {
@@ -19,16 +21,32 @@ namespace Gameplay.SceneFlow
     public class GameFlowView : StrictLifecycleMonoBehaviour
     {
         [Inject] private IGameFlowManager _manager;
+        [Inject] private IDialogueManager _dialogue;
         private AsyncOperationHandle<SceneInstance> _sceneHandle;
+        private static GameFlowView _instance;
+        private CanvasGroup _fadeGroup;
 
         // TODO: 待子系统就绪后注入
         // [Inject] private IAudioManager _audio;
-        // [Inject] private IDialogueManager _dialogue;
-
         private const string PhaseConfigLabel = "GamePhaseConfig";
+
+        protected override void OnInitialize()
+        {
+            if (_instance != null && _instance != this)
+            {
+                Destroy(gameObject);
+                return;
+            }
+
+            _instance = this;
+            DontDestroyOnLoad(gameObject);
+            EnsureFadeOverlay();
+        }
 
         protected override void OnStartExternal()
         {
+            if (_instance != this) return;
+
             _manager.OnPhaseComplete += HandlePhaseComplete;
             _manager.OnPhaseChanged += HandlePhaseChanged;
 
@@ -37,8 +55,14 @@ namespace Gameplay.SceneFlow
 
         protected override void OnShutdown()
         {
-            _manager.OnPhaseComplete -= HandlePhaseComplete;
-            _manager.OnPhaseChanged -= HandlePhaseChanged;
+            if (_manager != null)
+            {
+                _manager.OnPhaseComplete -= HandlePhaseComplete;
+                _manager.OnPhaseChanged -= HandlePhaseChanged;
+            }
+
+            if (_instance == this)
+                _instance = null;
 
             if (_sceneHandle.IsValid())
                 Addressables.Release(_sceneHandle);
@@ -54,13 +78,11 @@ namespace Gameplay.SceneFlow
             // 1. 播放离开对话
             if (!string.IsNullOrEmpty(config.ExitDialogueId))
             {
-                // TODO: await _dialogue.PlayAndWait(config.ExitDialogueId);
-                await WaitSeconds(0.5f);
+                await _dialogue.PlayAndWait(config.ExitDialogueId);
             }
 
             // 2. 黑屏淡入
-            // TODO: await FadeToBlack(config.TransitionDuration);
-            Debug.Log($"[GameFlowView] Fade to black ({config.TransitionDuration}s)");
+            await FadeToBlack(config.TransitionDuration);
 
             // 3. 加载场景
             if (!string.IsNullOrEmpty(config.SceneAssetPath))
@@ -92,14 +114,12 @@ namespace Gameplay.SceneFlow
             // TODO: _audio.PlayBGM(config.BackgroundMusic);
 
             // 6. 黑屏淡出
-            // TODO: await FadeFromBlack(config.TransitionDuration);
-            Debug.Log($"[GameFlowView] Fade from black ({config.TransitionDuration}s)");
+            await FadeFromBlack(config.TransitionDuration);
 
             // 7. 播放进入对话
             if (!string.IsNullOrEmpty(config.EntryDialogueId))
             {
-                // TODO: await _dialogue.PlayAndWait(config.EntryDialogueId);
-                await WaitSeconds(0.5f);
+                await _dialogue.PlayAndWait(config.EntryDialogueId);
             }
         }
 
@@ -132,14 +152,71 @@ namespace Gameplay.SceneFlow
             return null;
         }
 
-        private async System.Threading.Tasks.Task WaitSeconds(float seconds)
+        private void EnsureFadeOverlay()
         {
+            if (_fadeGroup != null) return;
+
+            var canvasObject = new GameObject("GameFlowFadeOverlay");
+            canvasObject.transform.SetParent(transform, false);
+
+            var canvas = canvasObject.AddComponent<Canvas>();
+            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+            canvas.sortingOrder = short.MaxValue;
+
+            canvasObject.AddComponent<CanvasScaler>();
+            canvasObject.AddComponent<GraphicRaycaster>();
+
+            _fadeGroup = canvasObject.AddComponent<CanvasGroup>();
+            _fadeGroup.alpha = 0f;
+            _fadeGroup.blocksRaycasts = false;
+            _fadeGroup.interactable = false;
+
+            var imageObject = new GameObject("Black");
+            imageObject.transform.SetParent(canvasObject.transform, false);
+
+            var image = imageObject.AddComponent<Image>();
+            image.color = Color.black;
+
+            var rect = image.GetComponent<RectTransform>();
+            rect.anchorMin = Vector2.zero;
+            rect.anchorMax = Vector2.one;
+            rect.offsetMin = Vector2.zero;
+            rect.offsetMax = Vector2.zero;
+        }
+
+        private System.Threading.Tasks.Task FadeToBlack(float duration)
+            => Fade(1f, duration, true);
+
+        private System.Threading.Tasks.Task FadeFromBlack(float duration)
+            => Fade(0f, duration, false);
+
+        private async System.Threading.Tasks.Task Fade(float targetAlpha, float duration, bool blockRaycasts)
+        {
+            EnsureFadeOverlay();
+
+            Debug.Log($"[GameFlowView] Fade {(targetAlpha > 0f ? "to" : "from")} black ({duration}s)");
+
+            _fadeGroup.blocksRaycasts = true;
+
+            var startAlpha = _fadeGroup.alpha;
+            if (duration <= 0f)
+            {
+                _fadeGroup.alpha = targetAlpha;
+                _fadeGroup.blocksRaycasts = blockRaycasts && targetAlpha > 0f;
+                return;
+            }
+
             var elapsed = 0f;
-            while (elapsed < seconds)
+            while (elapsed < duration)
             {
                 elapsed += Time.deltaTime;
+                _fadeGroup.alpha = Mathf.Lerp(startAlpha, targetAlpha, Mathf.Clamp01(elapsed / duration));
                 await System.Threading.Tasks.Task.Yield();
             }
+
+            _fadeGroup.alpha = targetAlpha;
+            _fadeGroup.blocksRaycasts = blockRaycasts && targetAlpha > 0f;
         }
+
     }
 }
