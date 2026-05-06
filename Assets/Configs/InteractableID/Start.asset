@@ -9,7 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: afd97b3d1808db944bfe0a9184016727, type: 3}
+  m_Script: {fileID: 11500000, guid: 76318d37cfabf10458b2b392b256d322, type: 3}
   m_Name: Start
-  m_EditorClassIdentifier: 
-  _description: 
+  m_EditorClassIdentifier:
+  _description:
+  Dialogue: {fileID: 0}
+  OneShot: 1 

@@ -1,21 +1,12 @@
-﻿using Core.Identity;
+using Core.Identity;
 using UnityEngine;
 
 namespace Gameplay.SceneFlow
 {
-    public enum StoryBeatType
-    {
-        CollectItem,        // 收集道具 → ItemCollectedEvent
-        SolvePuzzle,        // 完成解谜 → PuzzleSolvedEvent
-        CompleteDialogue,   // 完成对话 → DialogueEndedEvent
-        InteractWithObject, // 交互特定物体 → InteractionPerformedEvent
-        EnterTrigger,       // 进入触发区域 → TriggerEnterEvent
-    }
     [CreateAssetMenu(fileName = "StoryBeat", menuName = "Gameplay/Story Beat")]
-    public class StoryBeat:ScriptableObject
+    public class StoryBeat : ScriptableObject
     {
-        public StoryBeatType Type;
-        public InteractableId TargetId;
+        public InteractionDef Def;
 
         [TextArea(1, 2)]
         public string Description;

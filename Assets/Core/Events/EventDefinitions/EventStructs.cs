@@ -1,29 +1,15 @@
-﻿using Core.Identity;
+using Core.Identity;
 
-// 收集道具
-struct ItemCollectedEvent
+// 交互事件 — 所有交互物触发同一事件，消费者从 InteractionDef 各取所需
+struct InteractionEvent
 {
-    public InteractableId ItemID;
+    public InteractionDef Def;
 }
-// 完成解谜
-struct PuzzleSolvedEvent
-{
-    public InteractableId PuzzleID;
-}
-// 完成对话
+
+// 对话结束
 struct DialogueEndedEvent
 {
-    public InteractableId DialogueID;
-}
-// 交互特定物体
-struct InteractionPerformedEvent
-{
-    public InteractableId InteractableID;
-}
-// 进入触发区域
-struct TriggerEnterEvent
-{
-    public InteractableId TriggerID;
+    public InteractionDef Def;
 }
 
 struct StoryBeatCompletedEvent

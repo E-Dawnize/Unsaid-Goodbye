@@ -68,32 +68,23 @@ namespace Gameplay.SceneFlow
         #region 事件订阅
         private void SubscribeEvents()
         {
-            _events.Subscribe<ItemCollectedEvent>(e =>
-                TryCompleteBeat(StoryBeatType.CollectItem, e.ItemID));
-
-            _events.Subscribe<PuzzleSolvedEvent>(e =>
-                TryCompleteBeat(StoryBeatType.SolvePuzzle, e.PuzzleID));
+            _events.Subscribe<InteractionEvent>(e =>
+                TryCompleteBeat(e.Def));
 
             _events.Subscribe<DialogueEndedEvent>(e =>
-                TryCompleteBeat(StoryBeatType.CompleteDialogue, e.DialogueID));
-
-            _events.Subscribe<InteractionPerformedEvent>(e =>
-                TryCompleteBeat(StoryBeatType.InteractWithObject, e.InteractableID));
-
-            _events.Subscribe<TriggerEnterEvent>(e =>
-                TryCompleteBeat(StoryBeatType.EnterTrigger, e.TriggerID));
+                TryCompleteBeat(e.Def));
         }
         #endregion
 
         #region Beat 匹配（纯逻辑）
-        private void TryCompleteBeat(StoryBeatType beatType, InteractableId targetId)
+        private void TryCompleteBeat(InteractionDef def)
         {
-            if (_model.IsTransitioning || _currentConfig == null) return;
+            if (_model.IsTransitioning || _currentConfig == null || def == null) return;
 
             bool changed = false;
             foreach (var beat in _currentConfig.RequiredBeats)
             {
-                if (beat.Type == beatType && beat.TargetId == targetId)
+                if (beat.Def == def)
                 {
                     if (_completedBeats.Add(beat))
                     {
