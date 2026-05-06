@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Core.Identity;
+using UnityEngine;
 
 namespace Gameplay.SceneFlow
 {
@@ -13,9 +14,8 @@ namespace Gameplay.SceneFlow
     [CreateAssetMenu(fileName = "StoryBeat", menuName = "Gameplay/Story Beat")]
     public class StoryBeat:ScriptableObject
     {
-        public string BeatId;
         public StoryBeatType Type;
-        public string TargetId;
+        public InteractableId TargetId;
 
         [TextArea(1, 2)]
         public string Description;
