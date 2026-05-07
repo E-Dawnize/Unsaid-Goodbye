@@ -8,28 +8,19 @@ namespace Gameplay.Interactions
 {
     /// <summary>
     /// 挂到场景物体上，通过 Collider2D 检测交互，将事件发布到 IEventCenter。
-    /// 零耦合：不引用 Controller、View 或任何特定业务系统。
+    /// 零耦合，只发布 InteractionEvent，各系统自行从 InteractionDef 读取所需数据。
     ///
     /// 两种模式：
     ///   - 点击交互：挂 Collider2D（非 Trigger），玩家点击时 OnMouseDown → 发布事件
     ///   - 触发区域：挂 Collider2D（IsTrigger），玩家进入时 OnTriggerEnter2D → 发布事件
     /// </summary>
-    public enum InteractableType
-    {
-        Collectible,   // → ItemCollectedEvent { ItemID }
-        Puzzle,        // → PuzzleSolvedEvent { PuzzleID }
-        Interactive,   // → InteractionPerformedEvent { InteractableID }
-        TriggerZone    // → TriggerEnterEvent { TriggerID }
-    }
-
     [RequireComponent(typeof(Collider2D))]
     public class InteractableObject : StrictLifecycleMonoBehaviour
     {
         [Inject] private IEventCenter _events;
 
         [Header("交互定义")]
-        [SerializeField] private InteractableType _type;
-        [SerializeField] private InteractableId _targetId;
+        [SerializeField] private InteractionDef _def;
 
         [Header("交互模式")]
         [Tooltip("true=仅作触发区域(OnTriggerEnter)；false=点击交互(OnMouseDown)")]
@@ -94,31 +85,26 @@ namespace Gameplay.Interactions
                 Debug.LogWarning(
                     $"[Interactable] IEventCenter not injected. " +
                     $"Ensure DI container is set up before interaction. " +
-                    $"Object: '{_targetId}' ({_type})", this);
+                    $"Object: '{_def}'", this);
                 return;
             }
 
-            _used = true;
-
-            switch (_type)
+            if (_def == null)
             {
-                case InteractableType.Collectible:
-                    _events.Publish(new ItemCollectedEvent { ItemID = _targetId });
-                    break;
-                case InteractableType.Puzzle:
-                    _events.Publish(new PuzzleSolvedEvent { PuzzleID = _targetId });
-                    break;
-                case InteractableType.Interactive:
-                    _events.Publish(new InteractionPerformedEvent { InteractableID = _targetId });
-                    break;
-                case InteractableType.TriggerZone:
-                    _events.Publish(new TriggerEnterEvent { TriggerID = _targetId });
-                    break;
+                Debug.LogWarning($"[Interactable] InteractionDef is null on '{gameObject.name}'", this);
+                return;
             }
 
-            Debug.Log($"[Interactable] {_type} '{_targetId}' fired");
+            var effectiveOnce = _def.OneShot && _interactOnce;
+            if (_used && effectiveOnce) return;
 
-            if (_interactOnce)
+            _used = true;
+
+            _events.Publish(new InteractionEvent { Def = _def });
+
+            Debug.Log($"[Interactable] '{_def.name}' fired");
+
+            if (effectiveOnce)
                 ResetHover();
         }
 

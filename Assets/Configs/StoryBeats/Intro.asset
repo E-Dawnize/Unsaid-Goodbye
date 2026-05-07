@@ -12,6 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b9a74939c734897b962f069a16d5a8c, type: 3}
   m_Name: Intro
   m_EditorClassIdentifier: 
-  Type: 4
-  TargetId: {fileID: 11400000, guid: 486826347ee8923458090694cb4e59f8, type: 2}
+  Def: {fileID: 11400000, guid: 486826347ee8923458090694cb4e59f8, type: 2}
   Description: "\u8FDB\u5165\u6E38\u620F"

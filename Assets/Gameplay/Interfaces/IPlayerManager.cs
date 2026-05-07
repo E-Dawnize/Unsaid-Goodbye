@@ -6,6 +6,7 @@ namespace Gameplay.Interfaces
     {
         Vector3 Position { get; }
         Vector2 Direction { get; }
+        bool IsMoving { get; }
         void Move(Vector2 direction, float deltaTime);
     }
 }
