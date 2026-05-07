@@ -283,7 +283,7 @@ namespace Gameplay.Dialogue
         {
             await Task.Yield();
 
-            while (!Input.GetMouseButtonDown(0) && !Input.GetKeyDown(KeyCode.Space))
+            while (!UnityEngine.Input.GetMouseButtonDown(0) && !UnityEngine.Input.GetKeyDown(KeyCode.Space))
                 await Task.Yield();
         }
 
