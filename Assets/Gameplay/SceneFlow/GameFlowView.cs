@@ -25,6 +25,7 @@ namespace Gameplay.SceneFlow
         private AsyncOperationHandle<SceneInstance> _sceneHandle;
         private static GameFlowView _instance;
         private CanvasGroup _fadeGroup;
+        private bool _playedCurrentEntryDialogue;
 
         // TODO: 待子系统就绪后注入
         // [Inject] private IAudioManager _audio;
@@ -51,6 +52,7 @@ namespace Gameplay.SceneFlow
             _manager.OnPhaseChanged += HandlePhaseChanged;
 
             Debug.Log("[GameFlowView] Subscribed to GameFlow events");
+            PlayCurrentEntryDialogueIfNeeded();
         }
 
         protected override void OnShutdown()
@@ -119,8 +121,23 @@ namespace Gameplay.SceneFlow
             // 7. 播放进入对话
             if (!string.IsNullOrEmpty(config.EntryDialogueId))
             {
+                _playedCurrentEntryDialogue = true;
                 await _dialogue.PlayAndWait(config.EntryDialogueId);
             }
+        }
+
+        private async void PlayCurrentEntryDialogueIfNeeded()
+        {
+            if (_playedCurrentEntryDialogue || _manager == null || _manager.CurrentPhase == GamePhase.None)
+                return;
+
+            var config = _manager.CurrentConfig ?? await LoadPhaseConfig(_manager.CurrentPhase);
+            if (config == null || string.IsNullOrEmpty(config.EntryDialogueId))
+                return;
+
+            _playedCurrentEntryDialogue = true;
+            Debug.Log($"[GameFlowView] Playing current phase entry dialogue: {config.EntryDialogueId}");
+            await _dialogue.PlayAndWait(config.EntryDialogueId);
         }
 
         private async System.Threading.Tasks.Task<GamePhaseConfig> LoadPhaseConfig(GamePhase phase)

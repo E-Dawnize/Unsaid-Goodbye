@@ -32,6 +32,7 @@ namespace Gameplay.SceneFlow
 
         public GameSaveDataRuntime GameData { get; private set; }
         public GamePhase CurrentPhase => _model != null ? _model.CurrentPhase : GamePhase.None;
+        public GamePhaseConfig CurrentConfig => _currentConfig;
         public event Action<GamePhase> OnPhaseChanged;
         public event Action<GamePhase> OnPhaseComplete;
 
@@ -166,6 +167,7 @@ namespace Gameplay.SceneFlow
             }
             _currentConfig = config;
             _model.ApplyPhase(phase, 0, config.RequiredBeats.Count);
+            OnPhaseChanged?.Invoke(phase);
         }
         #endregion
 
@@ -183,6 +185,7 @@ namespace Gameplay.SceneFlow
                     .Select(id => beatByName.TryGetValue(id, out var b) ? b : null)
                     .Where(b => b != null));
             _model.ApplyPhase(phase, _completedBeats.Count, config.RequiredBeats.Count);
+            OnPhaseChanged?.Invoke(phase);
 
             Debug.Log($"[GameFlow] 从存档恢复: {phase}");
         }

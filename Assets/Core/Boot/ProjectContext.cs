@@ -7,6 +7,7 @@ using Core.Architecture;
 using Core.Architecture.Interfaces;
 using Core.DI;
 using Core.Events.EventInterfaces;
+using Gameplay.SceneFlow;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -67,6 +68,7 @@ namespace Core.Boot
 
             // 阶段3: 设置LifecycleRegistry
             SetupLifecycleRegistry();
+            SetupGlobalViews();
 
             // 阶段4: 启动场景作用域管理 + 为初始场景预创建 Scope
             // 必须在 ExecuteLifecycle 之前执行，确保 Scoped ViewModel 在 DI 注入时已注册
@@ -127,6 +129,14 @@ namespace Core.Boot
             // 设置LifecycleRegistry使用我们的DI容器
             LifecycleRegistry.SetContainer(_globalContainer, _projectScope);
             Debug.Log("[ProjectContext] LifecycleRegistry configured");
+        }
+
+        private void SetupGlobalViews()
+        {
+            var gameFlowViewObject = new GameObject("GameFlowView");
+            DontDestroyOnLoad(gameFlowViewObject);
+            gameFlowViewObject.AddComponent<GameFlowView>();
+            Debug.Log("[ProjectContext] Global GameFlowView created");
         }
 
         private void ExecuteLifecycle()
