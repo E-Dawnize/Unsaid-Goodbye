@@ -246,6 +246,11 @@ namespace Gameplay.SceneFlow
             var normalizedPath = sceneAssetPath.Replace("\\", "/");
             return normalizedPath == activeSceneName || normalizedPath.EndsWith($"/{activeSceneName}");
         }
+
+        private void StartDefaultPhase()
+        {
+            StartPhase(DefaultStartPhase);
+        }
         #endregion
 
         #region 存档
