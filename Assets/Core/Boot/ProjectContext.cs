@@ -53,6 +53,11 @@ namespace Core.Boot
         /// </summary>
         public static IScope GetProjectScope() => _instance?._projectScope;
 
+        public static void ResetStaticState()
+        {
+            _instance = null;
+        }
+
         private async void Boot()
         {
             Debug.Log("[ProjectContext] Starting boot sequence...");
@@ -266,6 +271,9 @@ namespace Core.Boot
         #region 清理
         private void OnDestroy()
         {
+            if (_instance == this)
+                _instance = null;
+
             // 清理LifecycleRegistry
             LifecycleRegistry.Clear();
 

@@ -128,12 +128,39 @@ namespace Gameplay.SceneFlow
 
         private async void PlayCurrentEntryDialogueIfNeeded()
         {
-            if (_playedCurrentEntryDialogue || _manager == null || _manager.CurrentPhase == GamePhase.None)
+            if (_playedCurrentEntryDialogue || _manager == null)
                 return;
 
-            var config = _manager.CurrentConfig ?? await LoadPhaseConfig(_manager.CurrentPhase);
-            if (config == null || string.IsNullOrEmpty(config.EntryDialogueId))
+            var waitedFrames = 0;
+            while (!_playedCurrentEntryDialogue &&
+                   _manager.CurrentPhase == GamePhase.None &&
+                   waitedFrames < 120)
+            {
+                waitedFrames++;
+                await System.Threading.Tasks.Task.Yield();
+            }
+
+            if (_playedCurrentEntryDialogue)
                 return;
+
+            if (_manager.CurrentPhase == GamePhase.None)
+            {
+                Debug.LogWarning("[GameFlowView] Entry dialogue skipped: current phase is not ready.");
+                return;
+            }
+
+            var config = _manager.CurrentConfig ?? await LoadPhaseConfig(_manager.CurrentPhase);
+            if (config == null)
+            {
+                Debug.LogWarning($"[GameFlowView] Entry dialogue skipped: no config for {_manager.CurrentPhase}.");
+                return;
+            }
+
+            if (string.IsNullOrEmpty(config.EntryDialogueId))
+            {
+                Debug.Log($"[GameFlowView] Entry dialogue skipped: no EntryDialogueId for {_manager.CurrentPhase}.");
+                return;
+            }
 
             _playedCurrentEntryDialogue = true;
             Debug.Log($"[GameFlowView] Playing current phase entry dialogue: {config.EntryDialogueId}");

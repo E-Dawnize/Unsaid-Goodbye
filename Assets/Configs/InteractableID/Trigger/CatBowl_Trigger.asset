@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: CatBowl_Trigger
   m_EditorClassIdentifier:
   _description:
-  Dialogue: {fileID: 11400000, guid: 4f32857b2b77d4a4bbec26e6f2be9339, type: 2}
+  Dialogue: {fileID: 11400000, guid: d05ba5fb927848be8956a7e29b9ebdc9, type: 2}
   OneShot: 1 

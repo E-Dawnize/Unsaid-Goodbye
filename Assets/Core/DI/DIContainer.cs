@@ -123,8 +123,11 @@ namespace Core.DI
         public void RegisterSingleton<TService>(TService implementationInstance) where TService:class
         {
             var concreteType = implementationInstance.GetType();
+            var isNewConcreteInstance = !_singletonInstances.ContainsKey(concreteType);
             _singletonInstances[concreteType] = implementationInstance;
-            if (implementationInstance is IDisposable d) _disposables.Add(d);
+            if (isNewConcreteInstance && implementationInstance is IDisposable d) _disposables.Add(d);
+            if (implementationInstance is IInitializable or IStartable)
+                LifecycleRegistry.Register(implementationInstance);
             Register(new ServiceDescriptor(NextId(), typeof(TService), concreteType, ServiceLifetime.Singleton));
         }
 

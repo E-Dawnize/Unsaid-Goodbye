@@ -26,12 +26,20 @@ namespace Gameplay.Dialogue
         private Text _dialogueText;
         private RectTransform _choiceRoot;
         private readonly List<GameObject> _choiceObjects = new();
+        private readonly Queue<DialogueSequence> _pendingSequences = new();
         private int _selectedChoiceIndex = -1;
         private bool _isPlaying;
+
         public bool IsPlaying => _isPlaying;
 
         public void Initialize()
         {
+            if (_events == null)
+            {
+                Debug.LogError("[Dialogue] IEventCenter was not injected; interaction dialogue cannot subscribe.");
+                return;
+            }
+
             _events.Subscribe<InteractionEvent>(OnInteraction);
         }
 
@@ -42,7 +50,13 @@ namespace Gameplay.Dialogue
 
         private void OnInteraction(InteractionEvent e)
         {
-            if (e.Def == null || e.Def.Dialogue == null || _isPlaying) return;
+            if (e.Def == null || e.Def.Dialogue == null) return;
+            if (_isPlaying)
+            {
+                _pendingSequences.Enqueue(e.Def.Dialogue);
+                return;
+            }
+
             _ = PlayAndWait(e.Def.Dialogue);
         }
 
@@ -56,12 +70,14 @@ namespace Gameplay.Dialogue
                 return;
 
             await PlayAndWait(data);
+            await PlayPendingSequences();
         }
 
         public async Task PlayAndWait(DialogueSequence sequence)
         {
             if (sequence == null) return;
             await PlayAndWait(DialoguePlaybackData.From(sequence));
+            await PlayPendingSequences();
         }
 
         private async Task PlayAndWait(DialoguePlaybackData data)
@@ -101,11 +117,22 @@ namespace Gameplay.Dialogue
             _dialogueText.text = string.Empty;
             _dialogueGroup.alpha = 0f;
             _dialogueGroup.blocksRaycasts = false;
-
             _isPlaying = false;
 
             if (data.CompletionId != null)
                 _events?.Publish(new DialogueEndedEvent { Def = data.CompletionId });
+        }
+
+        private async Task PlayPendingSequences()
+        {
+            if (_isPlaying) return;
+
+            while (_pendingSequences.Count > 0)
+            {
+                var sequence = _pendingSequences.Dequeue();
+                if (sequence == null) continue;
+                await PlayAndWait(DialoguePlaybackData.From(sequence));
+            }
         }
 
         private static async Task<DialoguePlaybackData> LoadDialogueData(string dialogueId)

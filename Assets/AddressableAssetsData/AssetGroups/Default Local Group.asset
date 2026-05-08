@@ -51,6 +51,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - DialogueSequence
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d05ba5fb927848be8956a7e29b9ebdc9
+    m_Address: Assets/Configs/Dialogue/CatBowlInspect.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - DialogueSequence
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 7c5bd9b7bb52d8241aa7765b96bcd1e5, type: 2}
   m_SchemaSet:

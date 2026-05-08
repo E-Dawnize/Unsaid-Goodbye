@@ -24,6 +24,7 @@ namespace Gameplay.SceneFlow
         [Inject] private ISaveManager _saveManager;
 
         private const string PhaseConfigLabel = "GamePhaseConfig";
+        private const GamePhase DefaultStartPhase = GamePhase.Phase1_SurfaceLivingRoom_Initial;
 
         private Dictionary<GamePhase, GamePhaseConfig> _configs;
         private GamePhaseConfig _currentConfig;
@@ -61,7 +62,7 @@ namespace Gameplay.SceneFlow
             }
             else
             {
-                StartPhase(GamePhase.Phase1_SurfaceLivingRoom_Initial);
+                StartDefaultPhase();
             }
         }
         #endregion
@@ -160,13 +161,23 @@ namespace Gameplay.SceneFlow
             _model.ApplyPhase(phase, 0, config.RequiredBeats.Count);
             OnPhaseChanged?.Invoke(phase);
         }
+
+        private void StartDefaultPhase()
+        {
+            StartPhase(DefaultStartPhase);
+        }
         #endregion
 
         #region 存档
         private void RestoreFromSave()
         {
             var phase = GameData.CurrentPhase;
-            if (!_configs.TryGetValue(phase, out var config)) return;
+            if (!_configs.TryGetValue(phase, out var config))
+            {
+                Debug.LogWarning($"[GameFlow] Saved phase has no config: {phase}. Starting default phase.");
+                StartDefaultPhase();
+                return;
+            }
 
             _currentConfig = config;
             // 从 save 的 string ID (beat.name) 还原为 StoryBeat 引用
