@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Def_CageDoor
   m_EditorClassIdentifier:
   _description: 推笼门 — 笼门虚掩吱呀，鹦鹉转头像等家长的孩子
-  Dialogue: {fileID: 11400000, guid: 58ce2958535d46eeb445e85c1176c2b2, type: 2}
+  Dialogue: {fileID: 0}
   OneShot: 1

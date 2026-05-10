@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Def_BedCornerSavings
   m_EditorClassIdentifier:
   _description: 床底存钱罐(H4) — 小猪存钱罐，纸条'给小橘看腿'，带血创可贴
-  Dialogue: {fileID: 11400000, guid: 443ba25f450e49608eafd77f19792183, type: 2}
+  Dialogue: {fileID: 0}
   OneShot: 1

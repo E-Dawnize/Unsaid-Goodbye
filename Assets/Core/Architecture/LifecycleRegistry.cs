@@ -35,6 +35,11 @@ namespace Core.Architecture
         /// 动态 ITickable 注册回调（由 UpdateRunner 订阅，确保运行时注册的 Tickable 被驱动）
         /// </summary>
         public static event Action<ITickable> OnTickableRegistered;
+
+        /// <summary>
+        /// ITickable 注销回调（由 UpdateRunner 订阅，用于及时移除已销毁的组件）
+        /// </summary>
+        public static event Action<ITickable> OnTickableUnregistered;
         #endregion
 
         #region 公共API - 状态查询
@@ -176,7 +181,10 @@ namespace Core.Architecture
                     _startables.Remove(startable);
 
                 if (component is ITickable tickable)
-                    _tickables.Remove(tickable);
+                {
+                    if (_tickables.Remove(tickable))
+                        OnTickableUnregistered?.Invoke(tickable);
+                }
 
                 _pendingInjection.Remove(component);
             }

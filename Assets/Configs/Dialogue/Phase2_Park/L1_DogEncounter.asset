@@ -15,19 +15,11 @@ MonoBehaviour:
   DialogueId: dialogue_l1_dog_encounter
   CompletionId: {fileID: 11400000, guid: 3513584a40b84641b3e853491d0a8526, type: 2}
   Lines:
-  - "\u9879\u5708\u5728\u6211\u7684\u5634\u91cc\u53d1\u51b7\uff0c\u50cf\u4e00\u679a\u751f\u9508\u5730\u53d1\u82e6\u7684\u786c\u5e01\u3002"
-  - "\u91d1\u5c5e\u724c\u4e0a\u7684\u53f7\u7801\u88ab\u78e8\u82b1\u4e86\uff0c\u4f46\u5f00\u5934\u4e09\u4f4d\u8fd8\u662f\u6e05\u6670\u7684\u3002"
+  - 长椅下缩着一只流浪狗，枕着破旧项圈。项圈金属牌上的号码被磨花了，但开头三位还是清晰的：138。[测试文本]
   Entries:
-  - Type: 1
-    Speaker: "\u9ed1\u732b"
-    Text: "\u9879\u5708\u5728\u6211\u7684\u5634\u91cc\u53d1\u51b7\uff0c\u50cf\u4e00\u679a\u751f\u9508\u5730\u53d1\u82e6\u7684\u786c\u5e01\u3002"
-    TextColor: {r: 0, g: 0, b: 0, a: 0}
-    AutoAdvance: 0
-    AutoAdvanceDelay: 1.5
-    Choices: []
-  - Type: 1
-    Speaker: "\u9ed1\u732b"
-    Text: "\u91d1\u5c5e\u724c\u4e0a\u7684\u53f7\u7801\u88ab\u78e8\u82b1\u4e86\uff0c\u4f46\u5f00\u5934\u4e09\u4f4d\u8fd8\u662f\u6e05\u6670\u7684\u3002"
+  - Type: 0
+    Speaker: 
+    Text: 长椅下缩着一只流浪狗，枕着破旧项圈。项圈金属牌上的号码被磨花了，但开头三位还是清晰的：138。[测试文本]
     TextColor: {r: 0, g: 0, b: 0, a: 0}
     AutoAdvance: 0
     AutoAdvanceDelay: 1.5

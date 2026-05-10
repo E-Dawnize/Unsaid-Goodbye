@@ -1,7 +1,9 @@
 ﻿using Core.Architecture;
 using Core.DI;
+using Gameplay.Audio;
 using Gameplay.Dialogue;
 using Gameplay.Interfaces;
+using Gameplay.Inventory;
 using Gameplay.Player;
 using Gameplay.Save;
 using Gameplay.SceneFlow;
@@ -21,8 +23,14 @@ namespace Gameplay.Installer
             // Player
             container.RegisterSingleton<IPlayerManager, PlayerManager>();
 
+            // Inventory
+            container.RegisterSingleton<IInventoryManager, InventoryManager>();
+
             // Save
             container.RegisterSingleton<ISaveManager, SaveManager>();
+
+            // Audio
+            container.RegisterSingleton<IAudioManager, AudioManager>();
 
             // Dialogue
             container.RegisterSingleton<IDialogueManager, DialogueManager>();

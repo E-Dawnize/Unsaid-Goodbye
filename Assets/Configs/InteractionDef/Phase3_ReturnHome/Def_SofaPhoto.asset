@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Def_SofaPhoto
   m_EditorClassIdentifier:
   _description: 沙发照片(L2) — 童年牵狗照，背面铅笔字，光源解谜
-  Dialogue: {fileID: 11400000, guid: 419ad1fd6c004c9cafa1f1eb61201dbe, type: 2}
+  Dialogue: {fileID: 0}
   OneShot: 1

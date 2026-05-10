@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Def_SofaOwner
   m_EditorClassIdentifier:
   _description: 沙发主人 — 淡紫色文字，自我真相独白，痊愈与告别
-  Dialogue: {fileID: 11400000, guid: c910e289495a447bbd8e018b21b31a05, type: 2}
+  Dialogue: {fileID: 0}
   OneShot: 1

@@ -12,13 +12,18 @@ namespace Core.Boot
 
         private void Awake()
         {
-            // 订阅 LifecycleRegistry 的动态 ITickable 回调
             LifecycleRegistry.OnTickableRegistered += OnTickableRegistered;
+            LifecycleRegistry.OnTickableUnregistered += OnTickableUnregistered;
         }
 
         private void OnTickableRegistered(ITickable tickable)
         {
             Register(tickable);
+        }
+
+        private void OnTickableUnregistered(ITickable tickable)
+        {
+            Unregister(tickable);
         }
 
         public void Register(ITickable tickable)
@@ -43,7 +48,7 @@ namespace Core.Boot
 
             lock (_lock)
             {
-                foreach (var tickable in _tickables.ToArray()) // 复制避免迭代修改
+                foreach (var tickable in _tickables.ToArray())
                 {
                     try
                     {
@@ -60,6 +65,7 @@ namespace Core.Boot
         private void OnDestroy()
         {
             LifecycleRegistry.OnTickableRegistered -= OnTickableRegistered;
+            LifecycleRegistry.OnTickableUnregistered -= OnTickableUnregistered;
             lock (_lock)
             {
                 _tickables.Clear();

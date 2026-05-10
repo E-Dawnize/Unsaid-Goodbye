@@ -51,11 +51,47 @@ MonoBehaviour:
     m_SerializedLabels:
     - DialogueSequence
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 413dd969b52f6ae49a3eacd3c8c08713
+    m_Address: Arts/LivingRoom
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8fda99e9589cf0f4cb1711df6f814c29
+    m_Address: Arts/Terrace
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 948745344d4a3474b82ec1fadeb44364
+    m_Address: Arts/Park
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fe83e15945e3eb04e95b9b0c3c555afc
+    m_Address: Arts/UnderTheBed
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d05ba5fb927848be8956a7e29b9ebdc9
     m_Address: Assets/Configs/Dialogue/CatBowlInspect.asset
     m_ReadOnly: 0
     m_SerializedLabels:
     - DialogueSequence
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8511323f491aa3b4d83c4b4416074704
+    m_Address: Scenes/Balcony
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8b67409a5d668874399b27506f846905
+    m_Address: Scenes/InnerWorld_Park
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5d0316f5a562464d912c9b122a186151
+    m_Address: Assets/Configs/StoryPhase/Phase2_InnerPark.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - GamePhaseConfig
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 7c5bd9b7bb52d8241aa7765b96bcd1e5, type: 2}

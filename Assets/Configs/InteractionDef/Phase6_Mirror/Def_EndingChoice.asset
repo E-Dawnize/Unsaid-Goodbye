@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Def_EndingChoice
   m_EditorClassIdentifier:
   _description: 结局选择 — 根据收集度解锁'留下'或'离开'选项
-  Dialogue: {fileID: 11400000, guid: 07bc9132de1647b2b8189430fc574edd, type: 2}
+  Dialogue: {fileID: 0}
   OneShot: 1

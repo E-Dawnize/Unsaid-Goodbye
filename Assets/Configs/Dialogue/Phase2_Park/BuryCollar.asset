@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: BuryCollar
   m_EditorClassIdentifier:
   DialogueId: dialogue_bury_collar
-  CompletionId: {fileID: 11400000, guid: 9d1fbc92b2aa4a8b9055db3c0c0ae678, type: 2}
+  CompletionId: {fileID: 0}
   Lines:
-  - "\u9879\u5708\u57cb\u8fdb\u6ce5\u571f\uff0c\u5fae\u5149\u4e00\u95ea\uff0c\u4fbf\u8f7b\u8f7b\u6d88\u6563\u4e86\u3002\u5c31\u50cf\u5b83\u4ece\u672a\u771f\u6b63\u79bb\u5f00\uff0c\u73b0\u5728\u7ec8\u4e8e\u56de\u5bb6\u4e86\u3002"
+  - 远处传来卡车引擎声，不是普通的卡车，是那种装很多铁笼子和很多狗的车。犬吠声停了。项圈埋进泥土时，它先变成了小狗的大小，然后才散开。[测试文本]
   Entries:
   - Type: 0
-    Speaker:
-    Text: "\u9879\u5708\u57cb\u8fdb\u6ce5\u571f\uff0c\u5fae\u5149\u4e00\u95ea\uff0c\u4fbf\u8f7b\u8f7b\u6d88\u6563\u4e86\u3002\u5c31\u50cf\u5b83\u4ece\u672a\u771f\u6b63\u79bb\u5f00\uff0c\u73b0\u5728\u7ec8\u4e8e\u56de\u5bb6\u4e86\u3002"
+    Speaker: 
+    Text: 远处传来卡车引擎声，不是普通的卡车，是那种装很多铁笼子和很多狗的车。犬吠声停了。项圈埋进泥土时，它先变成了小狗的大小，然后才散开。[测试文本]
     TextColor: {r: 0, g: 0, b: 0, a: 0}
     AutoAdvance: 0
     AutoAdvanceDelay: 1.5

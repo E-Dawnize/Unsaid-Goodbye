@@ -1,27 +1,28 @@
 ﻿using System.Collections.Generic;
+using Core.Identity;
 using Gameplay.SceneFlow;
 using UnityEngine;
 
 namespace Gameplay.SO
 {
     [CreateAssetMenu(fileName = "GamePhaseConfig", menuName = "SO/GamePhaseConfig")]
-    public class GamePhaseConfig:ScriptableObject
+    public class GamePhaseConfig : ScriptableObject
     {
         [Header("基础信息")]
-        public GamePhase PhaseId;                    // 阶段ID
-        public string DisplayName;                   // 显示名称（调试用）
-        public string SceneAssetPath;                // Unity场景路径
-        //public BGMTrack BackgroundMusic;             // 背景音乐
+        public GamePhase PhaseId;
+        public string DisplayName;
+        public string SceneAssetPath;
+        public string BackgroundMusic;
 
         [Header("对话")]
-        public string EntryDialogueId;               // 进入时播放的对话ID
-        public string ExitDialogueId;                // 完成时播放的对话ID
+        public string EntryDialogueId;
+        public string ExitDialogueId;
 
         [Header("流程控制")]
-        public List<StoryBeat> RequiredBeats;         // 本阶段需要完成的故事节拍
-        public GamePhase DefaultNextPhase;            // 默认下一阶段
-        public GamePhase AltNextPhase;               // 备选下一阶段（用于结局分支）
-        public bool IsEndingBranch;                   // 是否在此阶段判定结局
+        public List<InteractionDef> RequiredBeats;
+        public GamePhase DefaultNextPhase;
+        public GamePhase AltNextPhase;
+        public bool IsEndingBranch;
 
         [Header("转场")]
         public string TransitionSFX;

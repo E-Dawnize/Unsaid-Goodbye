@@ -41,6 +41,7 @@ namespace Gameplay.Dialogue
             }
 
             _events.Subscribe<InteractionEvent>(OnInteraction);
+            Debug.Log("[Dialogue] Subscribed to InteractionEvent");
         }
 
         public void Dispose()
@@ -50,7 +51,8 @@ namespace Gameplay.Dialogue
 
         private void OnInteraction(InteractionEvent e)
         {
-            if (e.Def == null || e.Def.Dialogue == null) return;
+            if (e.Def == null) return;
+            if (e.Def.Dialogue == null) return;
             if (_isPlaying)
             {
                 _pendingSequences.Enqueue(e.Def.Dialogue);
@@ -338,7 +340,11 @@ namespace Gameplay.Dialogue
 
         private async Task WaitForAdvance()
         {
+            // 跳过当前帧的残余点击，等下一帧再开始检测
             await Task.Yield();
+            await Task.Yield();
+
+            if (_input == null) return;
 
             while (!_input.IsClickTriggered)
                 await Task.Yield();
