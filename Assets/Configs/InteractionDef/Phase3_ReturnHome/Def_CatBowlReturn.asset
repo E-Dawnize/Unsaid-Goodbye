@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Def_CatBowlReturn
   m_EditorClassIdentifier:
   _description: 猫碗返回 — 猫粮满且发霉，吃几口后转场进入里世界卧室
-  Dialogue: {fileID: 0}
+  Dialogue: {fileID: 11400000, guid: 7aae0a807b6a4b3fab605ff03b5a40d0, type: 2}
   OneShot: 1

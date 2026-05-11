@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Def_BuryOrangeCat
   m_EditorClassIdentifier:
   _description: 安葬橘猫 — 触碰额头，橘猫闭眼，干瘪如橘子皮被风吹散
-  Dialogue: {fileID: 0}
+  Dialogue: {fileID: 11400000, guid: a5ad5450390a445eb363c3d9005a1f94, type: 2}
   OneShot: 1

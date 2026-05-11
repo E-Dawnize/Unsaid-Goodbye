@@ -10,40 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dce1219f7e574d74bb9b228883e22b88, type: 3}
-  m_Name: EpilogueStay
-  m_EditorClassIdentifier: 
+  m_Name: Phase7_Epilogue/EpilogueStay
+  m_EditorClassIdentifier:
   DialogueId: dialogue_epilogue_stay
   CompletionId: {fileID: 11400000, guid: afdcfd8a9eb24738a98e93d1c823ac56, type: 2}
   Lines:
-  - "\u5979\u7ee7\u7eed\u6bcf\u5929\u670d\u836f\u3002\u836f\u74f6\u4e0a\u7684\u526f\u4f5c\u7528\u8bf4\u660e\u88ab\u5979\u7528\u9a6c\u514b\u7b14\u6d82\u9ed1\u4e86\u3002"
-  - "\u5979\u603b\u662f\u5bf9\u7740\u819d\u76d6\u4e0a\u7684\u7a7a\u6c14\u8bf4\u8bdd\u3002"
-  - "\u5c0f\u732b\uff0c\u4eca\u5929\u8fc7\u5f97\u597d\u5417\uff1f"
-  - "\u6211\u56de\u7b54\u4e86\u5979\u3002\u4f46\u5979\u542c\u4e0d\u89c1\u3002\u6ca1\u5173\u7cfb\uff0c\u6211\u4f1a\u4e00\u76f4\u56de\u7b54\u3002"
+  - 她继续每天服药。药瓶上的副作用说明被她用马克笔涂黑了。她对着膝盖上的空气说话。我回答了她。但她听不见。没关系，我会一直回答。[测试文本]
   Entries:
   - Type: 0
-    Speaker:
-    Text: "\u5979\u7ee7\u7eed\u6bcf\u5929\u670d\u836f\u3002\u836f\u74f6\u4e0a\u7684\u526f\u4f5c\u7528\u8bf4\u660e\u88ab\u5979\u7528\u9a6c\u514b\u7b14\u6d82\u9ed1\u4e86\u3002"
-    TextColor: {r: 0, g: 0, b: 0, a: 0}
-    AutoAdvance: 0
-    AutoAdvanceDelay: 1.5
-    Choices: []
-  - Type: 0
-    Speaker:
-    Text: "\u5979\u603b\u662f\u5bf9\u7740\u819d\u76d6\u4e0a\u7684\u7a7a\u6c14\u8bf4\u8bdd\u3002"
-    TextColor: {r: 0, g: 0, b: 0, a: 0}
-    AutoAdvance: 0
-    AutoAdvanceDelay: 1.5
-    Choices: []
-  - Type: 3
-    Speaker: "\u4e3b\u4eba"
-    Text: "\u5c0f\u732b\uff0c\u4eca\u5929\u8fc7\u5f97\u597d\u5417\uff1f"
-    TextColor: {r: 0.78, g: 0.62, b: 1, a: 1}
-    AutoAdvance: 0
-    AutoAdvanceDelay: 1.5
-    Choices: []
-  - Type: 1
-    Speaker: "\u9ed1\u732b"
-    Text: "\u6211\u56de\u7b54\u4e86\u5979\u3002\u4f46\u5979\u542c\u4e0d\u89c1\u3002\u6ca1\u5173\u7cfb\uff0c\u6211\u4f1a\u4e00\u76f4\u56de\u7b54\u3002"
+    Speaker: 
+    Text: 她继续每天服药。药瓶上的副作用说明被她用马克笔涂黑了。她对着膝盖上的空气说话。我回答了她。但她听不见。没关系，我会一直回答。[测试文本]
     TextColor: {r: 0, g: 0, b: 0, a: 0}
     AutoAdvance: 0
     AutoAdvanceDelay: 1.5

@@ -10,41 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dce1219f7e574d74bb9b228883e22b88, type: 3}
-  m_Name: CageWater
-  m_EditorClassIdentifier: 
+  m_Name: Phase5_Balcony/CageWater
+  m_EditorClassIdentifier:
   DialogueId: dialogue_cage_water
   CompletionId: {fileID: 11400000, guid: 08b54a6ceb28470391c69c76bd394b75, type: 2}
   Lines:
-  - "\u534a\u676f\u53d1\u7eff\u7684\u6c34\u3002"
-  - "\u5979\u4e70\u8fc7\u90a3\u53ea\u9e66\u9e49\uff0c\u653e\u5728\u9633\u53f0\u3002\u5979\u544a\u8bc9\u5b83\u201c\u6211\u51fa\u53bb\u4e00\u4e0b\uff0c\u5f88\u5feb\u56de\u6765\u201d\u3002"
-  - "\u7136\u540e\u5979\u88ab\u7236\u6bcd\u9001\u4e0a\u4e86\u98de\u673a\u3002\u6ca1\u6709\u544a\u522b\uff0c\u6ca1\u6709\u56de\u5934\u3002"
-  - "\u9e66\u9e49\u98de\u56de\u6765\uff0c\u7b49\u5230\u98df\u69fd\u91cc\u7684\u6c34\u53d1\u7eff\u3002\u7b49\u5230\u5b83\u5f00\u59cb\u7528\u5979\u7684\u58f0\u97f3\u81ea\u8a00\u81ea\u8bed\u3002"
+  - 半杯发绿的水。她说过鸟飞走了。阳台没有封窗。它每次飞出去溜风，傍晚就会顺着风落回栏杆。[测试文本]
   Entries:
   - Type: 0
-    Speaker:
-    Text: "\u534a\u676f\u53d1\u7eff\u7684\u6c34\u3002"
+    Speaker: 
+    Text: 半杯发绿的水。她说过鸟飞走了。阳台没有封窗。它每次飞出去溜风，傍晚就会顺着风落回栏杆。[测试文本]
     TextColor: {r: 0, g: 0, b: 0, a: 0}
-    AutoAdvance: 0
-    AutoAdvanceDelay: 1.5
-    Choices: []
-  - Type: 3
-    Speaker: "\u5267\u60c5"
-    Text: "\u5979\u4e70\u8fc7\u90a3\u53ea\u9e66\u9e49\uff0c\u653e\u5728\u9633\u53f0\u3002\u5979\u544a\u8bc9\u5b83\u201c\u6211\u51fa\u53bb\u4e00\u4e0b\uff0c\u5f88\u5feb\u56de\u6765\u201d\u3002"
-    TextColor: {r: 0.72, g: 0.12, b: 0.14, a: 1}
-    AutoAdvance: 0
-    AutoAdvanceDelay: 1.5
-    Choices: []
-  - Type: 3
-    Speaker: "\u5267\u60c5"
-    Text: "\u7136\u540e\u5979\u88ab\u7236\u6bcd\u9001\u4e0a\u4e86\u98de\u673a\u3002\u6ca1\u6709\u544a\u522b\uff0c\u6ca1\u6709\u56de\u5934\u3002"
-    TextColor: {r: 0.72, g: 0.12, b: 0.14, a: 1}
-    AutoAdvance: 0
-    AutoAdvanceDelay: 1.5
-    Choices: []
-  - Type: 3
-    Speaker: "\u5267\u60c5"
-    Text: "\u9e66\u9e49\u98de\u56de\u6765\uff0c\u7b49\u5230\u98df\u69fd\u91cc\u7684\u6c34\u53d1\u7eff\u3002\u7b49\u5230\u5b83\u5f00\u59cb\u7528\u5979\u7684\u58f0\u97f3\u81ea\u8a00\u81ea\u8bed\u3002"
-    TextColor: {r: 0.72, g: 0.12, b: 0.14, a: 1}
     AutoAdvance: 0
     AutoAdvanceDelay: 1.5
     Choices: []

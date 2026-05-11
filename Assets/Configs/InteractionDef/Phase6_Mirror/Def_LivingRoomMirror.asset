@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Def_LivingRoomMirror
   m_EditorClassIdentifier:
   _description: 触摸镜子 — 镜子里没有猫，镜面冰凉，自我认知崩塌
-  Dialogue: {fileID: 0}
+  Dialogue: {fileID: 11400000, guid: b2dae9a094b84076b30c7123b8abbc5e, type: 2}
   OneShot: 1

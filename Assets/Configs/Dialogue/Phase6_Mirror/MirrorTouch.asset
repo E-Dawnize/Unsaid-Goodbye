@@ -10,32 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dce1219f7e574d74bb9b228883e22b88, type: 3}
-  m_Name: MirrorTouch
-  m_EditorClassIdentifier: 
+  m_Name: Phase6_Mirror/MirrorTouch
+  m_EditorClassIdentifier:
   DialogueId: dialogue_mirror_touch
   CompletionId: {fileID: 11400000, guid: f22c05138b6e47fa98b0bbd5ff02b897, type: 2}
   Lines:
-  - "\u6211\u62ac\u8d77\u722a\u5b50\u78b0\u4e86\u78b0\u955c\u9762\u3002\u89e6\u611f\u662f\u51c9\u7684\uff0c\u4f46\u955c\u5b50\u6ca1\u6709\u788e\uff0c\u4e5f\u6ca1\u6709\u5012\u5f71\u3002"
-  - "\u8fd9\u4e00\u6b21\u5149\u7ebf\u8db3\u591f\u4eae\uff0c\u955c\u9762\u8db3\u591f\u5e72\u51c0\u3002\u53ef\u6211\u6e05\u6e05\u695a\u695a\u5730\u770b\u89c1\u2026\u2026"
-  - "\u2014\u2014\u955c\u5b50\u91cc\u4ec0\u4e48\u90fd\u6709\uff0c\u5c31\u662f\u6ca1\u6709\u6211\u3002\u6211\u5230\u5e95\u2026\u2026\u662f\u4ec0\u4e48\uff1f"
+  - 我抬起爪子碰了碰镜面。触感是凉的，但镜子没有碎，也没有倒影。如果我是猫，为什么镜子里没有我？如果我不是猫，那我是什么？[测试文本]
   Entries:
-  - Type: 1
-    Speaker: "\u9ed1\u732b"
-    Text: "\u6211\u62ac\u8d77\u722a\u5b50\u78b0\u4e86\u78b0\u955c\u9762\u3002\u89e6\u611f\u662f\u51c9\u7684\uff0c\u4f46\u955c\u5b50\u6ca1\u6709\u788e\uff0c\u4e5f\u6ca1\u6709\u5012\u5f71\u3002"
-    TextColor: {r: 0, g: 0, b: 0, a: 0}
-    AutoAdvance: 0
-    AutoAdvanceDelay: 1.5
-    Choices: []
-  - Type: 1
-    Speaker: "\u9ed1\u732b"
-    Text: "\u8fd9\u4e00\u6b21\u5149\u7ebf\u8db3\u591f\u4eae\uff0c\u955c\u9762\u8db3\u591f\u5e72\u51c0\u3002\u53ef\u6211\u6e05\u6e05\u695a\u695a\u5730\u770b\u89c1\u2026\u2026"
-    TextColor: {r: 0, g: 0, b: 0, a: 0}
-    AutoAdvance: 0
-    AutoAdvanceDelay: 1.5
-    Choices: []
-  - Type: 1
-    Speaker: "\u9ed1\u732b"
-    Text: "\u2014\u2014\u955c\u5b50\u91cc\u4ec0\u4e48\u90fd\u6709\uff0c\u5c31\u662f\u6ca1\u6709\u6211\u3002\u6211\u5230\u5e95\u2026\u2026\u662f\u4ec0\u4e48\uff1f"
+  - Type: 0
+    Speaker: 
+    Text: 我抬起爪子碰了碰镜面。触感是凉的，但镜子没有碎，也没有倒影。如果我是猫，为什么镜子里没有我？如果我不是猫，那我是什么？[测试文本]
     TextColor: {r: 0, g: 0, b: 0, a: 0}
     AutoAdvance: 0
     AutoAdvanceDelay: 1.5

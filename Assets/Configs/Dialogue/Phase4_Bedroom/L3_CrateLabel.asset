@@ -10,24 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dce1219f7e574d74bb9b228883e22b88, type: 3}
-  m_Name: L3_CrateLabel
-  m_EditorClassIdentifier: 
+  m_Name: Phase4_Bedroom/L3_CrateLabel
+  m_EditorClassIdentifier:
   DialogueId: dialogue_l3_crate_label
   CompletionId: {fileID: 11400000, guid: 019d131cf3c14aff9ee4c5582821229d, type: 2}
   Lines:
-  - "\u7bb1\u95e8\u655e\u5f00\u7740\uff0c\u4e00\u53ea\u6a58\u732b\u5367\u5728\u90a3\u91cc\u3002\u5b83\u540e\u817f\u65e0\u529b\u5730\u8737\u7740\uff0c\u76ae\u6bdb\u5e72\u67af\uff0c\u53ea\u662f\u5b89\u9759\u5730\u671b\u7740\u6211\uff0c\u4e0d\u66fe\u79fb\u52a8\u5206\u6beb\u3002"
-  - "\u822a\u7a7a\u7bb1\u7684\u65e5\u671f\u6807\u7b7e\u662f\u5341\u4e8c\u5e74\u524d\u3002\u9501\u5df2\u7ecf\u9508\u6b7b\u4e86\u3002"
+  - 日期标签是十二年前。锁已经锈死了，但箱门自己弹开了一条缝——像是从里面被顶开的。橘猫从缝里挤出来，后腿拖着地。[测试文本]
   Entries:
-  - Type: 1
-    Speaker: "\u9ed1\u732b"
-    Text: "\u7bb1\u95e8\u655e\u5f00\u7740\uff0c\u4e00\u53ea\u6a58\u732b\u5367\u5728\u90a3\u91cc\u3002\u5b83\u540e\u817f\u65e0\u529b\u5730\u8737\u7740\uff0c\u76ae\u6bdb\u5e72\u67af\uff0c\u53ea\u662f\u5b89\u9759\u5730\u671b\u7740\u6211\uff0c\u4e0d\u66fe\u79fb\u52a8\u5206\u6beb\u3002"
-    TextColor: {r: 0, g: 0, b: 0, a: 0}
-    AutoAdvance: 0
-    AutoAdvanceDelay: 1.5
-    Choices: []
   - Type: 0
-    Speaker:
-    Text: "\u822a\u7a7a\u7bb1\u7684\u65e5\u671f\u6807\u7b7e\u662f\u5341\u4e8c\u5e74\u524d\u3002\u9501\u5df2\u7ecf\u9508\u6b7b\u4e86\u3002"
+    Speaker: 
+    Text: 日期标签是十二年前。锁已经锈死了，但箱门自己弹开了一条缝——像是从里面被顶开的。橘猫从缝里挤出来，后腿拖着地。[测试文本]
     TextColor: {r: 0, g: 0, b: 0, a: 0}
     AutoAdvance: 0
     AutoAdvanceDelay: 1.5

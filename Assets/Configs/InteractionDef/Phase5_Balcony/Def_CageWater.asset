@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Def_CageWater
   m_EditorClassIdentifier:
   _description: 检查食槽 — 半杯发绿的水，与表世界阳台共享
-  Dialogue: {fileID: 0}
+  Dialogue: {fileID: 11400000, guid: 624a338bab2b4cf8b2f7fcbb78736998, type: 2}
   OneShot: 1

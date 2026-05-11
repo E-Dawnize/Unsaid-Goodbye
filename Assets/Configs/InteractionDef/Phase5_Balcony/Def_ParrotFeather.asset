@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Def_ParrotFeather
   m_EditorClassIdentifier:
   _description: 叼羽毛(L5) — 风铃频率解谜，叼起绿羽毛，鹦鹉散成尘埃
-  Dialogue: {fileID: 0}
+  Dialogue: {fileID: 11400000, guid: 79f080bd376d4d4ea53b0b105ebb922f, type: 2}
   OneShot: 1
