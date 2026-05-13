@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dce1219f7e574d74bb9b228883e22b88, type: 3}
-  m_Name: Phase4_Bedroom/Phase4BedroomIntro
-  m_EditorClassIdentifier:
+  m_Name: Phase4BedroomIntro
+  m_EditorClassIdentifier: 
   DialogueId: dialogue_phase4_bedroom_intro
   CompletionId: {fileID: 0}
   Lines:
-  - 这不是我家的卧室，这是哪里？昏暗床底，航空箱门弹开一条缝。[测试文本]
+  - "\u8FD9\u4E0D\u662F\u6211\u5BB6\u7684\u5367\u5BA4\uFF0C\u8FD9\u662F\u54EA\u91CC\uFF1F\u660F\u6697\u5E8A\u5E95\uFF0C\u822A\u7A7A\u7BB1\u95E8\u5F39\u5F00\u4E00\u6761\u7F1D\u3002[\u6D4B\u8BD5\u6587\u672C]"
   Entries:
   - Type: 0
     Speaker: 
-    Text: 这不是我家的卧室，这是哪里？昏暗床底，航空箱门弹开一条缝。[测试文本]
+    Text: "\u8FD9\u4E0D\u662F\u6211\u5BB6\u7684\u5367\u5BA4\uFF0C\u8FD9\u662F\u54EA\u91CC\uFF1F\u660F\u6697\u5E8A\u5E95\uFF0C\u822A\u7A7A\u7BB1\u95E8\u5F39\u5F00\u4E00\u6761\u7F1D\u3002[\u6D4B\u8BD5\u6587\u672C]"
     TextColor: {r: 0, g: 0, b: 0, a: 0}
     AutoAdvance: 0
     AutoAdvanceDelay: 1.5

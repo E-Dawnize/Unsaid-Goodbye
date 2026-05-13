@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dce1219f7e574d74bb9b228883e22b88, type: 3}
-  m_Name: Phase6_Mirror/OwnerReveal
-  m_EditorClassIdentifier:
+  m_Name: OwnerReveal
+  m_EditorClassIdentifier: 
   DialogueId: dialogue_owner_reveal
   CompletionId: {fileID: 11400000, guid: 1aa79186598f43529184b615c61866c1, type: 2}
   Lines:
-  - 主人坐在沙发上。她不知道该怎么告别。她一直在失去。我是她想象出来的。一只从未真实存在过、也因此永远不会离开的猫。[测试文本]
+  - "\u4E3B\u4EBA\u5750\u5728\u6C99\u53D1\u4E0A\u3002\u5979\u4E0D\u77E5\u9053\u8BE5\u600E\u4E48\u544A\u522B\u3002\u5979\u4E00\u76F4\u5728\u5931\u53BB\u3002\u6211\u662F\u5979\u60F3\u8C61\u51FA\u6765\u7684\u3002\u4E00\u53EA\u4ECE\u672A\u771F\u5B9E\u5B58\u5728\u8FC7\u3001\u4E5F\u56E0\u6B64\u6C38\u8FDC\u4E0D\u4F1A\u79BB\u5F00\u7684\u732B\u3002[\u6D4B\u8BD5\u6587\u672C]"
   Entries:
   - Type: 0
     Speaker: 
-    Text: 主人坐在沙发上。她不知道该怎么告别。她一直在失去。我是她想象出来的。一只从未真实存在过、也因此永远不会离开的猫。[测试文本]
+    Text: "\u4E3B\u4EBA\u5750\u5728\u6C99\u53D1\u4E0A\u3002\u5979\u4E0D\u77E5\u9053\u8BE5\u600E\u4E48\u544A\u522B\u3002\u5979\u4E00\u76F4\u5728\u5931\u53BB\u3002\u6211\u662F\u5979\u60F3\u8C61\u51FA\u6765\u7684\u3002\u4E00\u53EA\u4ECE\u672A\u771F\u5B9E\u5B58\u5728\u8FC7\u3001\u4E5F\u56E0\u6B64\u6C38\u8FDC\u4E0D\u4F1A\u79BB\u5F00\u7684\u732B\u3002[\u6D4B\u8BD5\u6587\u672C]"
     TextColor: {r: 0, g: 0, b: 0, a: 0}
     AutoAdvance: 0
     AutoAdvanceDelay: 1.5

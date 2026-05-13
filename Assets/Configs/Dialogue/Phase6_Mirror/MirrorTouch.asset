@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dce1219f7e574d74bb9b228883e22b88, type: 3}
-  m_Name: Phase6_Mirror/MirrorTouch
-  m_EditorClassIdentifier:
+  m_Name: MirrorTouch
+  m_EditorClassIdentifier: 
   DialogueId: dialogue_mirror_touch
   CompletionId: {fileID: 11400000, guid: f22c05138b6e47fa98b0bbd5ff02b897, type: 2}
   Lines:
-  - 我抬起爪子碰了碰镜面。触感是凉的，但镜子没有碎，也没有倒影。如果我是猫，为什么镜子里没有我？如果我不是猫，那我是什么？[测试文本]
+  - "\u6211\u62AC\u8D77\u722A\u5B50\u78B0\u4E86\u78B0\u955C\u9762\u3002\u89E6\u611F\u662F\u51C9\u7684\uFF0C\u4F46\u955C\u5B50\u6CA1\u6709\u788E\uFF0C\u4E5F\u6CA1\u6709\u5012\u5F71\u3002\u5982\u679C\u6211\u662F\u732B\uFF0C\u4E3A\u4EC0\u4E48\u955C\u5B50\u91CC\u6CA1\u6709\u6211\uFF1F\u5982\u679C\u6211\u4E0D\u662F\u732B\uFF0C\u90A3\u6211\u662F\u4EC0\u4E48\uFF1F[\u6D4B\u8BD5\u6587\u672C]"
   Entries:
   - Type: 0
     Speaker: 
-    Text: 我抬起爪子碰了碰镜面。触感是凉的，但镜子没有碎，也没有倒影。如果我是猫，为什么镜子里没有我？如果我不是猫，那我是什么？[测试文本]
+    Text: "\u6211\u62AC\u8D77\u722A\u5B50\u78B0\u4E86\u78B0\u955C\u9762\u3002\u89E6\u611F\u662F\u51C9\u7684\uFF0C\u4F46\u955C\u5B50\u6CA1\u6709\u788E\uFF0C\u4E5F\u6CA1\u6709\u5012\u5F71\u3002\u5982\u679C\u6211\u662F\u732B\uFF0C\u4E3A\u4EC0\u4E48\u955C\u5B50\u91CC\u6CA1\u6709\u6211\uFF1F\u5982\u679C\u6211\u4E0D\u662F\u732B\uFF0C\u90A3\u6211\u662F\u4EC0\u4E48\uFF1F[\u6D4B\u8BD5\u6587\u672C]"
     TextColor: {r: 0, g: 0, b: 0, a: 0}
     AutoAdvance: 0
     AutoAdvanceDelay: 1.5

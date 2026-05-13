@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dce1219f7e574d74bb9b228883e22b88, type: 3}
-  m_Name: Phase4_Bedroom/H4_Savings
-  m_EditorClassIdentifier:
+  m_Name: H4_Savings
+  m_EditorClassIdentifier: 
   DialogueId: dialogue_h4_savings
   CompletionId: {fileID: 11400000, guid: 5e9a7fe399624ef0b884cef26961454b, type: 2}
   Lines:
-  - 床底角落有一个小猪存钱罐，里面有硬币和一张纸条：给小橘看腿。还差47块。旁边还有带血的创可贴包装纸。[测试文本]
+  - "\u5E8A\u5E95\u89D2\u843D\u6709\u4E00\u4E2A\u5C0F\u732A\u5B58\u94B1\u7F50\uFF0C\u91CC\u9762\u6709\u786C\u5E01\u548C\u4E00\u5F20\u7EB8\u6761\uFF1A\u7ED9\u5C0F\u6A58\u770B\u817F\u3002\u8FD8\u5DEE47\u5757\u3002\u65C1\u8FB9\u8FD8\u6709\u5E26\u8840\u7684\u521B\u53EF\u8D34\u5305\u88C5\u7EB8\u3002[\u6D4B\u8BD5\u6587\u672C]"
   Entries:
   - Type: 0
     Speaker: 
-    Text: 床底角落有一个小猪存钱罐，里面有硬币和一张纸条：给小橘看腿。还差47块。旁边还有带血的创可贴包装纸。[测试文本]
+    Text: "\u5E8A\u5E95\u89D2\u843D\u6709\u4E00\u4E2A\u5C0F\u732A\u5B58\u94B1\u7F50\uFF0C\u91CC\u9762\u6709\u786C\u5E01\u548C\u4E00\u5F20\u7EB8\u6761\uFF1A\u7ED9\u5C0F\u6A58\u770B\u817F\u3002\u8FD8\u5DEE47\u5757\u3002\u65C1\u8FB9\u8FD8\u6709\u5E26\u8840\u7684\u521B\u53EF\u8D34\u5305\u88C5\u7EB8\u3002[\u6D4B\u8BD5\u6587\u672C]"
     TextColor: {r: 0, g: 0, b: 0, a: 0}
     AutoAdvance: 0
     AutoAdvanceDelay: 1.5

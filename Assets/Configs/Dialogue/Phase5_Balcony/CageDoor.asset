@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dce1219f7e574d74bb9b228883e22b88, type: 3}
-  m_Name: Phase5_Balcony/CageDoor
-  m_EditorClassIdentifier:
+  m_Name: CageDoor
+  m_EditorClassIdentifier: 
   DialogueId: dialogue_cage_door
   CompletionId: {fileID: 11400000, guid: 120798b186e74fb09a3d2255955260ba, type: 2}
   Lines:
-  - 我碰了碰笼门。它本来就是开着的，只是往里推了推，发出生锈的吱呀声。鹦鹉没有飞走。它转头看着我，像一个人类孩子在确认门口站着的是不是晚归的家长。[测试文本]
+  - "\u6211\u78B0\u4E86\u78B0\u7B3C\u95E8\u3002\u5B83\u672C\u6765\u5C31\u662F\u5F00\u7740\u7684\uFF0C\u53EA\u662F\u5F80\u91CC\u63A8\u4E86\u63A8\uFF0C\u53D1\u51FA\u751F\u9508\u7684\u5431\u5440\u58F0\u3002\u9E66\u9E49\u6CA1\u6709\u98DE\u8D70\u3002\u5B83\u8F6C\u5934\u770B\u7740\u6211\uFF0C\u50CF\u4E00\u4E2A\u4EBA\u7C7B\u5B69\u5B50\u5728\u786E\u8BA4\u95E8\u53E3\u7AD9\u7740\u7684\u662F\u4E0D\u662F\u665A\u5F52\u7684\u5BB6\u957F\u3002[\u6D4B\u8BD5\u6587\u672C]"
   Entries:
   - Type: 0
     Speaker: 
-    Text: 我碰了碰笼门。它本来就是开着的，只是往里推了推，发出生锈的吱呀声。鹦鹉没有飞走。它转头看着我，像一个人类孩子在确认门口站着的是不是晚归的家长。[测试文本]
+    Text: "\u6211\u78B0\u4E86\u78B0\u7B3C\u95E8\u3002\u5B83\u672C\u6765\u5C31\u662F\u5F00\u7740\u7684\uFF0C\u53EA\u662F\u5F80\u91CC\u63A8\u4E86\u63A8\uFF0C\u53D1\u51FA\u751F\u9508\u7684\u5431\u5440\u58F0\u3002\u9E66\u9E49\u6CA1\u6709\u98DE\u8D70\u3002\u5B83\u8F6C\u5934\u770B\u7740\u6211\uFF0C\u50CF\u4E00\u4E2A\u4EBA\u7C7B\u5B69\u5B50\u5728\u786E\u8BA4\u95E8\u53E3\u7AD9\u7740\u7684\u662F\u4E0D\u662F\u665A\u5F52\u7684\u5BB6\u957F\u3002[\u6D4B\u8BD5\u6587\u672C]"
     TextColor: {r: 0, g: 0, b: 0, a: 0}
     AutoAdvance: 0
     AutoAdvanceDelay: 1.5

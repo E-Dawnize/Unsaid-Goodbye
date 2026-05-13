@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dce1219f7e574d74bb9b228883e22b88, type: 3}
-  m_Name: Phase6_Mirror/Phase6MirrorIntro
-  m_EditorClassIdentifier:
+  m_Name: Phase6MirrorIntro
+  m_EditorClassIdentifier: 
   DialogueId: dialogue_phase6_mirror_intro
   CompletionId: {fileID: 0}
   Lines:
-  - 镜子里没有猫。客厅的陈设和表世界一模一样，但更暗、更安静，像被遗忘了很久。[测试文本]
+  - "\u955C\u5B50\u91CC\u6CA1\u6709\u732B\u3002\u5BA2\u5385\u7684\u9648\u8BBE\u548C\u8868\u4E16\u754C\u4E00\u6A21\u4E00\u6837\uFF0C\u4F46\u66F4\u6697\u3001\u66F4\u5B89\u9759\uFF0C\u50CF\u88AB\u9057\u5FD8\u4E86\u5F88\u4E45\u3002[\u6D4B\u8BD5\u6587\u672C]"
   Entries:
   - Type: 0
     Speaker: 
-    Text: 镜子里没有猫。客厅的陈设和表世界一模一样，但更暗、更安静，像被遗忘了很久。[测试文本]
+    Text: "\u955C\u5B50\u91CC\u6CA1\u6709\u732B\u3002\u5BA2\u5385\u7684\u9648\u8BBE\u548C\u8868\u4E16\u754C\u4E00\u6A21\u4E00\u6837\uFF0C\u4F46\u66F4\u6697\u3001\u66F4\u5B89\u9759\uFF0C\u50CF\u88AB\u9057\u5FD8\u4E86\u5F88\u4E45\u3002[\u6D4B\u8BD5\u6587\u672C]"
     TextColor: {r: 0, g: 0, b: 0, a: 0}
     AutoAdvance: 0
     AutoAdvanceDelay: 1.5
