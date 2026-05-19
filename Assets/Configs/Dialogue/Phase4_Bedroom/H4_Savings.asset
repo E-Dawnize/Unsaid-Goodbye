@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dce1219f7e574d74bb9b228883e22b88, type: 3}
+  m_Name: H4_Savings
+  m_EditorClassIdentifier: 
+  DialogueId: dialogue_h4_savings
+  CompletionId: {fileID: 11400000, guid: 5e9a7fe399624ef0b884cef26961454b, type: 2}
+  Lines:
+  - "\u5e8a\u5e95\u89d2\u843d\u6709\u4e00\u4e2a\u5c0f\u732a\u5b58\u94b1\u7f50\uff0c\u91cc\u9762\u6709\u786c\u5e01\u548c\u4e00\u5f20\u7eb8\u6761\uff1a'\u7ed9\u5c0f\u6a58\u770b\u817f\u3002\u8fd8\u5dee47\u5757\u3002'\u65c1\u8fb9\u8fd8\u6709\u5e26\u8840\u7684\u521b\u53ef\u8d34\u5305\u88c5\u7eb8\u3002"
+  - "\u4e00\u53ea\u6a58\u732b\u4ece\u7f1d\u91cc\u6324\u51fa\u6765\u3002\u5b83\u7684\u540e\u817f\u8d34\u7740\u5730\uff0c\u4e0d\u662f\u7528\u8d70\u7684\uff0c\u662f\u7528\u62d6\u7684\u3002\u5b83\u9759\u9759\u5730\u770b\u7740\u6211\uff0c\u770b\u4e86\u5f88\u4e45\u3002"
+  Entries:
+  - Type: 0
+    Speaker:
+    Text: "\u5e8a\u5e95\u89d2\u843d\u6709\u4e00\u4e2a\u5c0f\u732a\u5b58\u94b1\u7f50\uff0c\u91cc\u9762\u6709\u786c\u5e01\u548c\u4e00\u5f20\u7eb8\u6761\uff1a'\u7ed9\u5c0f\u6a58\u770b\u817f\u3002\u8fd8\u5dee47\u5757\u3002'\u65c1\u8fb9\u8fd8\u6709\u5e26\u8840\u7684\u521b\u53ef\u8d34\u5305\u88c5\u7eb8\u3002"
+    TextColor: {r: 0, g: 0, b: 0, a: 0}
+    AutoAdvance: 0
+    AutoAdvanceDelay: 1.5
+    Choices: []
+  - Type: 1
+    Speaker:
+    Text: "\u4e00\u53ea\u6a58\u732b\u4ece\u7f1d\u91cc\u6324\u51fa\u6765\u3002\u5b83\u7684\u540e\u817f\u8d34\u7740\u5730\uff0c\u4e0d\u662f\u7528\u8d70\u7684\uff0c\u662f\u7528\u62d6\u7684\u3002\u5b83\u9759\u9759\u5730\u770b\u7740\u6211\uff0c\u770b\u4e86\u5f88\u4e45\u3002"
+    TextColor: {r: 0, g: 0, b: 0, a: 0}
+    AutoAdvance: 0
+    AutoAdvanceDelay: 1.5
+    Choices: []

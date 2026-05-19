@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dce1219f7e574d74bb9b228883e22b88, type: 3}
+  m_Name: H2_WallFrame
+  m_EditorClassIdentifier:
+  DialogueId: dialogue_h2_frame
+  CompletionId: {fileID: 11400000, guid: d49137aab5054cedbdfb0691b6eb0ceb, type: 2}
+  Lines:
+  - "\u7a7a\u76f8\u6846\uff0c\u8fb9\u6846\u7c98\u7740\u51e0\u6839\u91d1\u8272\u72d7\u6bdb\u3002"
+  - "\u5899\u6f06\u989c\u8272\u6bd4\u5468\u56f4\u6d45\u4e00\u5708\u2014\u2014\u50cf\u662f\u7167\u7247\u6700\u8fd1\u624d\u88ab\u53d6\u4e0b\u6765\u3002"
+  - "\u5979\u4ece\u6ca1\u544a\u8bc9\u6211\u5979\u517b\u8fc7\u72d7\u3002"
+  Entries:
+  - Type: 0
+    Speaker:
+    Text: "\u7a7a\u76f8\u6846\uff0c\u8fb9\u6846\u7c98\u7740\u51e0\u6839\u91d1\u8272\u72d7\u6bdb\u3002"
+    TextColor: {r: 0, g: 0, b: 0, a: 0}
+    AutoAdvance: 0
+    AutoAdvanceDelay: 1.5
+    Choices: []
+  - Type: 0
+    Speaker:
+    Text: "\u5899\u6f06\u989c\u8272\u6bd4\u5468\u56f4\u6d45\u4e00\u5708\u2014\u2014\u50cf\u662f\u7167\u7247\u6700\u8fd1\u624d\u88ab\u53d6\u4e0b\u6765\u3002"
+    TextColor: {r: 0, g: 0, b: 0, a: 0}
+    AutoAdvance: 0
+    AutoAdvanceDelay: 1.5
+    Choices: []
+  - Type: 1
+    Speaker: "\u9ed1\u732b"
+    Text: "\u5979\u4ece\u6ca1\u544a\u8bc9\u6211\u5979\u517b\u8fc7\u72d7\u3002"
+    TextColor: {r: 0, g: 0, b: 0, a: 0}
+    AutoAdvance: 0
+    AutoAdvanceDelay: 1.5
+    Choices: []

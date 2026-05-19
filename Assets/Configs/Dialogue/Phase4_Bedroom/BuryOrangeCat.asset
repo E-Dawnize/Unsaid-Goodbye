@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dce1219f7e574d74bb9b228883e22b88, type: 3}
+  m_Name: BuryOrangeCat
+  m_EditorClassIdentifier: 
+  DialogueId: dialogue_bury_orange_cat
+  CompletionId: {fileID: 11400000, guid: 7216f64db6964fe88d914ab95418b04d, type: 2}
+  Lines:
+  - "\u6211\u4f4e\u4e0b\u5934\uff0c\u7528\u9f3b\u5b50\u78b0\u4e86\u78b0\u5b83\u7684\u989d\u5934\u3002"
+  - "\u5b83\u6162\u6162\u95ed\u4e0a\u773c\u775b\uff0c\u5e72\u762a\u7684\u8eab\u4f53\u50cf\u4e00\u56e2\u6652\u5e72\u7684\u6a58\u5b50\u76ae\u4e00\u6837\u88ab\u98ce\u5439\u6563\u3002"
+  Entries:
+  - Type: 0
+    Speaker:
+    Text: "\u6211\u4f4e\u4e0b\u5934\uff0c\u7528\u9f3b\u5b50\u78b0\u4e86\u78b0\u5b83\u7684\u989d\u5934\u3002"
+    TextColor: {r: 0, g: 0, b: 0, a: 0}
+    AutoAdvance: 0
+    AutoAdvanceDelay: 1.5
+    Choices: []
+  - Type: 0
+    Speaker:
+    Text: "\u5b83\u6162\u6162\u95ed\u4e0a\u773c\u775b\uff0c\u5e72\u762a\u7684\u8eab\u4f53\u50cf\u4e00\u56e2\u6652\u5e72\u7684\u6a58\u5b50\u76ae\u4e00\u6837\u88ab\u98ce\u5439\u6563\u3002"
+    TextColor: {r: 0, g: 0, b: 0, a: 0}
+    AutoAdvance: 0
+    AutoAdvanceDelay: 1.5
+    Choices: []

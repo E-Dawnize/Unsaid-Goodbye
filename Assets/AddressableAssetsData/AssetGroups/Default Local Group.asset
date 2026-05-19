@@ -1,0 +1,293 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Default Local Group
+  m_EditorClassIdentifier: 
+  m_GroupName: Default Local Group
+  m_Data:
+    m_SerializedData: []
+  m_GUID: b16048c5a625c3f4cbfbfa335d15bffe
+  m_SerializeEntries:
+  - m_GUID: 8a859cde84c5fb848a708cddccd3b307
+    m_Address: Configs/GameSaveData.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6889c70cd30db6f4781ff1b1123ba213
+    m_Address: Configs/BootConfig
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - BootConfig
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f039510b9a0b6664a94d763213824342
+    m_Address: Assets/Configs/StoryPhase/StartPhase.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - GamePhaseConfig
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 94dd06c6542b22b4499e0966bc77eb66
+    m_Address: Scenes/OutterWorld_Living Room 1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8511323f491aa3b4d83c4b4416074704
+    m_Address: Scenes/Balcony
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8b67409a5d668874399b27506f846905
+    m_Address: Scenes/InnerWorld_Park
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5d0316f5a562464d912c9b122a186151
+    m_Address: Assets/Configs/StoryPhase/Phase2_InnerPark.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - GamePhaseConfig
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d7b02bbef67d440ab0d2fbe24e31da93
+    m_Address: Assets/Configs/Dialogue/Phase1_Balcony/BalconyJump.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - DialogueSequence
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 92a34bfeeaa64d4188d3c1085f729358
+    m_Address: Assets/Configs/Dialogue/Phase2_Park/BuryCollar.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - DialogueSequence
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a5ad5450390a445eb363c3d9005a1f94
+    m_Address: Assets/Configs/Dialogue/Phase4_Bedroom/BuryOrangeCat.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - DialogueSequence
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 58ce2958535d46eeb445e85c1176c2b2
+    m_Address: Assets/Configs/Dialogue/Phase5_Balcony/CageDoor.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - DialogueSequence
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 624a338bab2b4cf8b2f7fcbb78736998
+    m_Address: Assets/Configs/Dialogue/Phase5_Balcony/CageWater.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - DialogueSequence
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d05ba5fb927848be8956a7e29b9ebdc9
+    m_Address: Assets/Configs/Dialogue/Phase1_LivingRoom/CatBowlInspect.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - DialogueSequence
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7aae0a807b6a4b3fab605ff03b5a40d0
+    m_Address: Assets/Configs/Dialogue/Phase3_ReturnHome/CatBowlReturn.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - DialogueSequence
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a757d12da90a4ac7a40ab57ed7d8e00d
+    m_Address: Assets/Configs/Dialogue/Phase2_Park/DogLookBack.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - DialogueSequence
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 07bc9132de1647b2b8189430fc574edd
+    m_Address: Assets/Configs/Dialogue/Phase6_Mirror/EndingChoice.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - DialogueSequence
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d4c3a56d3c3b478abec11818b2948e61
+    m_Address: Assets/Configs/Dialogue/Phase7_Epilogue/EpilogueLeave.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - DialogueSequence
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3b90aa6127a44732b094e9fad55ece30
+    m_Address: Assets/Configs/Dialogue/Phase7_Epilogue/EpilogueStay.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - DialogueSequence
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8ce54ea8ef6b422fbfd65ddcd99b1f68
+    m_Address: Assets/Configs/Dialogue/Phase1_LivingRoom/H0_PillBottle.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - DialogueSequence
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9eb93a380e3d4266b8c108c3961506ed
+    m_Address: Assets/Configs/Dialogue/Phase1_LivingRoom/H1_SofaPhone.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - DialogueSequence
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e9316ba3a5c04d2a854103e2d460f624
+    m_Address: Assets/Configs/Dialogue/Phase1_LivingRoom/H2_WallFrame.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - DialogueSequence
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 414203c908f844808df7f4e31f1b634c
+    m_Address: Assets/Configs/Dialogue/Phase1_Balcony/H3_BalconyCorner.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - DialogueSequence
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 443ba25f450e49608eafd77f19792183
+    m_Address: Assets/Configs/Dialogue/Phase4_Bedroom/H4_Savings.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - DialogueSequence
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a824ddd424a341559756697201c46d50
+    m_Address: Assets/Configs/Dialogue/Phase2_Park/L1_DogEncounter.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - DialogueSequence
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 419ad1fd6c004c9cafa1f1eb61201dbe
+    m_Address: Assets/Configs/Dialogue/Phase3_ReturnHome/L2_SofaPhoto.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - DialogueSequence
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 545c1ee75da3462d8b370b8a7ecf79af
+    m_Address: Assets/Configs/Dialogue/Phase4_Bedroom/L3_CrateLabel.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - DialogueSequence
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f4cfe047857e42cab23b244ad52b0f80
+    m_Address: Assets/Configs/Dialogue/Phase4_Bedroom/L4_WallDiary.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - DialogueSequence
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 79f080bd376d4d4ea53b0b105ebb922f
+    m_Address: Assets/Configs/Dialogue/Phase5_Balcony/L5_ParrotFeather.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - DialogueSequence
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b2dae9a094b84076b30c7123b8abbc5e
+    m_Address: Assets/Configs/Dialogue/Phase6_Mirror/MirrorTouch.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - DialogueSequence
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c910e289495a447bbd8e018b21b31a05
+    m_Address: Assets/Configs/Dialogue/Phase6_Mirror/OwnerReveal.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - DialogueSequence
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4f32857b2b77d4a4bbec26e6f2be9339
+    m_Address: Assets/Configs/Dialogue/Phase1_LivingRoom/Phase1Wakeup.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - DialogueSequence
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9be8e7b6a6da4582a654a41b6fdcb061
+    m_Address: Assets/Configs/Dialogue/Phase2_Park/Phase2Intro.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - DialogueSequence
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b84f7ff575074638b2bc5789cf436d17
+    m_Address: Assets/Configs/Dialogue/Phase3_ReturnHome/Phase3ReturnEntry.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - DialogueSequence
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 45740dfcdd634a4782f0f2cbecc2c99f
+    m_Address: Assets/Configs/Dialogue/Phase4_Bedroom/Phase4BedroomIntro.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - DialogueSequence
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 98ab8b58dc05410386386a7fc61d4c6c
+    m_Address: Assets/Configs/Dialogue/Phase5_Balcony/Phase5BalconyIntro.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - DialogueSequence
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b5fce137fea8456f8ae222dac2f01c28
+    m_Address: Assets/Configs/Dialogue/Phase6_Mirror/Phase6MirrorIntro.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - DialogueSequence
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b0612b771a7846a79dd0722cf114ce71
+    m_Address: Assets/Configs/StoryPhase/ReturnHome.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - GamePhaseConfig
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 844f59b816124607b9787ccb70ae1f97
+    m_Address: Assets/Configs/StoryPhase/InnerBedroom.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - GamePhaseConfig
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3736a1f3cede48cea9552145c2762ca7
+    m_Address: Assets/Configs/StoryPhase/InnerBalcony.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - GamePhaseConfig
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ccd2102b0b944219a58aa51e418a3216
+    m_Address: Assets/Configs/StoryPhase/MirrorRoom.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - GamePhaseConfig
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 269a03529bcd4129a13afb3cbfc25dc5
+    m_Address: Assets/Configs/StoryPhase/EpilogueA.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - GamePhaseConfig
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f5373fd8272a41119ced4a65b76b4bc5
+    m_Address: Assets/Configs/StoryPhase/EpilogueB.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - GamePhaseConfig
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9dccfe6e96a24b947b46cf6ae8fa9fe2
+    m_Address: Scenes/OutterWorld_Living Room 2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f9a523911afe2c34d9a2d4f84df6ec1b
+    m_Address: Scenes/Old Home Bedroom
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fad80fcf07d89b148a75f6e3e5395fba
+    m_Address: Scenes/Balcony 2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: da62f5a82c1948e4086e5614bd88e5d3
+    m_Address: Scenes/OutterWorld_Living Room 3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 7c5bd9b7bb52d8241aa7765b96bcd1e5, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 3da8d436aa3bed64fb362d92a536ac2e, type: 2}
+    - {fileID: 11400000, guid: cc78b76acc78ccf4cb2a45feb78121ad, type: 2}
