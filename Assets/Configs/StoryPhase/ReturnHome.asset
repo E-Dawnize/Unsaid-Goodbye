@@ -1,4 +1,4 @@
-%YAML 1.1
+﻿%YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
 --- !u!114 &11400000
 MonoBehaviour:
@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier:
   PhaseId: 4
   DisplayName: ReturnHome
-  SceneAssetPath: Scenes/OutterWorld_Living Room 2
+  SceneAssetPath: Scenes/6.SurfaceWorld_LivingRoom
   BackgroundMusic:
   EntryDialogueId: dialogue_phase3_return_home
   ExitDialogueId:

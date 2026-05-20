@@ -1,0 +1,28 @@
+﻿%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92d24d3ed91b43ac84aa5dc98c5bfeb0, type: 3}
+  m_Name: Phase2_SurfacePark
+  m_EditorClassIdentifier: 
+  PhaseId: 2
+  DisplayName: Surface Park
+  SceneAssetPath: Scenes/4.SurfaceWorld_Park
+  BackgroundMusic: 
+  EntryDialogueId: dialogue_phase2_intro
+  ExitDialogueId: 
+  RequiredBeats:
+  - {fileID: 11400000, guid: 3513584a40b84641b3e853491d0a8526, type: 2}
+  - {fileID: 11400000, guid: 9d1fbc92b2aa4a8b9055db3c0c0ae678, type: 2}
+  DefaultNextPhase: 3
+  AltNextPhase: 0
+  IsEndingBranch: 0
+  TransitionSFX: 
+  TransitionDuration: 2

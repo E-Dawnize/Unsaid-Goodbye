@@ -16,7 +16,8 @@ MonoBehaviour:
   CompletionId: {fileID: 11400000, guid: d10d680d45104780a960443304192084, type: 2}
   Lines:
   - "\u5947\u602a\u3002\u732b\u7cae\u600e\u4e48\u53c8\u6ee1\u4e86\u3002"
-  - "\u5403\u51e0\u53e3\u732b\u7cae\u3002\u4e00\u80a1\u53d1\u9709\u7684\u5473\u9053\u3002"
+  - "\u5403\u51e0\u53e3\u732b\u7cae\u3002"
+  - "\u4e00\u80a1\u53d1\u9709\u7684\u5473\u9053\u3002"
   Entries:
   - Type: 1
     Speaker: "\u9ed1\u732b"
@@ -25,9 +26,16 @@ MonoBehaviour:
     AutoAdvance: 0
     AutoAdvanceDelay: 1.5
     Choices: []
+  - Type: 2
+    Speaker: "\u4e92\u52a8"
+    Text: "\u5403\u51e0\u53e3\u732b\u7cae\u3002"
+    TextColor: {r: 0, g: 0, b: 0, a: 0}
+    AutoAdvance: 0
+    AutoAdvanceDelay: 1.5
+    Choices: []
   - Type: 1
     Speaker: "\u9ed1\u732b"
-    Text: "\u5403\u51e0\u53e3\u732b\u7cae\u3002\u4e00\u80a1\u53d1\u9709\u7684\u5473\u9053\u3002"
+    Text: "\u4e00\u80a1\u53d1\u9709\u7684\u5473\u9053\u3002"
     TextColor: {r: 0, g: 0, b: 0, a: 0}
     AutoAdvance: 0
     AutoAdvanceDelay: 1.5

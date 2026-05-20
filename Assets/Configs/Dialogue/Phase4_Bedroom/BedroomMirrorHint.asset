@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dce1219f7e574d74bb9b228883e22b88, type: 3}
+  m_Name: BedroomMirrorHint
+  m_EditorClassIdentifier: 
+  DialogueId: dialogue_bedroom_mirror_hint
+  CompletionId: {fileID: 11400000, guid: df7343633e984f72a83bc6d313e1e0c0, type: 2}
+  Lines:
+  - "\u955c\u5b50\u91cc\u597d\u50cf\u2026\u2026\u5c11\u4e86\u70b9\u4ec0\u4e48\u3002\u662f\u5149\u592a\u6697\u4e86\u5417\uff1f\u8fd8\u662f\u6211\u7ad9\u5f97\u4e0d\u591f\u8fd1\uff1f"
+  Entries:
+  - Type: 1
+    Speaker: "\u9ed1\u732b"
+    Text: "\u955c\u5b50\u91cc\u597d\u50cf\u2026\u2026\u5c11\u4e86\u70b9\u4ec0\u4e48\u3002\u662f\u5149\u592a\u6697\u4e86\u5417\uff1f\u8fd8\u662f\u6211\u7ad9\u5f97\u4e0d\u591f\u8fd1\uff1f"
+    TextColor: {r: 0, g: 0, b: 0, a: 0}
+    AutoAdvance: 0
+    AutoAdvanceDelay: 1.5
+    Choices: []

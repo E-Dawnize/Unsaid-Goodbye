@@ -18,6 +18,7 @@ namespace Core.Boot
         private IScope _scope;
         private DIContainer _globalContainer;
         private IScopeProvider _scopeProvider;
+        private Scene _scopedScene;
 
         public static void Attach(InstallerConfig config, DIContainer globalContainer, IScopeProvider scopeProvider)
         {
@@ -27,6 +28,8 @@ namespace Core.Boot
             runner._config = config;
             runner._globalContainer = globalContainer;
             runner._scopeProvider = scopeProvider;
+            runner._scope = scopeProvider.CurrentScope;
+            runner._scopedScene = SceneManager.GetActiveScene();
             SceneManager.sceneLoaded += runner.OnSceneLoaded;
             SceneManager.sceneUnloaded += runner.OnSceneUnloaded;
         }
@@ -34,13 +37,22 @@ namespace Core.Boot
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
             // 如果已有 Scope（初始场景由 ProjectContext 创建），复用，不重建
-            if (_scope != null) return;
+            if (_scope != null)
+            {
+                _scopeProvider.CurrentScope = null;
+                _scope.Dispose();
+                _scope = null;
+            }
 
             CreateScopeAndInit();
+            _scopedScene = scene;
         }
 
         private void OnSceneUnloaded(Scene scene)
         {
+            if (scene.handle != _scopedScene.handle)
+                return;
+
             _scopeProvider.CurrentScope = null;
             _scope?.Dispose();
             _scope = null;

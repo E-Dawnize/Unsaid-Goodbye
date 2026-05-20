@@ -225,7 +225,7 @@ namespace Gameplay.Dialogue
             speakerRect.offsetMin = new Vector2(72f, 0f);
             speakerRect.offsetMax = new Vector2(-72f, 0f);
 
-            _dialogueText = CreateText("DialogueText", panelObject.transform, 30, FontStyle.Normal);
+            _dialogueText = CreateText("DialogueText", panelObject.transform, 35, FontStyle.Normal);
             _dialogueText.alignment = TextAnchor.UpperLeft;
             var textRect = _dialogueText.GetComponent<RectTransform>();
             textRect.anchorMin = new Vector2(0f, 0.22f);

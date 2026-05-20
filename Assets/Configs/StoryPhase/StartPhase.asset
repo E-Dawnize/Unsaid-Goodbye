@@ -1,4 +1,4 @@
-%YAML 1.1
+﻿%YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
 --- !u!114 &11400000
 MonoBehaviour:
@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PhaseId: 1
   DisplayName: 
-  SceneAssetPath: Scenes/OutterWorld_Living Room 1
+  SceneAssetPath: Scenes/2.SurfaceWorld_LivingRoom
   EntryDialogueId:
   ExitDialogueId:
   RequiredBeats:
   - {fileID: 11400000, guid: e0038a836d0042638efb2157006112b2, type: 2}
-  DefaultNextPhase: 3
+  DefaultNextPhase: 2
   AltNextPhase: 0
   IsEndingBranch: 0
   TransitionSFX: 

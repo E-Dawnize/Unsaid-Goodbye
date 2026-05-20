@@ -1,4 +1,4 @@
-%YAML 1.1
+﻿%YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
 --- !u!114 &11400000
 MonoBehaviour:
@@ -35,17 +35,17 @@ MonoBehaviour:
     - GamePhaseConfig
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 94dd06c6542b22b4499e0966bc77eb66
-    m_Address: Scenes/OutterWorld_Living Room 1
+    m_Address: Scenes/2.SurfaceWorld_LivingRoom
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8511323f491aa3b4d83c4b4416074704
-    m_Address: Scenes/Balcony
+    m_Address: Scenes/3.Surface_Balcony
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8b67409a5d668874399b27506f846905
-    m_Address: Scenes/InnerWorld_Park
+    m_Address: Scenes/5.InnerWorld_Park
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -217,6 +217,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - DialogueSequence
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: edafeb51dab94c149d1cb97809f0bdc9
+    m_Address: Assets/Configs/Dialogue/Phase4_Bedroom/BedroomMirrorHint.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - DialogueSequence
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 98ab8b58dc05410386386a7fc61d4c6c
     m_Address: Assets/Configs/Dialogue/Phase5_Balcony/Phase5BalconyIntro.asset
     m_ReadOnly: 0
@@ -237,6 +243,18 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 844f59b816124607b9787ccb70ae1f97
     m_Address: Assets/Configs/StoryPhase/InnerBedroom.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - GamePhaseConfig
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ea042c5592e94276b00b4d94fd743cef
+    m_Address: Assets/Configs/StoryPhase/InnerBedroomUnderBed.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - GamePhaseConfig
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 350b38a4ace94b9cb3006c3536962dd1
+    m_Address: Assets/Configs/StoryPhase/InnerBedroomMirror.asset
     m_ReadOnly: 0
     m_SerializedLabels:
     - GamePhaseConfig
@@ -266,24 +284,45 @@ MonoBehaviour:
     - GamePhaseConfig
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 9dccfe6e96a24b947b46cf6ae8fa9fe2
-    m_Address: Scenes/OutterWorld_Living Room 2
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: f9a523911afe2c34d9a2d4f84df6ec1b
-    m_Address: Scenes/Old Home Bedroom
+    m_Address: Scenes/6.SurfaceWorld_LivingRoom
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: fad80fcf07d89b148a75f6e3e5395fba
-    m_Address: Scenes/Balcony 2
+    m_Address: Scenes/10.InnerWorld_Balcony
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ca0976b9d6955334dbfb347464492e84
+    m_Address: Scenes/9.InnerWorld_Bedroom
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: da62f5a82c1948e4086e5614bd88e5d3
-    m_Address: Scenes/OutterWorld_Living Room 3
+    m_Address: Scenes/11.SurfaceWorld_LivingRoom
     m_ReadOnly: 0
     m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 588afd79b431420092ae74dd864fc8c2
+    m_Address: Scenes/4.SurfaceWorld_Park
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 06e9a3034a0ae2b4caf95be942202e4f
+    m_Address: Scenes/7.SurfaceWorld_Bedroom_UnderBed
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a0949c91acb7d784090a8bc156e020aa
+    m_Address: Scenes/8.InnerWorld_Bedroom_UnderBed
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b710eded085b4b7bab8b82fc6d91528e
+    m_Address: Assets/Configs/StoryPhase/Phase2_SurfacePark.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - GamePhaseConfig
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 7c5bd9b7bb52d8241aa7765b96bcd1e5, type: 2}

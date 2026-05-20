@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92d24d3ed91b43ac84aa5dc98c5bfeb0, type: 3}
   m_Name: EpilogueB
   m_EditorClassIdentifier:
-  PhaseId: 9
+  PhaseId: 11
   DisplayName: EpilogueB
   SceneAssetPath: Scenes/Epilogue_Leave
   BackgroundMusic:

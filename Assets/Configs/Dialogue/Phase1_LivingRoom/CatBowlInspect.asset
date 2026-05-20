@@ -15,19 +15,11 @@ MonoBehaviour:
   DialogueId: dialogue_cat_bowl_inspect
   CompletionId: {fileID: 0}
   Lines:
-  - "\u98df\u76c6\u91cc\u7684\u7cae\u8fd8\u5269\u4e00\u534a\u3002"
-  - "\u5979\u4e0d\u4f1a\u5fd8\u8bb0\u8fd9\u4ef6\u4e8b\u3002"
+  - "\u7b2c3\u5929\u3002\u98df\u76c6\u91cc\u7684\u7cae\u7a7a\u4e86\u3002\u5979\u4ee5\u524d\u4ece\u6765\u4e0d\u4f1a\u5fd8\u8bb0\u8fd9\u4ef6\u4e8b\u3002"
   Entries:
-  - Type: 2
-    Speaker: "\u4e92\u52a8"
-    Text: "\u98df\u76c6\u91cc\u7684\u7cae\u8fd8\u5269\u4e00\u534a\u3002"
-    TextColor: {r: 0, g: 0, b: 0, a: 0}
-    AutoAdvance: 0
-    AutoAdvanceDelay: 1.5
-    Choices: []
   - Type: 1
     Speaker: "\u9ed1\u732b"
-    Text: "\u5979\u4e0d\u4f1a\u5fd8\u8bb0\u8fd9\u4ef6\u4e8b\u3002"
+    Text: "\u7b2c3\u5929\u3002\u98df\u76c6\u91cc\u7684\u7cae\u7a7a\u4e86\u3002\u5979\u4ee5\u524d\u4ece\u6765\u4e0d\u4f1a\u5fd8\u8bb0\u8fd9\u4ef6\u4e8b\u3002"
     TextColor: {r: 0, g: 0, b: 0, a: 0}
     AutoAdvance: 0
     AutoAdvanceDelay: 1.5

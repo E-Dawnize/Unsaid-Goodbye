@@ -1,4 +1,4 @@
-%YAML 1.1
+﻿%YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
 --- !u!114 &11400000
 MonoBehaviour:
@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92d24d3ed91b43ac84aa5dc98c5bfeb0, type: 3}
   m_Name: MirrorRoom
   m_EditorClassIdentifier:
-  PhaseId: 7
+  PhaseId: 9
   DisplayName: MirrorRoom
-  SceneAssetPath: Scenes/OutterWorld_Living Room 3
+  SceneAssetPath: Scenes/11.SurfaceWorld_LivingRoom
   BackgroundMusic:
   EntryDialogueId: dialogue_phase6_mirror_intro
   ExitDialogueId:
@@ -22,7 +22,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f22c05138b6e47fa98b0bbd5ff02b897, type: 2}
   - {fileID: 11400000, guid: 1aa79186598f43529184b615c61866c1, type: 2}
   - {fileID: 11400000, guid: e1aa8025286f4feaaeb48c0ca7b50e5d, type: 2}
-  DefaultNextPhase: 8
+  DefaultNextPhase: 10
   AltNextPhase: 0
   IsEndingBranch: 0
   TransitionSFX:

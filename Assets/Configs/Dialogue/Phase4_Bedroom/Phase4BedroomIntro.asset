@@ -16,18 +16,10 @@ MonoBehaviour:
   CompletionId: {fileID: 0}
   Lines:
   - "\u8fd9\u4e0d\u662f\u6211\u5bb6\u7684\u5367\u5ba4\uff0c\u8fd9\u662f\u54ea\u91cc\uff1f"
-  - "\u660f\u6697\u5e8a\u5e95\uff0c\u822a\u7a7a\u7bb1\u95e8\u5f39\u5f00\u4e00\u6761\u7f1d\u3002"
   Entries:
   - Type: 1
     Speaker: "\u9ed1\u732b"
     Text: "\u8fd9\u4e0d\u662f\u6211\u5bb6\u7684\u5367\u5ba4\uff0c\u8fd9\u662f\u54ea\u91cc\uff1f"
-    TextColor: {r: 0, g: 0, b: 0, a: 0}
-    AutoAdvance: 0
-    AutoAdvanceDelay: 1.5
-    Choices: []
-  - Type: 0
-    Speaker:
-    Text: "\u660f\u6697\u5e8a\u5e95\uff0c\u822a\u7a7a\u7bb1\u95e8\u5f39\u5f00\u4e00\u6761\u7f1d\u3002"
     TextColor: {r: 0, g: 0, b: 0, a: 0}
     AutoAdvance: 0
     AutoAdvanceDelay: 1.5

@@ -17,8 +17,8 @@ MonoBehaviour:
   Lines:
   - "\u98ce\u4ece\u7a97\u5916\u5439\u8fdb\u6765\uff0c\u50cf\u67d0\u4e2a\u4e0d\u5c5e\u4e8e\u73b0\u5728\u7684\u508d\u665a\u3002"
   Entries:
-  - Type: 2
-    Speaker: "\u4e92\u52a8"
+  - Type: 0
+    Speaker:
     Text: "\u98ce\u4ece\u7a97\u5916\u5439\u8fdb\u6765\uff0c\u50cf\u67d0\u4e2a\u4e0d\u5c5e\u4e8e\u73b0\u5728\u7684\u508d\u665a\u3002"
     TextColor: {r: 0, g: 0, b: 0, a: 0}
     AutoAdvance: 0

@@ -1,0 +1,533 @@
+fileFormatVersion: 2
+guid: 49440e8bf7a4a5f4382578c19211fe33
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 5075208643367603768
+    second: H0-3(fallen)_0
+  - first:
+      213: -1062948200523658703
+    second: H0-3(fallen)_1
+  - first:
+      213: 551693614430057690
+    second: H0-3(fallen)_2
+  - first:
+      213: -7329842654055649794
+    second: H0-3(fallen)_3
+  - first:
+      213: 550613656586851761
+    second: H0-3(fallen)_4
+  - first:
+      213: 4921454199695382922
+    second: H0-3(fallen)_5
+  - first:
+      213: -8179867082061241991
+    second: H0-3(fallen)_6
+  - first:
+      213: 859646914661597060
+    second: H0-3(fallen)_7
+  - first:
+      213: 2111520098091450100
+    second: H0-3(fallen)_8
+  - first:
+      213: 1171797472308214793
+    second: H0-3(fallen)_9
+  - first:
+      213: -898954983338595268
+    second: H0-3(fallen)_10
+  - first:
+      213: 6902683759379227004
+    second: H0-3(fallen)_11
+  - first:
+      213: -8056359433608362980
+    second: H0-3(fallen)_12
+  - first:
+      213: -298429883474873577
+    second: H0-3(fallen)_13
+  - first:
+      213: -1135226200451701971
+    second: H0-3(fallen)_14
+  - first:
+      213: 6797445562373046328
+    second: H0-3(fallen)_15
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: H0-3(fallen)_0
+      rect:
+        serializedVersion: 2
+        x: 428
+        y: 0
+        width: 336
+        height: 1534
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 83e0bec1f53ce6640800000000000000
+      internalID: 5075208643367603768
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: H0-3(fallen)_1
+      rect:
+        serializedVersion: 2
+        x: 631
+        y: 404
+        width: 30
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 13a852d4e36af31f0800000000000000
+      internalID: -1062948200523658703
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: H0-3(fallen)_2
+      rect:
+        serializedVersion: 2
+        x: 650
+        y: 398
+        width: 11
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ad474f85b6208a700800000000000000
+      internalID: 551693614430057690
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: H0-3(fallen)_3
+      rect:
+        serializedVersion: 2
+        x: 651
+        y: 392
+        width: 8
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: efda189f0fa274a90800000000000000
+      internalID: -7329842654055649794
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: H0-3(fallen)_4
+      rect:
+        serializedVersion: 2
+        x: 717
+        y: 311
+        width: 171
+        height: 135
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1b59651143c24a700800000000000000
+      internalID: 550613656586851761
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: H0-3(fallen)_5
+      rect:
+        serializedVersion: 2
+        x: 747
+        y: 567
+        width: 30
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a89923705848c4440800000000000000
+      internalID: 4921454199695382922
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: H0-3(fallen)_6
+      rect:
+        serializedVersion: 2
+        x: 763
+        y: 464
+        width: 46
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 97124d74a364b7e80800000000000000
+      internalID: -8179867082061241991
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: H0-3(fallen)_7
+      rect:
+        serializedVersion: 2
+        x: 774
+        y: 440
+        width: 40
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 48f3aa470541eeb00800000000000000
+      internalID: 859646914661597060
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: H0-3(fallen)_8
+      rect:
+        serializedVersion: 2
+        x: 779
+        y: 560
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4feb6d68750ad4d10800000000000000
+      internalID: 2111520098091450100
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: H0-3(fallen)_9
+      rect:
+        serializedVersion: 2
+        x: 784
+        y: 544
+        width: 39
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 90cb1a5b79f034010800000000000000
+      internalID: 1171797472308214793
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: H0-3(fallen)_10
+      rect:
+        serializedVersion: 2
+        x: 831
+        y: 436
+        width: 19
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c3c290d94354683f0800000000000000
+      internalID: -898954983338595268
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: H0-3(fallen)_11
+      rect:
+        serializedVersion: 2
+        x: 836
+        y: 0
+        width: 1533
+        height: 1534
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c7128a2ae424bcf50800000000000000
+      internalID: 6902683759379227004
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: H0-3(fallen)_12
+      rect:
+        serializedVersion: 2
+        x: 885
+        y: 378
+        width: 12
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c1408e097cf023090800000000000000
+      internalID: -8056359433608362980
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: H0-3(fallen)_13
+      rect:
+        serializedVersion: 2
+        x: 974
+        y: 265
+        width: 28
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7137e152a93cbdbf0800000000000000
+      internalID: -298429883474873577
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: H0-3(fallen)_14
+      rect:
+        serializedVersion: 2
+        x: 999
+        y: 257
+        width: 49
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d232c5e09cdde30f0800000000000000
+      internalID: -1135226200451701971
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: H0-3(fallen)_15
+      rect:
+        serializedVersion: 2
+        x: 1173
+        y: 270
+        width: 21
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8300d4d79b0655e50800000000000000
+      internalID: 6797445562373046328
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      H0-3(fallen)_0: 5075208643367603768
+      H0-3(fallen)_1: -1062948200523658703
+      H0-3(fallen)_10: -898954983338595268
+      H0-3(fallen)_11: 6902683759379227004
+      H0-3(fallen)_12: -8056359433608362980
+      H0-3(fallen)_13: -298429883474873577
+      H0-3(fallen)_14: -1135226200451701971
+      H0-3(fallen)_15: 6797445562373046328
+      H0-3(fallen)_2: 551693614430057690
+      H0-3(fallen)_3: -7329842654055649794
+      H0-3(fallen)_4: 550613656586851761
+      H0-3(fallen)_5: 4921454199695382922
+      H0-3(fallen)_6: -8179867082061241991
+      H0-3(fallen)_7: 859646914661597060
+      H0-3(fallen)_8: 2111520098091450100
+      H0-3(fallen)_9: 1171797472308214793
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

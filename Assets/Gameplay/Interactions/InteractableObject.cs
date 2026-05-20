@@ -1,4 +1,4 @@
-using Core.Architecture;
+﻿using Core.Architecture;
 using Core.DI;
 using Core.Events.EventInterfaces;
 using Core.Identity;
@@ -36,7 +36,7 @@ namespace Gameplay.Interactions
         [SerializeField] private string _playerTag = "Player";
 
         [Header("场景切换（Trigger 模式下可选）")]
-        [Tooltip("触发后加载的目标场景路径，如 Scenes/Balcony")]
+        [Tooltip("触发后加载的目标场景路径，如 Scenes/3.Surface_Balcony")]
         [SerializeField] private string _sceneToLoad;
 
         private bool _playerInRange;

@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76318d37cfabf10458b2b392b256d322, type: 3}
   m_Name: Def_CrateLabel
   m_EditorClassIdentifier:
-  _description: 航空箱标签(L3) — 十二年前标签，箱门弹开，橘猫出现
+  _description: 航空箱标签(L3) — 箱门敞开，橘猫已经卧在 CatBox 里
   Dialogue: {fileID: 11400000, guid: 545c1ee75da3462d8b370b8a7ecf79af, type: 2}
   OneShot: 1
