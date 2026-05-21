@@ -1,4 +1,5 @@
 ﻿using Core.Architecture;
+using Core.Architecture.Interfaces;
 using Core.DI;
 using Gameplay.Audio;
 using Gameplay.Dialogue;
@@ -24,7 +25,14 @@ namespace Gameplay.Installer
             container.RegisterSingleton<IPlayerManager, PlayerManager>();
 
             // Inventory
-            container.RegisterSingleton<IInventoryManager, InventoryManager>();
+            var inventoryManager = new InventoryManager();
+            container.RegisterSingleton<IInventoryManager>(inventoryManager);
+            container.RegisterSingleton<IInitializable>(inventoryManager);
+
+            var inventoryUI = new InventoryUIManager();
+            container.RegisterSingleton<InventoryUIManager>(inventoryUI);
+            container.RegisterSingleton<IBackpackUI>(inventoryUI);
+            container.RegisterSingleton<IInitializable>(inventoryUI);
 
             // Save
             container.RegisterSingleton<ISaveManager, SaveManager>();

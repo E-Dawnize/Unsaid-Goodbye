@@ -24,6 +24,10 @@ namespace Input.Manager
         public bool IsClickTriggered => _enabled
             && _actions.Gameplay.Click.WasPressedThisFrame();
 
+        public bool BackpackToggleTriggered => _enabled
+            && UnityEngine.InputSystem.Keyboard.current != null
+            && UnityEngine.InputSystem.Keyboard.current.tabKey.wasPressedThisFrame;
+
         public PlayerInputManager()
         {
             _actions = new PlayerInputActions();

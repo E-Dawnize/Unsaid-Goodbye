@@ -41,7 +41,7 @@ namespace Core.Boot
 
         private static void FixEventSystemInputModules()
         {
-            var eventSystems = Object.FindObjectsOfType<EventSystem>(true);
+            var eventSystems = Object.FindObjectsByType<EventSystem>(FindObjectsSortMode.None);
             foreach (var eventSystem in eventSystems)
             {
                 if (eventSystem.TryGetComponent<StandaloneInputModule>(out var oldInputModule))

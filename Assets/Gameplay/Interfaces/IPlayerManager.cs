@@ -9,5 +9,6 @@ namespace Gameplay.Interfaces
         bool IsMoving { get; }
         void SetPosition(Vector3 position);
         void Move(Vector2 direction, float deltaTime);
+        void SetWalkableArea(IWalkableArea area);
     }
 }

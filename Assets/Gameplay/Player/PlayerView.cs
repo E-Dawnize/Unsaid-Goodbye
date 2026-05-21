@@ -2,6 +2,7 @@ using Core.Architecture;
 using Core.DI;
 using Gameplay.Dialogue;
 using Gameplay.Interfaces;
+using Gameplay.Inventory;
 using Input.InputInterface;
 using UnityEngine;
 
@@ -14,6 +15,7 @@ namespace Gameplay.Player
         [Inject] private IPlayerInput _input;
         [Inject] private IPlayerManager _manager;
         [Inject] private IDialogueManager _dialogue;
+        [Inject] private IBackpackUI _backpack;
 
         [Header("尾巴骨骼（尾根→尾尖）")]
         [SerializeField] private Transform[] _tailBones;
@@ -62,11 +64,16 @@ namespace Gameplay.Player
         {
             _input.Enable();
             _manager.SetPosition(transform.position);
+
+            var walkableArea = FindFirstObjectByType<WalkableArea>();
+            if (walkableArea != null)
+                _manager.SetWalkableArea(walkableArea);
         }
 
         protected override void Tick(float deltaTime)
         {
-            var direction = _dialogue.IsPlaying ? Vector2.zero : _input.MoveDirection;
+            var blocked = _dialogue.IsPlaying || (_backpack != null && _backpack.IsOpen);
+            var direction = blocked ? Vector2.zero : _input.MoveDirection;
 
             _manager.Move(direction, deltaTime);
 

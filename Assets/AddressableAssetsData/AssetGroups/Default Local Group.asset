@@ -73,6 +73,66 @@ MonoBehaviour:
     m_SerializedLabels:
     - GamePhaseConfig
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6a7661c9c5376f94d9eaa96a62cd89c8
+    m_Address: Arts/open-items/open-h0
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5fdaafedfa5bdf54c92a244157376de9
+    m_Address: Arts/open-items/open-h1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c45ec0212a1679042a3f9e9198a35cfe
+    m_Address: Arts/open-items/open-h2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4a80b54c51f390e4f82bed288c5a7338
+    m_Address: Arts/open-items/open-h3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fb8d9ababc75a0246b4af7f13e3505c2
+    m_Address: Arts/open-items/open-h4
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dd9abeb3223d9d543aaca2757ee13b9a
+    m_Address: Arts/open-items/open-l1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8d67bcfad394b8444bad52fe0954c64b
+    m_Address: Arts/open-items/open-l2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8fc343100b13e7c45ae2b974b0b76467
+    m_Address: Arts/open-items/open-l3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8506bfd7ec46c6a4abcec38bca36b922
+    m_Address: Arts/open-items/open-l4
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 709e4b31d097c7c4c8a87191073fcce9
+    m_Address: Arts/open-items/open-l5
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5ae2bdb5339544842855f36c0a8566f6
+    m_Address: Arts/UI/Bag
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f9cddb60855fed54091e2d0e390dd6c1
+    m_Address: Arts/UI/UIinterface
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 7c5bd9b7bb52d8241aa7765b96bcd1e5, type: 2}
   m_SchemaSet:
