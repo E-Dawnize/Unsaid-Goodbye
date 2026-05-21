@@ -183,6 +183,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sofa
       objectReference: {fileID: 0}
+    - target: {fileID: -1760818416528546751, guid: 551d3590430eca547b658bc86073c355, type: 3}
+      propertyPath: m_SortingLayer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -1760818416528546751, guid: 551d3590430eca547b658bc86073c355, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 4155392593071147832, guid: 551d3590430eca547b658bc86073c355, type: 3}
       propertyPath: m_Name
       value: PictureFrame
@@ -190,6 +198,14 @@ PrefabInstance:
     - target: {fileID: 5079478018858342862, guid: 551d3590430eca547b658bc86073c355, type: 3}
       propertyPath: m_Name
       value: CatBowl
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187643597156909238, guid: 551d3590430eca547b658bc86073c355, type: 3}
+      propertyPath: m_SortingLayer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8187643597156909238, guid: 551d3590430eca547b658bc86073c355, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -201,12 +217,18 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5079478018858342862, guid: 551d3590430eca547b658bc86073c355, type: 3}
       insertIndex: -1
       addedObject: {fileID: 73289266}
+    - targetCorrespondingSourceObject: {fileID: 7966663031060929536, guid: 551d3590430eca547b658bc86073c355, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 629061347}
     - targetCorrespondingSourceObject: {fileID: -5525396579245178455, guid: 551d3590430eca547b658bc86073c355, type: 3}
       insertIndex: -1
       addedObject: {fileID: 359668924}
     - targetCorrespondingSourceObject: {fileID: -5525396579245178455, guid: 551d3590430eca547b658bc86073c355, type: 3}
       insertIndex: -1
       addedObject: {fileID: 359668923}
+    - targetCorrespondingSourceObject: {fileID: -5525396579245178455, guid: 551d3590430eca547b658bc86073c355, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 359668929}
     - targetCorrespondingSourceObject: {fileID: -4256422170898788669, guid: 551d3590430eca547b658bc86073c355, type: 3}
       insertIndex: -1
       addedObject: {fileID: 359668922}
@@ -576,6 +598,21 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 6.31, y: 2.0491292}
   m_EdgeRadius: 0
+--- !u!114 &359668929
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 359668920}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Rendering.DepthSortable
+  _sortingAnchor: {fileID: 0}
+  _orderOffset: 0
+  _sortPrecision: 100
 --- !u!1 &486326420
 GameObject:
   m_ObjectHideFlags: 0
@@ -735,6 +772,26 @@ Transform:
   - {fileID: 1125687653}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &629061344 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7966663031060929536, guid: 551d3590430eca547b658bc86073c355, type: 3}
+  m_PrefabInstance: {fileID: 73289264}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &629061347
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 629061344}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Rendering.DepthSortable
+  _sortingAnchor: {fileID: 0}
+  _orderOffset: 0
+  _sortPrecision: 100
 --- !u!1001 &662588637
 PrefabInstance:
   m_ObjectHideFlags: 0
