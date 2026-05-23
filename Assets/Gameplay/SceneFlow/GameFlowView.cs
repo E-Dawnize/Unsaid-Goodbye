@@ -53,6 +53,7 @@ namespace Gameplay.SceneFlow
             _manager.OnPhaseComplete += HandlePhaseComplete;
             _manager.OnPhaseChanged += HandlePhaseChanged;
             _events.Subscribe<SceneLoadRequest>(HandleSceneLoad);
+            SceneManager.sceneLoaded += OnSceneLoaded;
 
             Debug.Log("[GameFlowView] Subscribed to GameFlow events");
             PlayCurrentEntryDialogueIfNeeded();
@@ -67,12 +68,23 @@ namespace Gameplay.SceneFlow
             }
 
             _events?.Unsubscribe<SceneLoadRequest>(HandleSceneLoad);
+            SceneManager.sceneLoaded -= OnSceneLoaded;
 
             if (_instance == this)
                 _instance = null;
 
             if (_sceneHandle.IsValid())
                 Addressables.Release(_sceneHandle);
+        }
+
+        /// <summary>场景加载后回调 — 主菜单切游戏场景时触发阶段初始化</summary>
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            Debug.Log($"[GameFlowView] Scene loaded: {scene.name}, mode={mode}, manager={_manager != null}");
+            if (_manager != null)
+                _manager.OnGameSceneLoaded();
+            else
+                Debug.LogError("[GameFlowView] Cannot init phase: _manager is null");
         }
 
         private async void HandlePhaseComplete(GamePhase nextPhase)
@@ -88,10 +100,14 @@ namespace Gameplay.SceneFlow
                 await _dialogue.PlayAndWait(config.ExitDialogueId);
             }
 
-            // 2. 黑屏淡入
+            // 2. 转场音效
+            if (_audio != null)
+                _audio.PlaySfx("SFX/Transition");
+
+            // 3. 黑屏淡入
             await FadeToBlack(config.TransitionDuration);
 
-            // 3. 加载场景
+            // 4. 加载场景
             if (!string.IsNullOrEmpty(config.SceneAssetPath))
             {
                 // 释放上一场景的 handle
@@ -108,6 +124,9 @@ namespace Gameplay.SceneFlow
 
             // 4. 通知 Manager 状态切换完成
             _manager.ConfirmTransition(nextPhase);
+
+            // 5. 自动存档
+            _manager.GetSaveState();
         }
 
         private async void HandlePhaseChanged(GamePhase newPhase)

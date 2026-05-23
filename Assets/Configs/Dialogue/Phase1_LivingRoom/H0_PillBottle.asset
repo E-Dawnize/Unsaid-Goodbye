@@ -15,11 +15,35 @@ MonoBehaviour:
   DialogueId: dialogue_h0_pillbottle
   CompletionId: {fileID: 11400000, guid: a3b9e54743bb4fabbb995b7a7468c4d7, type: 2}
   Lines:
-  - 茶几上有一瓶药，瓶身贴着一张便利贴：每天早餐后1片，不要停。说明书背面被红笔圈出：可能出现幻觉、虚构伴侣、解离性记忆。[测试文本]
+  - "\u8336\u51e0\u4e0a\u6709\u4e00\u74f6\u836f\uff0c\u74f6\u8eab\u8d34\u7740\u4e00\u5f20\u4fbf\u5229\u8d34\uff0c\u662f\u5979\u7684\u5b57\u8ff9\uff1a\u201c\u6bcf\u5929\u65e9\u9910\u540e 1 \u7247\uff0c\u4e0d\u8981\u505c\u3002\u201d"
+  - "\u8bf4\u660e\u4e66\u80cc\u9762\u88ab\u5979\u7528\u7ea2\u7b14\u5708\u4e86\u51fa\u6765\u3002"
+  - "\u2026\u2026\u865a\u6784\u4f34\u4fa3\u548c\u89e3\u79bb\u6027\u8bb0\u5fc6\uff1f"
+  - "\u836f\u74f6\u91cc\u8fd8\u52697\u7247\u3002"
   Entries:
   - Type: 0
-    Speaker: 
-    Text: 茶几上有一瓶药，瓶身贴着一张便利贴：每天早餐后1片，不要停。说明书背面被红笔圈出：可能出现幻觉、虚构伴侣、解离性记忆。[测试文本]
+    Speaker:
+    Text: "\u8336\u51e0\u4e0a\u6709\u4e00\u74f6\u836f\uff0c\u74f6\u8eab\u8d34\u7740\u4e00\u5f20\u4fbf\u5229\u8d34\uff0c\u662f\u5979\u7684\u5b57\u8ff9\uff1a\u201c\u6bcf\u5929\u65e9\u9910\u540e 1 \u7247\uff0c\u4e0d\u8981\u505c\u3002\u201d"
+    TextColor: {r: 0, g: 0, b: 0, a: 0}
+    AutoAdvance: 0
+    AutoAdvanceDelay: 1.5
+    Choices: []
+  - Type: 0
+    Speaker:
+    Text: "\u8bf4\u660e\u4e66\u80cc\u9762\u88ab\u5979\u7528\u7ea2\u7b14\u5708\u4e86\u51fa\u6765\u3002"
+    TextColor: {r: 0, g: 0, b: 0, a: 0}
+    AutoAdvance: 0
+    AutoAdvanceDelay: 1.5
+    Choices: []
+  - Type: 1
+    Speaker: "\u9ed1\u732b"
+    Text: "\u2026\u2026\u865a\u6784\u4f34\u4fa3\u548c\u89e3\u79bb\u6027\u8bb0\u5fc6\uff1f"
+    TextColor: {r: 0, g: 0, b: 0, a: 0}
+    AutoAdvance: 0
+    AutoAdvanceDelay: 1.5
+    Choices: []
+  - Type: 0
+    Speaker:
+    Text: "\u836f\u74f6\u91cc\u8fd8\u52697\u7247\u3002"
     TextColor: {r: 0, g: 0, b: 0, a: 0}
     AutoAdvance: 0
     AutoAdvanceDelay: 1.5

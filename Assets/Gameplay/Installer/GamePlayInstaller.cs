@@ -5,6 +5,7 @@ using Gameplay.Audio;
 using Gameplay.Dialogue;
 using Gameplay.Interfaces;
 using Gameplay.Inventory;
+using Gameplay.Pause;
 using Gameplay.Player;
 using Gameplay.Save;
 using Gameplay.SceneFlow;
@@ -18,13 +19,12 @@ namespace Gameplay.Installer
     {
         public override void Register(DIContainer container)
         {
-            // GameFlow Manager
-            container.RegisterSingleton<IGameFlowManager, GameFlowManager>();
-
             // Player
             container.RegisterSingleton<IPlayerManager, PlayerManager>();
 
-            // Inventory
+            // Inventory — 必须在 GameFlowManager 之前注册
+            // 原因：事件处理器按订阅顺序调用，InventoryManager 必须在 DialogueEndedEvent 中
+            // 先于 GameFlowManager 执行，确保 GetSaveState() 读取到已更新的 CollectedItems
             var inventoryManager = new InventoryManager();
             container.RegisterSingleton<IInventoryManager>(inventoryManager);
             container.RegisterSingleton<IInitializable>(inventoryManager);
@@ -34,6 +34,9 @@ namespace Gameplay.Installer
             container.RegisterSingleton<IBackpackUI>(inventoryUI);
             container.RegisterSingleton<IInitializable>(inventoryUI);
 
+            // GameFlow Manager — 在 Inventory 之后注册
+            container.RegisterSingleton<IGameFlowManager, GameFlowManager>();
+
             // Save
             container.RegisterSingleton<ISaveManager, SaveManager>();
 
@@ -42,6 +45,12 @@ namespace Gameplay.Installer
 
             // Dialogue
             container.RegisterSingleton<IDialogueManager, DialogueManager>();
+
+            // Pause Menu
+            var pauseMenu = new PauseMenuManager();
+            container.RegisterSingleton<IPauseMenu>(pauseMenu);
+            container.RegisterSingleton<IInitializable>(pauseMenu);
+            container.RegisterSingleton<ITickable>(pauseMenu);
 
             // Model — 纯运行时类，Manager 在加载存档时填充数据
             container.RegisterSingleton<GameFlowModel>(new GameFlowModel());

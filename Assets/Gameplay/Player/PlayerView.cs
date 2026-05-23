@@ -1,8 +1,10 @@
 using Core.Architecture;
 using Core.DI;
+using Gameplay.Audio;
 using Gameplay.Dialogue;
 using Gameplay.Interfaces;
 using Gameplay.Inventory;
+using Gameplay.Pause;
 using Input.InputInterface;
 using UnityEngine;
 
@@ -16,6 +18,11 @@ namespace Gameplay.Player
         [Inject] private IPlayerManager _manager;
         [Inject] private IDialogueManager _dialogue;
         [Inject] private IBackpackUI _backpack;
+        [InjectOptional] private IPauseMenu _pauseMenu;
+        [InjectOptional] private IAudioManager _audio;
+
+        private const string FootstepSfxKey = "SFX/Footstep";
+        private float _footstepTimer;
 
         [Header("尾巴骨骼（尾根→尾尖）")]
         [SerializeField] private Transform[] _tailBones;
@@ -72,7 +79,7 @@ namespace Gameplay.Player
 
         protected override void Tick(float deltaTime)
         {
-            var blocked = _dialogue.IsPlaying || (_backpack != null && _backpack.IsOpen);
+            var blocked = _dialogue.IsPlaying || (_backpack != null && _backpack.IsOpen) || (_pauseMenu != null && _pauseMenu.IsOpen);
             var direction = blocked ? Vector2.zero : _input.MoveDirection;
 
             _manager.Move(direction, deltaTime);
@@ -81,6 +88,18 @@ namespace Gameplay.Player
             {
                 transform.position = _manager.Position;
                 _lastFacingSign = Mathf.Sign(direction.x);
+
+                // 脚步声（约 0.4s 间隔）
+                _footstepTimer -= deltaTime;
+                if (_footstepTimer <= 0f && _audio != null)
+                {
+                    _footstepTimer = 0.4f;
+                    _audio.PlaySfx(FootstepSfxKey);
+                }
+            }
+            else
+            {
+                _footstepTimer = 0f;
             }
 
             ApplyAnimationState(direction);

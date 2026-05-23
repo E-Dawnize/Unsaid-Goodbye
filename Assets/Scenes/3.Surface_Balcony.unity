@@ -455,11 +455,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -1760818416528546751, guid: be81286d319aff54e84e1e51ead90ab9, type: 3}
       propertyPath: m_SortingOrder
-      value: 2
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: -798572654357397628, guid: be81286d319aff54e84e1e51ead90ab9, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 918093286594383227, guid: be81286d319aff54e84e1e51ead90ab9, type: 3}
       propertyPath: m_SortingOrder
-      value: 2
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4155392593071147832, guid: be81286d319aff54e84e1e51ead90ab9, type: 3}
+      propertyPath: m_Name
+      value: Corner
       objectReference: {fileID: 0}
     - target: {fileID: 4339153937253177849, guid: be81286d319aff54e84e1e51ead90ab9, type: 3}
       propertyPath: m_SortingOrder
@@ -467,7 +475,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4742677687274849776, guid: be81286d319aff54e84e1e51ead90ab9, type: 3}
       propertyPath: m_SortingOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7995018800391078397, guid: be81286d319aff54e84e1e51ead90ab9, type: 3}
       propertyPath: m_SortingOrder
@@ -479,7 +487,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9130832159517235881, guid: be81286d319aff54e84e1e51ead90ab9, type: 3}
       propertyPath: m_SortingOrder
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -491,6 +499,18 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7276608457956774635, guid: be81286d319aff54e84e1e51ead90ab9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1020538618}
+    - targetCorrespondingSourceObject: {fileID: -4256422170898788669, guid: be81286d319aff54e84e1e51ead90ab9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1020538625}
+    - targetCorrespondingSourceObject: {fileID: -4256422170898788669, guid: be81286d319aff54e84e1e51ead90ab9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1020538624}
+    - targetCorrespondingSourceObject: {fileID: 4155392593071147832, guid: be81286d319aff54e84e1e51ead90ab9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1020538623}
+    - targetCorrespondingSourceObject: {fileID: 4155392593071147832, guid: be81286d319aff54e84e1e51ead90ab9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1020538622}
   m_SourcePrefab: {fileID: 4843985084834002234, guid: be81286d319aff54e84e1e51ead90ab9, type: 3}
 --- !u!1 &1020538617 stripped
 GameObject:
@@ -578,6 +598,146 @@ PolygonCollider2D:
       - {x: 0.26999998, y: -0.42999998}
       - {x: 0.32999998, y: -0.21}
   m_UseDelaunayMesh: 1
+--- !u!1 &1020538620 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4155392593071147832, guid: be81286d319aff54e84e1e51ead90ab9, type: 3}
+  m_PrefabInstance: {fileID: 1020538616}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1020538621 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -4256422170898788669, guid: be81286d319aff54e84e1e51ead90ab9, type: 3}
+  m_PrefabInstance: {fileID: 1020538616}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1020538622
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1020538620}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d1e79154ff427344bde47ad48b6f439, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Interactions.InteractableObject
+  _def: {fileID: 11400000, guid: c38799964368467c912c041ad85e6178, type: 2}
+  _mode: 2
+  _interactOnce: 1
+  _playerTag: Player
+  _sceneToLoad: 
+  _enableHoverEffect: 1
+  _hoverColor: {r: 1, g: 1, b: 0.8, a: 1}
+--- !u!61 &1020538623
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1020538620}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: -1.564661}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 3.21, y: 3.55}
+    newSize: {x: 3.21, y: 3.55}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 3.21, y: 1.2997012}
+  m_EdgeRadius: 0
+--- !u!114 &1020538624
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1020538621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d1e79154ff427344bde47ad48b6f439, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Interactions.InteractableObject
+  _def: {fileID: 11400000, guid: e0038a836d0042638efb2157006112b2, type: 2}
+  _mode: 2
+  _interactOnce: 1
+  _playerTag: Player
+  _sceneToLoad: 
+  _enableHoverEffect: 1
+  _hoverColor: {r: 1, g: 1, b: 0.8, a: 1}
+--- !u!61 &1020538625
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1020538621}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 2.1184454}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1.95, y: 1.94}
+    newSize: {x: 1.95, y: 1.94}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 1.95, y: 2.0630655}
+  m_EdgeRadius: 0
 --- !u!1 &1086069783
 GameObject:
   m_ObjectHideFlags: 0

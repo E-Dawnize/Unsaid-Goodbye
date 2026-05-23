@@ -35,7 +35,7 @@ MonoBehaviour:
     - GamePhaseConfig
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 94dd06c6542b22b4499e0966bc77eb66
-    m_Address: Scenes/Phase3_SurfaceLivingRoom_Photo
+    m_Address: Scenes/OutterWorld
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -63,32 +63,116 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8b67409a5d668874399b27506f846905
-    m_Address: Scenes/Phase2_InnerPark
+    m_Address: Scenes/InnerWorld_Park
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 29866eaabf008d5418671714fe5f1998
-    m_Address: Scenes/Phase1_SurfaceLivingRoom_Initial
+    m_Address: Scenes/2.SurfaceWorld_LivingRoom
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 588afd79b431420092ae74dd864fc8c2
-    m_Address: Scenes/Phase1_SurfaceLivingRoom_Investigate
+    m_Address: Scenes/4.SurfaceWorld_Park
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bc7109ccfdee9cd45a37f1d7542bd47c
+    m_Address: Scenes/5.InnerWorld_Park
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9dccfe6e96a24b947b46cf6ae8fa9fe2
+    m_Address: Scenes/6.SurfaceWorld_LivingRoom
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 06e9a3034a0ae2b4caf95be942202e4f
+    m_Address: Scenes/7.SurfaceWorld_Bedroom_UnderBed
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a0949c91acb7d784090a8bc156e020aa
-    m_Address: Scenes/Phase5_InnerBalcony_UnderBed
+    m_Address: Scenes/8.InnerWorld_Bedroom_UnderBed
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ca0976b9d6955334dbfb347464492e84
-    m_Address: Scenes/Phase6_InnerLivingRoom_Mirror_Bedroom
+    m_Address: Scenes/9.InnerWorld_Bedroom
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fad80fcf07d89b148a75f6e3e5395fba
+    m_Address: Scenes/10.InnerWorld_Balcony
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: da62f5a82c1948e4086e5614bd88e5d3
+    m_Address: Scenes/11.SurfaceWorld_LivingRoom
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 540525098c1945e42b7543711b26ea12
+    m_Address: Scenes/3.Surface_Balcony
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5d0316f5a562464d912c9b122a186151
     m_Address: Assets/Configs/StoryPhase/Phase2_InnerPark.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - GamePhaseConfig
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b710eded085b4b7bab8b82fc6d91528e
+    m_Address: Assets/Configs/StoryPhase/Phase2_SurfacePark.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - GamePhaseConfig
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b0612b771a7846a79dd0722cf114ce71
+    m_Address: Assets/Configs/StoryPhase/ReturnHome.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - GamePhaseConfig
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 844f59b816124607b9787ccb70ae1f97
+    m_Address: Assets/Configs/StoryPhase/InnerBedroom.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - GamePhaseConfig
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ea042c5592e94276b00b4d94fd743cef
+    m_Address: Assets/Configs/StoryPhase/InnerBedroomUnderBed.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - GamePhaseConfig
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 350b38a4ace94b9cb3006c3536962dd1
+    m_Address: Assets/Configs/StoryPhase/InnerBedroomMirror.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - GamePhaseConfig
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3736a1f3cede48cea9552145c2762ca7
+    m_Address: Assets/Configs/StoryPhase/InnerBalcony.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - GamePhaseConfig
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ccd2102b0b944219a58aa51e418a3216
+    m_Address: Assets/Configs/StoryPhase/MirrorRoom.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - GamePhaseConfig
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 269a03529bcd4129a13afb3cbfc25dc5
+    m_Address: Assets/Configs/StoryPhase/EpilogueA.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - GamePhaseConfig
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f5373fd8272a41119ced4a65b76b4bc5
+    m_Address: Assets/Configs/StoryPhase/EpilogueB.asset
     m_ReadOnly: 0
     m_SerializedLabels:
     - GamePhaseConfig
@@ -152,6 +236,380 @@ MonoBehaviour:
     m_Address: Arts/UI/UIinterface
     m_ReadOnly: 0
     m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 60977f7562fd2fd48b9c7c421a33bc6c
+    m_Address: InteractUI/Investigate
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c590607ead95373459e67e0ca33d7798
+    m_Address: "Assets/Arts- New/UI\uFF08\u5F85\u8865\u5145\u80CC\u5305\u672C\u8EAB\u56FE\u6837\u548C\u80CC\u5305\u5185\u7269\u54C1\u70B9\u51FB\u653E\u5927\u56FE\uFF09/\u4EA4\u4E92\u6309\u94AE/\u6DF1\u8910\u8272-\u5C3A\u5BF8\u8FC7\u5927\uFF0C\u9700x0.45\u5DE6\u53F3/investigate1.png"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a3b9e54743bb4fabbb995b7a7468c4d7
+    m_Address: InteractionDef/Def_PillBottle
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - InteractionDef
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8601c4a7e39c4e1a83d90803b24cb7dc
+    m_Address: InteractionDef/Def_SofaPhone
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - InteractionDef
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d49137aab5054cedbdfb0691b6eb0ceb
+    m_Address: InteractionDef/Def_WallFrame
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - InteractionDef
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c38799964368467c912c041ad85e6178
+    m_Address: InteractionDef/Def_BalconyCorner
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - InteractionDef
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3513584a40b84641b3e853491d0a8526
+    m_Address: InteractionDef/Def_DogCollar
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - InteractionDef
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ea2dc7bc462a4f7993bf783940d62265
+    m_Address: InteractionDef/Def_SofaPhoto
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - InteractionDef
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 019d131cf3c14aff9ee4c5582821229d
+    m_Address: InteractionDef/Def_CrateLabel
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - InteractionDef
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3d291dc7fb7448d0baa827e6c9c5fbf1
+    m_Address: InteractionDef/Def_WallDiary
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - InteractionDef
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5e9a7fe399624ef0b884cef26961454b
+    m_Address: InteractionDef/Def_BedCornerSavings
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - InteractionDef
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 171d218dd73d49a8a7523f6f32f4bfd1
+    m_Address: InteractionDef/Def_ParrotFeather
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - InteractionDef
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6e03a55f5f444f5e94d5b00d2b6df27a
+    m_Address: InteractionDef/Def_StartNewGame
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - InteractionDef
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 44c9ee428722423682eb1a216cf1ef45
+    m_Address: InteractionDef/Def_BalconyEntrance
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - InteractionDef
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e0038a836d0042638efb2157006112b2
+    m_Address: InteractionDef/Def_BalconyJump
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - InteractionDef
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 647f40c2597743509590c394176f6060
+    m_Address: InteractionDef/Def_CatBowl
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - InteractionDef
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9d1fbc92b2aa4a8b9055db3c0c0ae678
+    m_Address: InteractionDef/Def_BuryCollar
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - InteractionDef
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5a8f9c8a3a2d46dabd85d1a562d72553
+    m_Address: InteractionDef/Def_DogLookBack
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - InteractionDef
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d10d680d45104780a960443304192084
+    m_Address: InteractionDef/Def_CatBowlReturn
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - InteractionDef
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: df7343633e984f72a83bc6d313e1e0c0
+    m_Address: InteractionDef/Def_BedroomMirrorHint
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - InteractionDef
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7216f64db6964fe88d914ab95418b04d
+    m_Address: InteractionDef/Def_BuryOrangeCat
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - InteractionDef
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 120798b186e74fb09a3d2255955260ba
+    m_Address: InteractionDef/Def_CageDoor
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - InteractionDef
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 08b54a6ceb28470391c69c76bd394b75
+    m_Address: InteractionDef/Def_CageWater
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - InteractionDef
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e1aa8025286f4feaaeb48c0ca7b50e5d
+    m_Address: InteractionDef/Def_EndingChoice
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - InteractionDef
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f22c05138b6e47fa98b0bbd5ff02b897
+    m_Address: InteractionDef/Def_LivingRoomMirror
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - InteractionDef
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1aa79186598f43529184b615c61866c1
+    m_Address: InteractionDef/Def_SofaOwner
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - InteractionDef
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ab12f81e53dc407fb262cb8cfda45245
+    m_Address: InteractionDef/Def_EpilogueLeave
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - InteractionDef
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: afdcfd8a9eb24738a98e93d1c823ac56
+    m_Address: InteractionDef/Def_EpilogueStay
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - InteractionDef
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d28c1849ec7df2c4886dbd84cfe4166d
+    m_Address: Arts/UI/Settings
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a2e9d313190f90e45b36f35673d9e599
+    m_Address: Scenes/Start New
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0c20d2ba64ec0f04ab70cd0e0931a0be
+    m_Address: BGM/SurfaceLivingRoom
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - BGM
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 440837f3943ac67469ca8912d9e767d6
+    m_Address: BGM/SurfaceBalcony
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - BGM
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4da133cb830c7ef4d98ca24faef6da24
+    m_Address: BGM/SurfacePark
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - BGM
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1d0d4aa22739bff4ca4698b2ee3f2534
+    m_Address: BGM/InnerPark
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - BGM
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ffadbe3f4ad87144eb2c958d4ef508b8
+    m_Address: BGM/SurfaceBedroom
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - BGM
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1e2afb311b062d94e824aaec0375136e
+    m_Address: BGM/InnerBedroom
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - BGM
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cbc63cad383aba043ab2b6bbc10f1a88
+    m_Address: BGM/InnerBalcony
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - BGM
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2e1d11aa2e66c7742bf2592b9253c183
+    m_Address: BGM/EndingA
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - BGM
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f2df7cc57a33b484ead9afa781947b53
+    m_Address: BGM/EndingB
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - BGM
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ab1a5819e55cbb04eaa077aca8382596
+    m_Address: BGM/Title
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - BGM
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 112f52a12a2601c4882da41c4a0ac1ee
+    m_Address: SFX/Footstep
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - SFX
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ac8f024d61d775841a86c16a9ec517ee
+    m_Address: SFX/DialogueAdvance
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - SFX
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 67f00576f9bc2d641b070c8f4c936362
+    m_Address: SFX/Transition
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - SFX
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a7acb541f4e73e64e9823cd32cc141a6
+    m_Address: SFX/ItemPickup
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - SFX
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 412c95d6bb29d5e48aa1b93e402986c4
+    m_Address: SFX/PickupCollar
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - SFX
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4149069228991ec49853faffa101fc80
+    m_Address: SFX/DogLookBack
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - SFX
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 07929e63b618c764fab63e692f719479
+    m_Address: SFX/BuryOrangeCat
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - SFX
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: eff42fd39f8b1c74590b6722f1f2f98e
+    m_Address: SFX/BuryCollar
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - SFX
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d6bf291041b98fe419b7bcb08344cc3a
+    m_Address: SFX/BuryParrot
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - SFX
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 90ef3b449af7c0445945929126f1631e
+    m_Address: SFX/PushCageDoor
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - SFX
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d3e625b04ec8c3148b6244b4fbbd2126
+    m_Address: SFX/CheckSavings
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - SFX
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 762107a6649789b429c7ad6d635838bd
+    m_Address: SFX/CheckFoodTrough
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - SFX
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8a4512d3b7870364eba2a81d21abde84
+    m_Address: SFX/OrangeCatAppears
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - SFX
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8818b02337e5fa5478626d177ea7cb81
+    m_Address: SFX/ItemTouch
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - SFX
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ed88786c39bf23d40ba101c98657aa13
+    m_Address: SFX/MonologueStart
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - SFX
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 47178aa51c70fbe48be17e7781a7455b
+    m_Address: SFX/CatFood
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - SFX
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a04fca0ea015f404686b0355b878a34d
+    m_Address: SFX/OpenCrate
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - SFX
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1ed339dc0f69d62448a4f12161e7bbf3
+    m_Address: SFX/TruthReveal
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - SFX
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c37ce4c40e01eb544b5798f39abbeb2e
+    m_Address: SFX/TouchMirror
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - SFX
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 420f60f043ab2e543a44f0558e85a031
+    m_Address: SFX/CheckPhone
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - SFX
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 333a1d7ebbc018646bbcfd50147b751d
+    m_Address: SFX/CheckFrame
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - SFX
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 471611c86a7673940bd85b6ddcffc24c
+    m_Address: SFX/EnterPark
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - SFX
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8ca3000133eada8409e36d9792e2a00f
+    m_Address: SFX/EnterBalconyInner
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - SFX
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 7c5bd9b7bb52d8241aa7765b96bcd1e5, type: 2}

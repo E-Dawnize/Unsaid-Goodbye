@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: Phase2_InnerPark
   m_EditorClassIdentifier: 
   PhaseId: 3
-  DisplayName: Inner Park
-  SceneAssetPath: Scenes/Phase2_InnerPark
-  BackgroundMusic: 
-  EntryDialogueId: dialogue_phase2_intro
+  DisplayName: Inner Park Truth
+  SceneAssetPath: Scenes/5.InnerWorld_Park
+  BackgroundMusic: BGM/InnerPark
+  EntryDialogueId: 
   ExitDialogueId: 
   RequiredBeats:
-  - {fileID: 11400000, guid: 3513584a40b84641b3e853491d0a8526, type: 2}
+  - {fileID: 11400000, guid: 5a8f9c8a3a2d46dabd85d1a562d72553, type: 2}
   DefaultNextPhase: 4
   AltNextPhase: 0
   IsEndingBranch: 0

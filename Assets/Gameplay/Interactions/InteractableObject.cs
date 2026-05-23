@@ -2,6 +2,7 @@
 using Core.DI;
 using Core.Events.EventInterfaces;
 using Core.Identity;
+using Gameplay.Audio;
 using Gameplay.Dialogue;
 using Input.InputInterface;
 using UnityEngine;
@@ -26,9 +27,11 @@ namespace Gameplay.Interactions
         [Inject] private IEventCenter _events;
         [Inject] private IPlayerInput _input;
         [Inject] private IDialogueManager _dialogue;
+        [InjectOptional] private IAudioManager _audio;
 
         [Header("交互定义")]
         [SerializeField] private InteractionDef _def;
+        public InteractionDef Def => _def;
 
         [Header("交互模式")]
         [SerializeField] private InteractMode _mode = InteractMode.Click;
@@ -40,6 +43,14 @@ namespace Gameplay.Interactions
         [SerializeField] private string _sceneToLoad;
 
         private bool _playerInRange;
+
+        /// <summary>
+        /// 当前玩家范围内最近的 Proximity 模式交互物，供 InteractionPromptView 读取。
+        /// </summary>
+        public static InteractableObject CurrentProximityTarget { get; private set; }
+
+        /// <summary>是否仍可交互（未被一次性消耗）</summary>
+        public bool CanInteract => !_used || !(_def != null && _def.OneShot && _interactOnce);
 
         [Header("视觉反馈（点击交互模式下生效）")]
         [SerializeField] private bool _enableHoverEffect = true;
@@ -60,11 +71,8 @@ namespace Gameplay.Interactions
         #endregion
 
         #region 交互入口
-        protected override void Tick(float deltaTime)
-        {
-            if (_mode == InteractMode.Proximity && _playerInRange && _dialogue != null && _input != null && _input.IsClickTriggered && !_dialogue.IsPlaying)
-                Fire();
-        }
+        // Proximity 模式的点击交互已迁移到 InteractionPromptView，
+        // Tick 保留以便后续扩展其他每帧逻辑。
 
         private void OnMouseDown()
         {
@@ -84,6 +92,8 @@ namespace Gameplay.Interactions
                 case InteractMode.Proximity:
                     _playerInRange = true;
                     SetHover(true);
+                    if (CanInteract)
+                        CurrentProximityTarget = this;
                     break;
             }
         }
@@ -95,6 +105,8 @@ namespace Gameplay.Interactions
             {
                 _playerInRange = false;
                 SetHover(false);
+                if (CurrentProximityTarget == this)
+                    CurrentProximityTarget = null;
             }
         }
         #endregion
@@ -120,7 +132,7 @@ namespace Gameplay.Interactions
         #endregion
 
         #region 事件发布
-        private void Fire()
+        public void Fire()
         {
             if (_used && _interactOnce) return;
 
@@ -144,7 +156,15 @@ namespace Gameplay.Interactions
 
             _used = true;
 
+            // 一次性交互：消耗后立即清除提示图标
+            if (effectiveOnce && CurrentProximityTarget == this)
+                CurrentProximityTarget = null;
+
             _events.Publish(new InteractionEvent { Def = _def });
+
+            // 播放交互音效
+            if (!string.IsNullOrEmpty(_def.SfxKey))
+                _audio?.PlaySfx(_def.SfxKey);
 
             if (!string.IsNullOrEmpty(_sceneToLoad))
             {

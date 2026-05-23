@@ -119,6 +119,23 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &53413590 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -8653719598885068355, guid: 2ffdbecee8f85f94aa1d22ecd2225d65, type: 3}
+  m_PrefabInstance: {fileID: 2043659106}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &53413592
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 53413590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MVVM.View.MainMenuView
 --- !u!1 &65719353
 GameObject:
   m_ObjectHideFlags: 0
@@ -211,7 +228,7 @@ Transform:
   m_GameObject: {fileID: 65719353}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.9699993, y: 5.23, z: 0}
+  m_LocalPosition: {x: 0.93, y: -0.14, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -368,15 +385,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7552582706839291426, guid: 2ffdbecee8f85f94aa1d22ecd2225d65, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.94
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -7552582706839291426, guid: 2ffdbecee8f85f94aa1d22ecd2225d65, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.94
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -7552582706839291426, guid: 2ffdbecee8f85f94aa1d22ecd2225d65, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.94
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -7552582706839291426, guid: 2ffdbecee8f85f94aa1d22ecd2225d65, type: 3}
       propertyPath: m_LocalPosition.x
@@ -426,104 +443,10 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 9090009983201034199, guid: 2ffdbecee8f85f94aa1d22ecd2225d65, type: 3}
+    - targetCorrespondingSourceObject: {fileID: -8653719598885068355, guid: 2ffdbecee8f85f94aa1d22ecd2225d65, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 2043659109}
-    - targetCorrespondingSourceObject: {fileID: 9090009983201034199, guid: 2ffdbecee8f85f94aa1d22ecd2225d65, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2043659108}
+      addedObject: {fileID: 53413592}
   m_SourcePrefab: {fileID: 4843985084834002234, guid: 2ffdbecee8f85f94aa1d22ecd2225d65, type: 3}
---- !u!1 &2043659107 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 9090009983201034199, guid: 2ffdbecee8f85f94aa1d22ecd2225d65, type: 3}
-  m_PrefabInstance: {fileID: 2043659106}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &2043659108
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2043659107}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d1e79154ff427344bde47ad48b6f439, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Interactions.InteractableObject
-  _def: {fileID: 11400000, guid: 6e03a55f5f444f5e94d5b00d2b6df27a, type: 2}
-  _mode: 0
-  _interactOnce: 1
-  _playerTag: Player
-  _sceneToLoad: Scenes/2.SurfaceWorld_LivingRoom
-  _enableHoverEffect: 1
-  _hoverColor: {r: 1, g: 1, b: 0.8, a: 1}
---- !u!60 &2043659109
-PolygonCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2043659107}
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 3.56, y: 1.08}
-    newSize: {x: 3.56, y: 1.08}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: 0.76, y: -0.5}
-      - {x: 1.1, y: -0.52}
-      - {x: 1.48, y: -0.52}
-      - {x: 1.78, y: -0.34}
-      - {x: 1.78, y: 0.38}
-      - {x: 1.54, y: 0.52}
-      - {x: 0.06, y: 0.52}
-      - {x: -0.099999994, y: 0.5}
-      - {x: -0.35999998, y: 0.52}
-      - {x: -1.0799999, y: 0.5}
-      - {x: -1.0799999, y: 0.52}
-      - {x: -1.4599999, y: 0.52}
-      - {x: -1.6999999, y: 0.38}
-      - {x: -1.74, y: 0.34}
-      - {x: -1.76, y: 0.06}
-      - {x: -1.74, y: -0.35999998}
-      - {x: -1.5, y: -0.52}
-      - {x: 0.17999999, y: -0.52}
-      - {x: 0.39999998, y: -0.5}
-      - {x: 0.48, y: -0.52}
-  m_UseDelaunayMesh: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

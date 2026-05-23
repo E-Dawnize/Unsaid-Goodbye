@@ -15,3 +15,5 @@ MonoBehaviour:
   _description: 结局B离开 — 停药扔药瓶，日记'再见小猫'，阳光风铃
   Dialogue: {fileID: 11400000, guid: d4c3a56d3c3b478abec11818b2948e61, type: 2}
   OneShot: 1
+  PromptIconKey: 
+  SfxKey: 

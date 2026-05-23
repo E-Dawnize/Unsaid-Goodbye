@@ -15,5 +15,16 @@ namespace Core.Identity
 
         public DialogueSequence Dialogue;
         public bool OneShot = true;
+
+        /// <summary>
+        /// Proximity 模式下玩家靠近时显示的交互提示图标 Addressables Key。
+        /// 留空则不显示图标。不同交互物可配置不同图标路径。
+        /// </summary>
+        [Tooltip("Proximity 模式下显示的交互提示图 Addressables Key（留空不显示）")]
+        public string PromptIconKey;
+
+        /// <summary>交互触发时播放的音效 Addressables Key，留空则不播放</summary>
+        [Tooltip("交互时播放的音效 Addressables Key")]
+        public string SfxKey;
     }
 }

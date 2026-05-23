@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Core.Architecture;
 using Core.DI;
+using Gameplay.Interfaces;
 using Gameplay.Save;
 using Gameplay.SceneFlow;
 using Gameplay.SO;
@@ -21,9 +22,12 @@ namespace MVVM.ViewModel
     public class MainMenuViewModel : ViewModelBase
     {
         [Inject] private ISaveManager _saveManager;
+        [Inject] private IGameFlowManager _gameFlow;
         private AsyncOperationHandle<SceneInstance> _sceneHandle;
+        private bool _sceneLoaded;
 
         public ICommand StartGameCommand { get; private set; }
+        public ICommand ContinueGameCommand { get; private set; }
 
         private float _volume = 1f;
         public float Volume
@@ -35,33 +39,43 @@ namespace MVVM.ViewModel
         public override void Initialize()
         {
             StartGameCommand = new AsyncCommand(StartGameAsync);
+            ContinueGameCommand = new AsyncCommand(ContinueGameAsync);
         }
 
+        /// <summary>新游戏：强制创建新存档，从 Phase1 开始</summary>
         private async Task StartGameAsync()
         {
-            // 1. 获取存档：存在则继续，不存在则创建新存档
-            GameSaveDto save;
-            if (_saveManager.SaveExists())
-            {
-                save = _saveManager.LoadSave();
-                Debug.Log($"[MainMenu] 继续游戏: Phase={save.currentPhase}");
-            }
-            else
-            {
-                save = _saveManager.CreateNewSave();
-                Debug.Log("[MainMenu] 新游戏开始");
-            }
+            var save = _saveManager.CreateNewSave();
+            Debug.Log("[MainMenu] 新游戏开始");
 
-            // 2. 加载阶段配置，获取目标场景路径
-            var scenePath = await LoadScenePathForPhase(save.currentPhase);
+            await LoadAndEnterScene(save.currentPhase);
+        }
 
-            if (string.IsNullOrEmpty(scenePath))
+        /// <summary>继续游戏：仅当存档存在时有效</summary>
+        private async Task ContinueGameAsync()
+        {
+            if (!_saveManager.SaveExists())
             {
-                Debug.LogError($"[MainMenu] 无法找到阶段 {save.currentPhase} 的场景路径");
+                Debug.LogWarning("[MainMenu] 没有存档，无法继续游戏");
                 return;
             }
 
-            // 3. 加载游戏场景
+            var save = _saveManager.LoadSave();
+            Debug.Log($"[MainMenu] 继续游戏: Phase={save.currentPhase}");
+
+            await LoadAndEnterScene(save.currentPhase);
+        }
+
+        private async Task LoadAndEnterScene(GamePhase phase)
+        {
+            var scenePath = await LoadScenePathForPhase(phase);
+
+            if (string.IsNullOrEmpty(scenePath))
+            {
+                Debug.LogError($"[MainMenu] 无法找到阶段 {phase} 的场景路径");
+                return;
+            }
+
             Debug.Log($"[MainMenu] 加载场景: {scenePath}");
             _sceneHandle = Addressables.LoadSceneAsync(scenePath, LoadSceneMode.Single);
             await _sceneHandle.Task;
@@ -69,7 +83,12 @@ namespace MVVM.ViewModel
             if (_sceneHandle.Status != AsyncOperationStatus.Succeeded)
             {
                 Debug.LogError($"[MainMenu] 场景加载失败: {scenePath}");
+                return;
             }
+
+            _sceneLoaded = true;
+            Debug.Log($"[MainMenu] 场景加载完成，通知 GameFlowManager 初始化阶段");
+            _gameFlow.OnGameSceneLoaded();
         }
 
         private static async Task<string> LoadScenePathForPhase(GamePhase phase)
@@ -101,8 +120,7 @@ namespace MVVM.ViewModel
 
         public override void Dispose()
         {
-            if (_sceneHandle.IsValid())
-                Addressables.Release(_sceneHandle);
+            // 不释放 _sceneHandle：场景加载中释放会取消加载，加载完成后释放会卸载游戏场景
             base.Dispose();
         }
     }

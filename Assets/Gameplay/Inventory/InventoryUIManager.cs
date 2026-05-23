@@ -4,6 +4,9 @@ using Core.Architecture.Interfaces;
 using Core.DI;
 using Core.Identity;
 using DG.Tweening;
+using Gameplay.Interfaces;
+using Gameplay.Pause;
+using Gameplay.SceneFlow;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -15,6 +18,8 @@ namespace Gameplay.Inventory
     public class InventoryUIManager : IInitializable, IDisposable, IBackpackUI
     {
         [Inject] private IInventoryManager _inventory;
+        [Inject] private IGameFlowManager _flow;
+        [InjectOptional] private IPauseMenu _pauseMenu;
 
         public bool IsOpen { get; private set; }
 
@@ -71,14 +76,53 @@ namespace Gameplay.Inventory
         private Image _detailImage;
         private Transform _detailImageTransform;
         private readonly Dictionary<string, Sprite> _loadedDetailSprites = new();
+        private bool _isDetailShowing;
 
         // ui sprites
         private Sprite _b1, _b2, _c1, _c2;
+        private bool _uiBuilt;
 
         public void Initialize()
         {
             _cam = Camera.main;
             _inventory.OnItemCollected += OnItemCollected;
+            _flow.OnPhaseChanged += OnGamePhaseChanged;
+            // 主菜单不初始化背包 UI，等进入游戏后再建
+            if (_flow.CurrentConfig != null)
+                BuildGameUI();
+        }
+
+        public void Dispose()
+        {
+            _inventory.OnItemCollected -= OnItemCollected;
+            _flow.OnPhaseChanged -= OnGamePhaseChanged;
+            if (_backpackRoot != null) Object.Destroy(_backpackRoot);
+            if (_overlayGo != null) Object.Destroy(_overlayGo);
+            if (_toggleBtn != null) Object.Destroy(_toggleBtn.gameObject);
+            if (_closeBtn != null) Object.Destroy(_closeBtn.gameObject);
+            if (_detailCanvasGo != null) Object.Destroy(_detailCanvasGo);
+            if (_loadHandle.IsValid()) Addressables.Release(_loadHandle);
+        }
+
+        private void OnGamePhaseChanged(GamePhase phase)
+        {
+            // 进入第一个游戏场景时才建 UI
+            if (!_uiBuilt && _flow.CurrentConfig != null)
+                BuildGameUI();
+            SyncBagVisibility();
+        }
+
+        private void BuildGameUI()
+        {
+            _uiBuilt = true;
+            // 场景切换后 Camera.main 已变，必须重新获取
+            _cam = Camera.main;
+            if (_cam == null)
+            {
+                Debug.LogError("[InventoryUI] Cannot build UI: no camera found");
+                _uiBuilt = false;
+                return;
+            }
             BuildOverlay();
             BuildToggleBtn();
             BuildDetailCanvas();
@@ -86,15 +130,17 @@ namespace Gameplay.Inventory
             LoadPrefab();
         }
 
-        public void Dispose()
+        private void SyncBagVisibility()
         {
-            _inventory.OnItemCollected -= OnItemCollected;
-            if (_backpackRoot != null) Object.Destroy(_backpackRoot);
-            if (_overlayGo != null) Object.Destroy(_overlayGo);
-            if (_toggleBtn != null) Object.Destroy(_toggleBtn.gameObject);
-            if (_closeBtn != null) Object.Destroy(_closeBtn.gameObject);
-            if (_detailCanvasGo != null) Object.Destroy(_detailCanvasGo);
-            if (_loadHandle.IsValid()) Addressables.Release(_loadHandle);
+            // 用 CurrentConfig 判空：主菜单无 PhaseConfig，背包不显示
+            SetBagButtonVisible(_flow.CurrentConfig != null);
+        }
+
+        private void SetBagButtonVisible(bool visible)
+        {
+            if (!visible && IsOpen) Close();
+            if (_toggleBtn != null) _toggleBtn.gameObject.SetActive(visible);
+            if (!visible && _closeBtn != null) _closeBtn.gameObject.SetActive(false);
         }
 
         // ==================== world-space overlay ====================
@@ -138,12 +184,12 @@ namespace Gameplay.Inventory
             var go = CreateCameraChild("BackpackToggleBtn");
             var hh = _cam.orthographicSize;
             var hw = hh * _cam.aspect;
-            go.transform.localPosition = new Vector3(hw - 0.7f, -hh + 0.7f, 5f);
+            go.transform.position = _cam.transform.position + new Vector3(hw - 0.7f, -hh + 0.7f, 5f);
 
             _toggleBtn = go.AddComponent<WorldButton>();
-            _toggleBtn.Init(PopupLayer, 100, new Vector2(1f, 1f));
+            _toggleBtn.Init(PopupLayer, 100, new Vector2(1f, 1f), new Vector2(0.95f, 0.05f));
             _toggleBtn.OnClick += Toggle;
-            _toggleBtn.gameObject.SetActive(true);
+            _toggleBtn.gameObject.SetActive(false); // 初始化隐藏，由 SyncBagVisibility 决定
         }
 
         private void CreateCloseBtnOnBackpack()
@@ -151,10 +197,10 @@ namespace Gameplay.Inventory
             var go = CreateCameraChild("BackpackCloseBtn");
             var hh = _cam.orthographicSize;
             var hw = hh * _cam.aspect;
-            go.transform.localPosition = new Vector3(hw - 2.45f, hh - 2.01f, 5f);
+            go.transform.position = _cam.transform.position + new Vector3(hw - 2.45f, hh - 2.01f, 5f);
 
             _closeBtn = go.AddComponent<WorldButton>();
-            _closeBtn.Init(PopupLayer, 110, new Vector2(0.4f, 0.4f));
+            _closeBtn.Init(PopupLayer, 110, new Vector2(0.4f, 0.4f), new Vector2(0.86f, 0.80f));
             _closeBtn.OnClick += Close;
             _closeBtn.gameObject.SetActive(false);
         }
@@ -162,8 +208,6 @@ namespace Gameplay.Inventory
         private static GameObject CreateCameraChild(string name)
         {
             var go = new GameObject(name);
-            var cam = Camera.main;
-            if (cam != null) go.transform.SetParent(cam.transform, false);
             Object.DontDestroyOnLoad(go);
             return go;
         }
@@ -203,6 +247,7 @@ namespace Gameplay.Inventory
 
             var detailGo = NewUI("DetailImage", go.transform);
             _detailImage = detailGo.AddComponent<Image>();
+            _detailImage.raycastTarget = false; // 点击穿透到背景 Button，否则大图拦截点击无法退出
             _detailImage.preserveAspect = true;
             _detailImageTransform = detailGo.transform;
             var dr = detailGo.GetComponent<RectTransform>();
@@ -314,7 +359,9 @@ namespace Gameplay.Inventory
                     col.isTrigger = true;
                     col.size = sr.bounds.size;
                     var slotName = kv.Value;
-                    child.gameObject.AddComponent<SlotClickHandler>().OnClick += () => ShowDetail(slotName);
+                    var handler = child.gameObject.AddComponent<SlotClickHandler>();
+                    handler.BlockCheck = () => _isDetailShowing;
+                    handler.OnClick += () => ShowDetail(slotName);
                 }
 
                 foreach (var def in _inventory.CollectedItems)
@@ -383,6 +430,7 @@ namespace Gameplay.Inventory
             }
 
             _detailOverlay.blocksRaycasts = true;
+            _isDetailShowing = true;
             FadeCG(_detailOverlay, 1f, 0.25f);
             _detailImageTransform.localScale = Vector3.one * 0.7f;
             _detailImageTransform.DOScale(1f, 0.3f).SetEase(Ease.OutBack);
@@ -391,6 +439,7 @@ namespace Gameplay.Inventory
         private void HideDetail()
         {
             _detailOverlay.blocksRaycasts = false;
+            _isDetailShowing = false;
             FadeCG(_detailOverlay, 0f, 0.2f);
             _detailImageTransform.DOScale(0.7f, 0.15f);
         }
@@ -406,6 +455,7 @@ namespace Gameplay.Inventory
         public void Open()
         {
             if (_backpackRoot == null) return;
+            if (_pauseMenu != null && _pauseMenu.IsOpen) return; // 暂停菜单开着时不响应
             IsOpen = true;
             _overlayGo.SetActive(true);
             _backpackRoot.SetActive(true);
@@ -456,8 +506,9 @@ namespace Gameplay.Inventory
             private BoxCollider2D _col;
             private Sprite _normal, _hover;
             private bool _hovered;
+            private float _anchorX, _anchorY;
 
-            public void Init(string sortingLayer, int sortingOrder, Vector2 defaultSize)
+            public void Init(string sortingLayer, int sortingOrder, Vector2 defaultSize, Vector2 viewportAnchor)
             {
                 _sr = gameObject.AddComponent<SpriteRenderer>();
                 _sr.sortingLayerName = sortingLayer;
@@ -468,6 +519,9 @@ namespace Gameplay.Inventory
                 _col = gameObject.AddComponent<BoxCollider2D>();
                 _col.isTrigger = true;
                 _col.size = defaultSize;
+
+                _anchorX = viewportAnchor.x;
+                _anchorY = viewportAnchor.y;
 
                 gameObject.layer = LayerMask.NameToLayer("UI");
             }
@@ -500,6 +554,14 @@ namespace Gameplay.Inventory
                 var cam = Camera.main;
                 if (cam == null) return;
 
+                // 每帧跟随当前相机，防止场景切换后相机被销毁导致按钮丢失
+                var camPos = cam.transform.position;
+                var hh = cam.orthographicSize;
+                var hw = hh * cam.aspect;
+                var worldX = camPos.x + (_anchorX - 0.5f) * 2f * hw;
+                var worldY = camPos.y + (_anchorY - 0.5f) * 2f * hh;
+                transform.position = new Vector3(worldX, worldY, transform.position.z);
+
                 var worldPos = (Vector2)cam.ScreenToWorldPoint(mouse.position.ReadValue());
                 var hits = new List<Collider2D>();
                 Physics2D.OverlapPoint(worldPos, new ContactFilter2D().NoFilter(), hits);
@@ -520,7 +582,7 @@ namespace Gameplay.Inventory
                 else if (!_hovered && wasHovered)
                     _sr.sprite = _normal ?? _sr.sprite;
 
-                if (_hovered && mouse.leftButton.wasPressedThisFrame)
+                if (_hovered && mouse.leftButton.wasPressedThisFrame && !Pause.PauseMenuManager.IsAnyOpen)
                     OnClick?.Invoke();
             }
         }
@@ -530,6 +592,7 @@ namespace Gameplay.Inventory
         private class SlotClickHandler : MonoBehaviour
         {
             public event Action OnClick;
+            public Func<bool> BlockCheck;
             private Camera _cam;
             private Transform _target;
             private bool _hovered;
@@ -544,6 +607,8 @@ namespace Gameplay.Inventory
 
             private void Update()
             {
+                // 每帧刷新，场景切换后 Camera.main 会变
+                if (Camera.main != null) _cam = Camera.main;
                 if (_cam == null) return;
                 var mouse = UnityEngine.InputSystem.Mouse.current;
                 if (mouse == null) return;
@@ -573,7 +638,7 @@ namespace Gameplay.Inventory
                     _target.DOScale(_originalScale, 0.15f).SetEase(Ease.OutQuad);
                 }
 
-                if (_hovered && mouse.leftButton.wasPressedThisFrame)
+                if (_hovered && mouse.leftButton.wasPressedThisFrame && (BlockCheck == null || !BlockCheck()))
                     OnClick?.Invoke();
             }
         }

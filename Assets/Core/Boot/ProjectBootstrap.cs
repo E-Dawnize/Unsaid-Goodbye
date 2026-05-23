@@ -23,6 +23,14 @@ namespace Core.Boot
         {
             if (!Application.isPlaying) return;
             Debug.Log("Boot");
+
+            // 移动端强制横屏
+            Screen.orientation = ScreenOrientation.AutoRotation;
+            Screen.autorotateToPortrait = false;
+            Screen.autorotateToPortraitUpsideDown = false;
+            Screen.autorotateToLandscapeLeft = true;
+            Screen.autorotateToLandscapeRight = true;
+
             SceneManager.sceneLoaded -= OnSceneLoaded;
             SceneManager.sceneLoaded += OnSceneLoaded;
             ProjectContext.Ensure();
@@ -37,6 +45,23 @@ namespace Core.Boot
         private static void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
             FixEventSystemInputModules();
+            FixCameraFor1080p(scene);
+        }
+
+        /// <summary>
+        /// 设置正交相机 orthoSize=5.4，使 1920×1080 PPU100 的 Sprite 刚好填满屏幕
+        /// </summary>
+        private static void FixCameraFor1080p(Scene scene)
+        {
+            foreach (var root in scene.GetRootGameObjects())
+            {
+                var cam = root.GetComponentInChildren<Camera>(true);
+                if (cam != null && cam.orthographic)
+                {
+                    cam.orthographicSize = 5.4f;
+                    break;
+                }
+            }
         }
 
         private static void FixEventSystemInputModules()

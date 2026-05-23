@@ -10,18 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 92d24d3ed91b43ac84aa5dc98c5bfeb0, type: 3}
-  m_Name: InnerBedroom
-  m_EditorClassIdentifier:
+  m_Name: SurfaceBedroomUnderBed
+  m_EditorClassIdentifier: 
   PhaseId: 5
-  DisplayName: InnerBedroom
-  SceneAssetPath: Scenes/Phase4_InnerBedroom
-  BackgroundMusic:
+  DisplayName: SurfaceBedroomUnderBed
+  SceneAssetPath: Scenes/7.SurfaceWorld_Bedroom_UnderBed
+  BackgroundMusic: BGM/SurfaceBedroom
   EntryDialogueId: dialogue_phase4_bedroom_intro
-  ExitDialogueId:
+  ExitDialogueId: 
   RequiredBeats:
-  - {fileID: 11400000, guid: 3d291dc7fb7448d0baa827e6c9c5fbf1, type: 2}
+  - {fileID: 11400000, guid: 019d131cf3c14aff9ee4c5582821229d, type: 2}
+  - {fileID: 11400000, guid: 5e9a7fe399624ef0b884cef26961454b, type: 2}
+  - {fileID: 11400000, guid: 7216f64db6964fe88d914ab95418b04d, type: 2}
   DefaultNextPhase: 6
   AltNextPhase: 0
   IsEndingBranch: 0
-  TransitionSFX:
+  TransitionSFX: 
   TransitionDuration: 2

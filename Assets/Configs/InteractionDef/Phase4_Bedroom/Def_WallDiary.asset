@@ -15,3 +15,5 @@ MonoBehaviour:
   _description: 墙上日记(L4) — 童年字迹日记，碎片拼贴解谜，红色文字
   Dialogue: {fileID: 11400000, guid: f4cfe047857e42cab23b244ad52b0f80, type: 2}
   OneShot: 1
+  PromptIconKey: 
+  SfxKey: 

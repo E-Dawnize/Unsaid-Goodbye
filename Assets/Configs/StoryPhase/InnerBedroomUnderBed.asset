@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PhaseId: 6
   DisplayName: InnerBedroomUnderBed
-  SceneAssetPath: Scenes/Phase5_InnerBalcony_UnderBed
-  BackgroundMusic: 
+  SceneAssetPath: Scenes/8.InnerWorld_Bedroom_UnderBed
+  BackgroundMusic: BGM/InnerBedroom
   EntryDialogueId: 
   ExitDialogueId: 
   RequiredBeats:

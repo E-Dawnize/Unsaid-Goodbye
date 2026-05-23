@@ -15,3 +15,5 @@ MonoBehaviour:
   _description: "\u5367\u5BA4\u955C\u5B50\u63D0\u793A - \u770B\u89C1\u955C\u4E2D\u4F3C\u4E4E\u5C11\u4E86\u4EC0\u4E48\uFF0C\u968F\u540E\u8FDB\u5165\u91CC\u4E16\u754C\u9633\u53F0"
   Dialogue: {fileID: 11400000, guid: edafeb51dab94c149d1cb97809f0bdc9, type: 2}
   OneShot: 1
+  PromptIconKey: 
+  SfxKey: 

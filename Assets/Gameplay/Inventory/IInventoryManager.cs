@@ -8,5 +8,6 @@ namespace Gameplay.Inventory
     {
         IReadOnlyList<InteractionDef> CollectedItems { get; }
         event Action<InteractionDef> OnItemCollected;
+        void RestoreItem(InteractionDef def);
     }
 }

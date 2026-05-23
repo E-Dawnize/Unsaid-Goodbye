@@ -15,3 +15,5 @@ MonoBehaviour:
   _description: 墙壁相框(H2) — 空相框，金色狗毛残留，墙漆色差
   Dialogue: {fileID: 11400000, guid: e9316ba3a5c04d2a854103e2d460f624, type: 2}
   OneShot: 1
+  PromptIconKey: 
+  SfxKey: SFX/CheckFrame

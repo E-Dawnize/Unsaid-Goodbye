@@ -15,3 +15,5 @@ MonoBehaviour:
   _description: 结局选择 — 根据收集度解锁'留下'或'离开'选项
   Dialogue: {fileID: 11400000, guid: 07bc9132de1647b2b8189430fc574edd, type: 2}
   OneShot: 1
+  PromptIconKey: 
+  SfxKey: 

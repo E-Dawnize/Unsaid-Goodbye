@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PhaseId: 2
   DisplayName: Surface Park
-  SceneAssetPath: Scenes/Phase1_SurfaceLivingRoom_Investigate
-  BackgroundMusic: 
+  SceneAssetPath: Scenes/4.SurfaceWorld_Park
+  BackgroundMusic: BGM/SurfacePark
   EntryDialogueId: dialogue_phase2_intro
   ExitDialogueId: 
   RequiredBeats:

@@ -4,6 +4,7 @@ using Core.Architecture.Interfaces;
 using Core.DI;
 using Core.Events.EventInterfaces;
 using Core.Identity;
+using Gameplay.Audio;
 using Gameplay.SO;
 using Input.InputInterface;
 using UnityEngine;
@@ -16,9 +17,16 @@ namespace Gameplay.Dialogue
     public class DialogueManager : IDialogueManager, IInitializable, System.IDisposable
     {
         private const string DialogueLabel = "DialogueSequence";
+        private const string DialogueBoxResourcePath = "UI/Dialogue/DialogBox";
+        private const string DialogueFontResourcePath = "Fonts/HongLeiXiaozhitiao";
+
+        private static Font _dialogueFont;
 
         [Inject] private IEventCenter _events;
         [Inject] private IPlayerInput _input;
+        [InjectOptional] private IAudioManager _audio;
+
+        private const string DialogueAdvanceSfxKey = "SFX/DialogueAdvance";
 
         private CanvasGroup _dialogueGroup;
         private Image _panelImage;
@@ -98,6 +106,7 @@ namespace Gameplay.Dialogue
                 ApplyEntryStyle(entry);
                 _speakerText.text = BuildSpeakerText(entry);
                 _dialogueText.text = entry.Text ?? string.Empty;
+                _audio?.PlaySfx(DialogueAdvanceSfxKey);
                 ClearChoices();
 
                 if (entry.Choices.Count > 0)
@@ -187,36 +196,55 @@ namespace Gameplay.Dialogue
             var panelObject = new GameObject("DialoguePanel");
             panelObject.transform.SetParent(root.transform, false);
 
-            _panelImage = panelObject.AddComponent<Image>();
-
-            var panelRect = panelObject.GetComponent<RectTransform>();
-            panelRect.anchorMin = new Vector2(0.08f, 0.06f);
-            panelRect.anchorMax = new Vector2(0.92f, 0.3f);
+            var panelRect = panelObject.AddComponent<RectTransform>();
+            panelRect.anchorMin = new Vector2(0.07f, 0.03f);
+            panelRect.anchorMax = new Vector2(0.93f, 0.30f);
             panelRect.offsetMin = Vector2.zero;
             panelRect.offsetMax = Vector2.zero;
 
+            var artObject = new GameObject("DialogueArt");
+            artObject.transform.SetParent(panelObject.transform, false);
+            _panelImage = artObject.AddComponent<Image>();
+            var panelSprite = Resources.Load<Sprite>(DialogueBoxResourcePath);
+            if (panelSprite != null)
+            {
+                _panelImage.sprite = panelSprite;
+                _panelImage.type = Image.Type.Simple;
+                _panelImage.color = Color.white;
+            }
+            else
+            {
+                _panelImage.color = new Color(0.08f, 0.07f, 0.1f, 0.88f);
+                Debug.LogWarning($"[Dialogue] Dialogue box sprite not found at Resources/{DialogueBoxResourcePath}");
+            }
+            var artRect = _panelImage.GetComponent<RectTransform>();
+            artRect.anchorMin = Vector2.zero;
+            artRect.anchorMax = Vector2.one;
+            artRect.offsetMin = Vector2.zero;
+            artRect.offsetMax = Vector2.zero;
+
             _speakerText = CreateText("SpeakerText", panelObject.transform, 26, FontStyle.Bold);
             var speakerRect = _speakerText.GetComponent<RectTransform>();
-            speakerRect.anchorMin = new Vector2(0f, 0.72f);
-            speakerRect.anchorMax = new Vector2(1f, 1f);
-            speakerRect.offsetMin = new Vector2(32f, 0f);
-            speakerRect.offsetMax = new Vector2(-32f, -12f);
+            speakerRect.anchorMin = new Vector2(0f, 0.58f);
+            speakerRect.anchorMax = new Vector2(1f, 0.88f);
+            speakerRect.offsetMin = new Vector2(72f, 0f);
+            speakerRect.offsetMax = new Vector2(-72f, 0f);
 
-            _dialogueText = CreateText("DialogueText", panelObject.transform, 30, FontStyle.Normal);
+            _dialogueText = CreateText("DialogueText", panelObject.transform, 35, FontStyle.Normal);
             _dialogueText.alignment = TextAnchor.UpperLeft;
             var textRect = _dialogueText.GetComponent<RectTransform>();
-            textRect.anchorMin = new Vector2(0f, 0.12f);
-            textRect.anchorMax = new Vector2(1f, 0.75f);
-            textRect.offsetMin = new Vector2(32f, 0f);
-            textRect.offsetMax = new Vector2(-32f, 0f);
+            textRect.anchorMin = new Vector2(0f, 0.22f);
+            textRect.anchorMax = new Vector2(1f, 0.64f);
+            textRect.offsetMin = new Vector2(157f, 0f);
+            textRect.offsetMax = new Vector2(-72f, 0f);
 
             var choicesObject = new GameObject("Choices");
             choicesObject.transform.SetParent(panelObject.transform, false);
             _choiceRoot = choicesObject.AddComponent<RectTransform>();
             _choiceRoot.anchorMin = new Vector2(0f, 0f);
-            _choiceRoot.anchorMax = new Vector2(1f, 0.22f);
-            _choiceRoot.offsetMin = new Vector2(32f, 16f);
-            _choiceRoot.offsetMax = new Vector2(-32f, 0f);
+            _choiceRoot.anchorMax = new Vector2(1f, 0.26f);
+            _choiceRoot.offsetMin = new Vector2(72f, 14f);
+            _choiceRoot.offsetMax = new Vector2(-72f, 0f);
 
             var layout = choicesObject.AddComponent<HorizontalLayoutGroup>();
             layout.spacing = 16f;
@@ -232,7 +260,7 @@ namespace Gameplay.Dialogue
             textObject.transform.SetParent(parent, false);
 
             var text = textObject.AddComponent<Text>();
-            text.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            text.font = GetDialogueFont();
             text.fontSize = size;
             text.fontStyle = style;
             text.horizontalOverflow = HorizontalWrapMode.Wrap;
@@ -240,29 +268,43 @@ namespace Gameplay.Dialogue
             return text;
         }
 
+        private static Font GetDialogueFont()
+        {
+            if (_dialogueFont != null)
+                return _dialogueFont;
+
+            _dialogueFont = Resources.Load<Font>(DialogueFontResourcePath);
+            if (_dialogueFont == null)
+            {
+                Debug.LogWarning($"[Dialogue] Dialogue font not found at Resources/{DialogueFontResourcePath}");
+                _dialogueFont = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            }
+
+            return _dialogueFont;
+        }
+
         private void ApplyEntryStyle(DialogueEntryData entry)
         {
+            if (_panelImage.sprite != null)
+                _panelImage.color = Color.white;
+
             switch (entry.Type)
             {
                 case DialogueLineType.InnerMonologue:
-                    _panelImage.color = new Color(0.08f, 0.07f, 0.1f, 0.88f);
-                    _speakerText.color = new Color(0.78f, 0.7f, 1f, 1f);
-                    _dialogueText.color = ResolveTextColor(entry, new Color(0.9f, 0.84f, 1f, 1f));
+                    _speakerText.color = new Color(0.31f, 0.18f, 0.24f, 1f);
+                    _dialogueText.color = ResolveTextColor(entry, new Color(0.30f, 0.19f, 0.12f, 1f));
                     break;
                 case DialogueLineType.Interaction:
-                    _panelImage.color = new Color(0.94f, 0.97f, 1f, 0.9f);
-                    _speakerText.color = new Color(0.1f, 0.27f, 0.48f, 1f);
-                    _dialogueText.color = ResolveTextColor(entry, new Color(0.05f, 0.12f, 0.2f, 1f));
+                    _speakerText.color = new Color(0.34f, 0.19f, 0.11f, 1f);
+                    _dialogueText.color = ResolveTextColor(entry, new Color(0.27f, 0.16f, 0.09f, 1f));
                     break;
                 case DialogueLineType.StoryText:
-                    _panelImage.color = new Color(0.08f, 0.06f, 0.08f, 0.9f);
-                    _speakerText.color = new Color(0.85f, 0.72f, 1f, 1f);
-                    _dialogueText.color = ResolveTextColor(entry, new Color(0.86f, 0.22f, 0.24f, 1f));
+                    _speakerText.color = new Color(0.32f, 0.16f, 0.12f, 1f);
+                    _dialogueText.color = ResolveTextColor(entry, new Color(0.42f, 0.16f, 0.11f, 1f));
                     break;
                 default:
-                    _panelImage.color = new Color(1f, 1f, 1f, 0.9f);
-                    _speakerText.color = new Color(0.12f, 0.12f, 0.12f, 1f);
-                    _dialogueText.color = ResolveTextColor(entry, new Color(0.08f, 0.08f, 0.08f, 1f));
+                    _speakerText.color = new Color(0.34f, 0.19f, 0.11f, 1f);
+                    _dialogueText.color = ResolveTextColor(entry, new Color(0.27f, 0.16f, 0.09f, 1f));
                     break;
             }
         }
@@ -315,7 +357,7 @@ namespace Gameplay.Dialogue
             var text = CreateText("Text", buttonObject.transform, 24, FontStyle.Normal);
             text.text = $"「{label}」";
             text.alignment = TextAnchor.MiddleCenter;
-            text.color = new Color(0.06f, 0.1f, 0.18f, 1f);
+            text.color = new Color(0.27f, 0.16f, 0.09f, 1f);
 
             var rect = text.GetComponent<RectTransform>();
             rect.anchorMin = Vector2.zero;

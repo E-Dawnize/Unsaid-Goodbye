@@ -15,3 +15,5 @@ MonoBehaviour:
   _description: 猫碗触发器 — 醒来后靠近猫碗触发内心独白，完成推进Phase1
   Dialogue: {fileID: 11400000, guid: 4f32857b2b77d4a4bbec26e6f2be9339, type: 2}
   OneShot: 1
+  PromptIconKey: 
+  SfxKey: SFX/CatFood

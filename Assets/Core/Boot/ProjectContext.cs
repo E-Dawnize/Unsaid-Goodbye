@@ -7,6 +7,7 @@ using Core.Architecture;
 using Core.Architecture.Interfaces;
 using Core.DI;
 using Core.Events.EventInterfaces;
+using Gameplay.Interactions;
 using Gameplay.SceneFlow;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -142,6 +143,11 @@ namespace Core.Boot
             DontDestroyOnLoad(gameFlowViewObject);
             gameFlowViewObject.AddComponent<GameFlowView>();
             Debug.Log("[ProjectContext] Global GameFlowView created");
+
+            var promptViewObject = new GameObject("InteractionPromptView");
+            DontDestroyOnLoad(promptViewObject);
+            promptViewObject.AddComponent<InteractionPromptView>();
+            Debug.Log("[ProjectContext] Global InteractionPromptView created");
         }
 
         private void ExecuteLifecycle()

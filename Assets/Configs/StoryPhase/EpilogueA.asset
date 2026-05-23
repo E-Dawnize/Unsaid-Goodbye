@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92d24d3ed91b43ac84aa5dc98c5bfeb0, type: 3}
   m_Name: EpilogueA
   m_EditorClassIdentifier:
-  PhaseId: 8
+  PhaseId: 10
   DisplayName: EpilogueA
-  SceneAssetPath: Scenes/Phase7_Epilogue_A
-  BackgroundMusic:
+  SceneAssetPath: Scenes/Epilogue_Stay
+  BackgroundMusic: BGM/EndingA
   EntryDialogueId: dialogue_epilogue_stay
   ExitDialogueId:
   RequiredBeats:

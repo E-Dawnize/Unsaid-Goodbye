@@ -15,3 +15,5 @@ MonoBehaviour:
   _description: Start New 场景开始热区 - 进入主线客厅
   Dialogue: {fileID: 0}
   OneShot: 1
+  PromptIconKey: 
+  SfxKey: 

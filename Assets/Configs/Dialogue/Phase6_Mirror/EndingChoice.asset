@@ -15,12 +15,16 @@ MonoBehaviour:
   DialogueId: dialogue_ending_choice
   CompletionId: {fileID: 11400000, guid: e1aa8025286f4feaaeb48c0ca7b50e5d, type: 2}
   Lines:
-  - "\u6211\u8BE5\u7559\u4E0B\u8FD8\u662F\u79BB\u5F00\u3002\u4E00\u53EA\u88AB\u60F3\u8C61\u7684\u732B\u4E0D\u80FD\u8FDB\u5165\u771F\u5B9E\u4E16\u754C\uFF0C\u4F46\u4E00\u53EA\u88AB\u8BB0\u4F4F\u7684\u732B\uFF0C\u53EF\u4EE5\u79BB\u5F00\u88AB\u9057\u5FD8\u7684\u4E16\u754C\u3002[\u6D4B\u8BD5\u6587\u672C]"
+  - "\u4e00\u53ea\u6c38\u8fdc\u4e0d\u4f1a\u79bb\u5f00\u7684\u732b\u3002"
   Entries:
-  - Type: 0
-    Speaker: 
-    Text: "\u6211\u8BE5\u7559\u4E0B\u8FD8\u662F\u79BB\u5F00\u3002\u4E00\u53EA\u88AB\u60F3\u8C61\u7684\u732B\u4E0D\u80FD\u8FDB\u5165\u771F\u5B9E\u4E16\u754C\uFF0C\u4F46\u4E00\u53EA\u88AB\u8BB0\u4F4F\u7684\u732B\uFF0C\u53EF\u4EE5\u79BB\u5F00\u88AB\u9057\u5FD8\u7684\u4E16\u754C\u3002[\u6D4B\u8BD5\u6587\u672C]"
-    TextColor: {r: 0, g: 0, b: 0, a: 0}
+  - Type: 3
+    Speaker: "\u5267\u60c5"
+    Text: "\u4e00\u53ea\u6c38\u8fdc\u4e0d\u4f1a\u79bb\u5f00\u7684\u732b\u3002"
+    TextColor: {r: 0.78, g: 0.62, b: 1, a: 1}
     AutoAdvance: 0
     AutoAdvanceDelay: 1.5
-    Choices: []
+    Choices:
+    - Text: "\u7559\u4e0b"
+      ResultDialogueId: dialogue_epilogue_stay
+    - Text: "\u79bb\u5f00"
+      ResultDialogueId: dialogue_epilogue_leave

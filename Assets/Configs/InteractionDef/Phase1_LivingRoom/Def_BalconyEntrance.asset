@@ -15,3 +15,5 @@ MonoBehaviour:
   _description: 阳台门 — 靠近后点击进入阳台场景，同Phase内场景切换
   Dialogue: {fileID: 0}
   OneShot: 1
+  PromptIconKey: 
+  SfxKey: SFX/EnterBalconyInner

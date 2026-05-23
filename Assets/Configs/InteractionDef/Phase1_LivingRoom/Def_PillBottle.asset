@@ -15,3 +15,5 @@ MonoBehaviour:
   _description: 茶几药瓶(H0) — 抗抑郁药，副作用标签，还剩7片
   Dialogue: {fileID: 11400000, guid: 8ce54ea8ef6b422fbfd65ddcd99b1f68, type: 2}
   OneShot: 1
+  PromptIconKey: 
+  SfxKey: 

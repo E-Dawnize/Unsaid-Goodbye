@@ -15,12 +15,36 @@ MonoBehaviour:
   DialogueId: dialogue_owner_reveal
   CompletionId: {fileID: 11400000, guid: 1aa79186598f43529184b615c61866c1, type: 2}
   Lines:
-  - "\u4E3B\u4EBA\u5750\u5728\u6C99\u53D1\u4E0A\u3002\u5979\u4E0D\u77E5\u9053\u8BE5\u600E\u4E48\u544A\u522B\u3002\u5979\u4E00\u76F4\u5728\u5931\u53BB\u3002\u6211\u662F\u5979\u60F3\u8C61\u51FA\u6765\u7684\u3002\u4E00\u53EA\u4ECE\u672A\u771F\u5B9E\u5B58\u5728\u8FC7\u3001\u4E5F\u56E0\u6B64\u6C38\u8FDC\u4E0D\u4F1A\u79BB\u5F00\u7684\u732B\u3002[\u6D4B\u8BD5\u6587\u672C]"
+  - "\u6211\u6ca1\u6709\u544a\u522b\u7684\u673a\u4f1a\u3002"
+  - "\u6211\u603b\u662f\u5728\u5931\u53bb\u3002"
+  - "\u4f60\u662f\u6211\u60f3\u8c61\u51fa\u6765\u7684\u3002"
+  - "\u4e00\u53ea\u6c38\u8fdc\u4e0d\u4f1a\u79bb\u5f00\u7684\u732b\u3002"
   Entries:
-  - Type: 0
-    Speaker: 
-    Text: "\u4E3B\u4EBA\u5750\u5728\u6C99\u53D1\u4E0A\u3002\u5979\u4E0D\u77E5\u9053\u8BE5\u600E\u4E48\u544A\u522B\u3002\u5979\u4E00\u76F4\u5728\u5931\u53BB\u3002\u6211\u662F\u5979\u60F3\u8C61\u51FA\u6765\u7684\u3002\u4E00\u53EA\u4ECE\u672A\u771F\u5B9E\u5B58\u5728\u8FC7\u3001\u4E5F\u56E0\u6B64\u6C38\u8FDC\u4E0D\u4F1A\u79BB\u5F00\u7684\u732B\u3002[\u6D4B\u8BD5\u6587\u672C]"
-    TextColor: {r: 0, g: 0, b: 0, a: 0}
+  - Type: 3
+    Speaker: "\u4e3b\u4eba"
+    Text: "\u6211\u6ca1\u6709\u544a\u522b\u7684\u673a\u4f1a\u3002"
+    TextColor: {r: 0.78, g: 0.62, b: 1, a: 1}
+    AutoAdvance: 0
+    AutoAdvanceDelay: 1.5
+    Choices: []
+  - Type: 3
+    Speaker: "\u4e3b\u4eba"
+    Text: "\u6211\u603b\u662f\u5728\u5931\u53bb\u3002"
+    TextColor: {r: 0.78, g: 0.62, b: 1, a: 1}
+    AutoAdvance: 0
+    AutoAdvanceDelay: 1.5
+    Choices: []
+  - Type: 3
+    Speaker: "\u4e3b\u4eba"
+    Text: "\u4f60\u662f\u6211\u60f3\u8c61\u51fa\u6765\u7684\u3002"
+    TextColor: {r: 0.78, g: 0.62, b: 1, a: 1}
+    AutoAdvance: 0
+    AutoAdvanceDelay: 1.5
+    Choices: []
+  - Type: 3
+    Speaker: "\u4e3b\u4eba"
+    Text: "\u4e00\u53ea\u6c38\u8fdc\u4e0d\u4f1a\u79bb\u5f00\u7684\u732b\u3002"
+    TextColor: {r: 0.78, g: 0.62, b: 1, a: 1}
     AutoAdvance: 0
     AutoAdvanceDelay: 1.5
     Choices: []
