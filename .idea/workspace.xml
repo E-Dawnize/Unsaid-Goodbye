@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="BackendCodeEditorMiscSettings">
+    <option name="/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=SwitchToGoToActionSuggester/@EntryIndexedValue" value="true" type="bool" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="ff2ee2e1-1aaa-4833-8338-90c818e51231" name="更改" comment="">
+      <change afterPath="$PROJECT_DIR$/Assets/Bridge/IEcsInputBridge.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Bridge/IEcsInputBridge.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Configs/AttackConfig.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Configs/AttackConfig.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Configs/BuffConfig.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Configs/BuffConfig.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Core/Architecture/Installers/ControllerInstaller.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Core/Architecture/Installers/ControllerInstaller.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Core/Architecture/Installers/EcsInstaller.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Core/Architecture/Installers/EcsInstaller.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Core/Architecture/Installers/InputInstaller.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Core/Architecture/Installers/InputInstaller.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Core/Tools.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Core/Tools/MonoSingleton.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Core/Tools/MonoSingleton.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/ECS/Component.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/ECS/Component/BuffComponents.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/ECS/Component/BuffComponents.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/ECS/Component/MoveComponents.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/ECS/Component/MoveComponents.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/ECS/Component/SingletonComponent.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/ECS/Component/SingletonComponent/PlayerInputState.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/ECS/Component/SingletonComponent/PlayerInputState.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/ECS/Component/Tags.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/ECS/Component/Tags/EntityTags.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/ECS/Component/Tags/EntityTags.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/ECS/Entity.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/ECS/Input.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/ECS/Input/PlayerInputStateAuthoring.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/ECS/Input/PlayerInputStateAuthoring.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/ECS/System.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/ECS/System/MovementSystem.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/ECS/System/MovementSystem.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Input/InputInterface/ISettingInput.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Input/InputInterface/ISettingInput.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/MVVM/Model/EntityModel.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/MVVM/Model/EntityModel.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/MVVM/ViewModel/CombatController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/MVVM/ViewModel/CombatController.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/MVVM/ViewModel/ControllerBase.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/MVVM/ViewModel/ControllerBase.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/MVVM/ViewModel/GameFlowController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/MVVM/ViewModel/GameFlowController.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/MVVM/ViewModel/HudController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/MVVM/ViewModel/HudController.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/MVVM/ViewModel/Interfaces/IController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/MVVM/ViewModel/Interfaces/IController.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/MVVM/ViewModel/Interfaces/IControllerManager.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/MVVM/ViewModel/Interfaces/IControllerManager.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/MVVM/ViewModel/Manager.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/MVVM/ViewModel/Manager/ControllerManager.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/MVVM/ViewModel/Manager/ControllerManager.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/MVVM/ViewModel/PlayerController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/MVVM/ViewModel/PlayerController.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/MVVM/ViewModel/TestViewModel.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/MVVM/ViewModel/TestViewModel.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Core/Architecture/Installers/CoreInstaller.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Core/Architecture/Installers/CoreInstaller.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Core/Architecture/LifecycleMonoBehaviour.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Core/Architecture/LifecycleMonoBehaviour.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Core/Architecture/LifecycleRegistry.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Core/Architecture/LifecycleRegistry.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Core/Boot/ProjectBootstrap.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Core/Boot/ProjectBootstrap.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Core/Boot/ProjectContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Core/Boot/ProjectContext.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Core/Boot/SceneScopeRunner.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Core/Boot/SceneScopeRunner.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Core/Boot/UpdateRunner.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Core/Boot/UpdateRunner.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Core/DI/DIContainer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Core/DI/DIContainer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Core/DI/Inject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Core/DI/Inject.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Core/Events/EventDefinitions/EventStructs.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Core/Events/EventDefinitions/EventStructs.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Core/Events/EventInterfaces/IEventCenter.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Core/Events/EventInterfaces/IEventCenter.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Core/Events/EventManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Core/Events/EventManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Core/Events/EventManager.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Core/Events/EventManager.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Core/GlobalTime.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Core/GlobalTime.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Input/InputConfig/PlayerInput.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Input/InputConfig/PlayerInput.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Input/InputConfig/PlayerInput.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Input/InputConfig/PlayerInput.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Input/InputConfig/PlayerInput.inputactions" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Input/InputConfig/PlayerInput.inputactions" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Input/InputInterface/IPlayerInput.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Input/InputInterface/IPlayerInput.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Input/Manager/PlayerInputManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Input/Manager/PlayerInputManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/MVVM/Binding/CommandBinding.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MVVM/Binding/CommandBinding.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/MVVM/Binding/PropertyBinding.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MVVM/Binding/PropertyBinding.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/MVVM/Model/ModelBase.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MVVM/Model/ModelBase.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/MVVM/View/PlayerView.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MVVM/View/PlayerView.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/MVVM/ViewModel/Base/ViewModelBase.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MVVM/ViewModel/Base/ViewModelBase.cs" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MacroExpansionManager">
+    <option name="directoryName" value="WH8PFGue" />
+  </component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 8,
+  "fromUser": false
+}]]></component>
+  <component name="ProjectId" id="3E6dUkdzPdNd8PitjYh1gy1BMzO" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.RadMigrateCodeStyle": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "git-widget-placeholder": "正在变基 main",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="默认任务">
+      <changelist id="ff2ee2e1-1aaa-4833-8338-90c818e51231" name="更改" comment="" />
+      <created>1779502971087</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1779502971087</updated>
+      <workItem from="1779502972781" duration="33000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

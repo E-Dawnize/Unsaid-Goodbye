@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier:
   PhaseId: 5
   DisplayName: InnerBedroom
-  SceneAssetPath: Scenes/InnerWorld_Bedroom
+  SceneAssetPath: Scenes/Phase4_InnerBedroom
   BackgroundMusic:
   EntryDialogueId: dialogue_phase4_bedroom_intro
   ExitDialogueId:

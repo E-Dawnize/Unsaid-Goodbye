@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier:
   PhaseId: 4
   DisplayName: ReturnHome
-  SceneAssetPath: Scenes/OutterWorld
+  SceneAssetPath: Scenes/Phase3_SurfaceLivingRoom_Photo
   BackgroundMusic:
   EntryDialogueId: dialogue_phase3_return_home
   ExitDialogueId:

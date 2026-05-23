@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier:
   PhaseId: 7
   DisplayName: MirrorRoom
-  SceneAssetPath: Scenes/InnerWorld_LivingRoom
+  SceneAssetPath: Scenes/Phase6_InnerLivingRoom_Mirror
   BackgroundMusic:
   EntryDialogueId: dialogue_phase6_mirror_intro
   ExitDialogueId:

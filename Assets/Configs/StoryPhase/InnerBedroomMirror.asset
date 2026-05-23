@@ -1,4 +1,4 @@
-﻿%YAML 1.1
+%YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
 --- !u!114 &11400000
 MonoBehaviour:
@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PhaseId: 7
   DisplayName: InnerBedroomMirror
-  SceneAssetPath: Scenes/9.InnerWorld_Bedroom
+  SceneAssetPath: Scenes/Phase6_InnerLivingRoom_Mirror_Bedroom
   BackgroundMusic: 
   EntryDialogueId: 
   ExitDialogueId: 

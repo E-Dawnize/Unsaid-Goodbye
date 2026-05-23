@@ -35,7 +35,7 @@ MonoBehaviour:
     - GamePhaseConfig
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 94dd06c6542b22b4499e0966bc77eb66
-    m_Address: Scenes/OutterWorld
+    m_Address: Scenes/Phase3_SurfaceLivingRoom_Photo
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -63,7 +63,27 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8b67409a5d668874399b27506f846905
-    m_Address: Scenes/InnerWorld_Park
+    m_Address: Scenes/Phase2_InnerPark
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 29866eaabf008d5418671714fe5f1998
+    m_Address: Scenes/Phase1_SurfaceLivingRoom_Initial
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 588afd79b431420092ae74dd864fc8c2
+    m_Address: Scenes/Phase1_SurfaceLivingRoom_Investigate
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a0949c91acb7d784090a8bc156e020aa
+    m_Address: Scenes/Phase5_InnerBalcony_UnderBed
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ca0976b9d6955334dbfb347464492e84
+    m_Address: Scenes/Phase6_InnerLivingRoom_Mirror_Bedroom
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

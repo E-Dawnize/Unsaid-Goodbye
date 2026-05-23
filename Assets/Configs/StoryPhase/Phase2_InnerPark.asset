@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PhaseId: 3
   DisplayName: Inner Park
-  SceneAssetPath: Scenes/InnerWorld_Park
+  SceneAssetPath: Scenes/Phase2_InnerPark
   BackgroundMusic: 
   EntryDialogueId: dialogue_phase2_intro
   ExitDialogueId: 

@@ -214,11 +214,6 @@ namespace Gameplay.SceneFlow
             FlushPendingBeats();
         }
 
-        private void StartDefaultPhase()
-        {
-            StartPhase(DefaultStartPhase);
-        }
-
         private bool TryGetPhaseForActiveScene(out GamePhase phase)
         {
             phase = GamePhase.None;

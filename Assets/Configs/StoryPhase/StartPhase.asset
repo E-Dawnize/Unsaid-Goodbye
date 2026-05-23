@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PhaseId: 1
   DisplayName: 
-  SceneAssetPath: Scenes/2.SurfaceWorld_LivingRoom
+  SceneAssetPath: Scenes/Phase1_SurfaceLivingRoom_Initial
   EntryDialogueId:
   ExitDialogueId:
   RequiredBeats:

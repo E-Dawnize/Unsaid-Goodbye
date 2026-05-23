@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier:
   PhaseId: 9
   DisplayName: EpilogueB
-  SceneAssetPath: Scenes/Epilogue_Leave
+  SceneAssetPath: Scenes/Phase7_Epilogue_B
   BackgroundMusic:
   EntryDialogueId: dialogue_epilogue_leave
   ExitDialogueId:

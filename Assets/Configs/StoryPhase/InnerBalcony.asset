@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier:
   PhaseId: 6
   DisplayName: InnerBalcony
-  SceneAssetPath: Scenes/InnerWorld_Balcony
+  SceneAssetPath: Scenes/Phase5_InnerBalcony
   BackgroundMusic:
   EntryDialogueId: dialogue_phase5_balcony_intro
   ExitDialogueId:
