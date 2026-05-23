@@ -1,20 +1,20 @@
+﻿using Input.InputConfig;
 using Input.InputInterface;
-using Input.InputConfig;
 using UnityEngine;
 
 namespace Input.Manager
 {
     /// <summary>
-    /// 玩家输入实现 — 纯 C# 类，轮询 InputAction 当前值
-    /// 不依赖 MonoBehaviour，直接注册为 Singleton
+    /// 玩家输入实现 — 基于新 Input System 轮询 InputAction 当前值。
+    /// 虚拟摇杆作为补充输入，与键盘方向共存；不使用旧输入系统。
     /// </summary>
     public class PlayerInputManager : IPlayerInput
     {
-        private PlayerInputActions _actions;
+        private readonly PlayerInputActions _actions;
         private bool _enabled;
 
         public Vector2 MoveDirection => _enabled
-            ? _actions.Gameplay.Move.ReadValue<Vector2>()
+            ? CombineMoveDirection(_actions.Gameplay.Move.ReadValue<Vector2>(), VirtualJoystickInput.Direction)
             : Vector2.zero;
 
         public Vector2 MousePosition => _enabled
@@ -39,6 +39,15 @@ namespace Input.Manager
         {
             _actions.Gameplay.Disable();
             _enabled = false;
+            VirtualJoystickInput.SetDirection(Vector2.zero);
+        }
+
+        private static Vector2 CombineMoveDirection(Vector2 inputActionDirection, Vector2 virtualDirection)
+        {
+            if (virtualDirection.sqrMagnitude > 0.0001f)
+                return Vector2.ClampMagnitude(virtualDirection, 1f);
+
+            return Vector2.ClampMagnitude(inputActionDirection, 1f);
         }
     }
 }
