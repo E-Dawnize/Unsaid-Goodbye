@@ -5,6 +5,7 @@ using Core.DI;
 using Core.Events.EventInterfaces;
 using Core.Identity;
 using Gameplay.Audio;
+using Gameplay.Ending;
 using Gameplay.SO;
 using Input.InputInterface;
 using UnityEngine;
@@ -39,6 +40,10 @@ namespace Gameplay.Dialogue
         private bool _isPlaying;
 
         public bool IsPlaying => _isPlaying;
+        public event System.Action<int, int> OnLineDisplayed;
+
+        private int _currentLineIndex;
+        private int _totalLines;
 
         public void Initialize()
         {
@@ -97,6 +102,8 @@ namespace Gameplay.Dialogue
             _dialogueGroup.alpha = 1f;
             _dialogueGroup.blocksRaycasts = true;
             _isPlaying = true;
+            _currentLineIndex = 0;
+            _totalLines = data.Entries.Count;
 
             foreach (var entry in data.Entries)
             {
@@ -107,6 +114,8 @@ namespace Gameplay.Dialogue
                 _speakerText.text = BuildSpeakerText(entry);
                 _dialogueText.text = entry.Text ?? string.Empty;
                 _audio?.PlaySfx(DialogueAdvanceSfxKey);
+                OnLineDisplayed?.Invoke(_currentLineIndex, _totalLines);
+                _currentLineIndex++;
                 ClearChoices();
 
                 if (entry.Choices.Count > 0)
@@ -388,7 +397,7 @@ namespace Gameplay.Dialogue
 
             if (_input == null) return;
 
-            while (!_input.IsClickTriggered)
+            while (!_input.IsClickTriggered || EndingDirector.IsAnimating)
                 await Task.Yield();
         }
 

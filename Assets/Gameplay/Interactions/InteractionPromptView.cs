@@ -8,32 +8,19 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace Gameplay.Interactions
 {
-    /// <summary>
-    /// Proximity 模式交互提示 UI — 玩家靠近交互物时在右侧显示可点击图标。
-    /// 不同交互物通过 InteractionDef.PromptIconKey 指定不同图标的 Addressables Key。
-    /// 点击图标即触发 InteractableObject.Fire()。
-    /// </summary>
     public class InteractionPromptView : StrictLifecycleMonoBehaviour
     {
         private const string PopupLayer = "Popup";
-        private const float PlayerOffsetX = 1.3f;
+        private const float PlayerOffsetX = 1.5f;
+        private const float StackSpacing = 1.2f;
 
         private Camera _cam;
         private Transform _playerTransform;
 
-        private GameObject _promptGo;
-        private SpriteRenderer _sr;
-        private BoxCollider2D _col;
-
-        private string _loadedIconKey;
-        private AsyncOperationHandle<Sprite> _iconLoadHandle;
-        private bool _visible;
-        private bool _usingDefaultSprite;
-        private InteractableObject _currentTarget;
-        private string _lastWarnedDefName;
-
-        // 默认图标（未配置 PromptIconKey 时使用）
+        private readonly Dictionary<InteractableObject, PromptEntry> _entries = new();
+        private readonly List<InteractableObject> _toRemove = new();
         private static Sprite _defaultPromptSprite;
+        private readonly HashSet<string> _warnedDefs = new();
 
         protected override void OnInitialize()
         {
@@ -41,84 +28,193 @@ namespace Gameplay.Interactions
             _cam = Camera.main;
         }
 
-        protected override void OnStartExternal()
-        {
-            BuildPromptUI();
-        }
-
-        private void BuildPromptUI()
-        {
-            _promptGo = new GameObject("InteractionPromptIcon");
-            DontDestroyOnLoad(_promptGo);
-
-            _sr = _promptGo.AddComponent<SpriteRenderer>();
-            _sr.sortingLayerName = PopupLayer;
-            _sr.sortingOrder = 50;
-            _sr.enabled = false;
-
-            _col = _promptGo.AddComponent<BoxCollider2D>();
-            _col.isTrigger = true;
-            _col.size = Vector2.one;
-
-            _promptGo.layer = LayerMask.NameToLayer("UI");
-        }
-
         protected override void Tick(float dt)
         {
             RefreshCamera();
+            UpdatePlayerRef();
 
-            var target = InteractableObject.CurrentProximityTarget;
+            var targets = InteractableObject.ProximityTargets;
 
-            if (target != _currentTarget)
+            // 移除已离开范围的条目
+            _toRemove.Clear();
+            foreach (var kv in _entries)
+                if (!targets.Contains(kv.Key))
+                    _toRemove.Add(kv.Key);
+            foreach (var t in _toRemove)
+                RemoveEntry(t);
+
+            // 添加新进入范围的条目
+            foreach (var target in targets)
             {
-                _currentTarget = target;
-                _usingDefaultSprite = false;
-
-                if (target != null)
-                {
-                    var iconKey = target.Def?.PromptIconKey;
-                    if (!string.IsNullOrEmpty(iconKey))
-                    {
-                        if (iconKey != _loadedIconKey)
-                            LoadIcon(iconKey);
-                    }
-                    else
-                    {
-                        // 未配置 PromptIconKey → 使用默认图标并警告
-                        ApplyDefaultSprite();
-                        var defName = target.Def != null ? target.Def.name : "(null)";
-                        if (defName != _lastWarnedDefName)//每个def只警告一次
-                        {
-                            _lastWarnedDefName = defName;
-                            Debug.LogWarning($"[InteractionPrompt] InteractionDef '{defName}' 未配置 PromptIconKey，使用默认图标");
-                        }
-                    }
-                }
+                if (!_entries.ContainsKey(target))
+                    AddEntry(target);
             }
 
-            if (target != null && target.CanInteract)
+            // 更新位置和点击检测
+            if (_entries.Count == 0 || _playerTransform == null) return;
+
+            // 以玩家正右方为基准，上下排开居中
+            var basePos = _playerTransform.position;
+            var count = _entries.Count;
+            var totalH = (count - 1) * StackSpacing;
+            var startY = basePos.y + totalH * 0.5f;
+            var idx = 0;
+            foreach (var kv in _entries)
             {
-                UpdatePlayerRef();
-                UpdatePosition();
-
-                if (!_visible)
-                {
-                    _visible = true;
-                    if (_sr != null) _sr.enabled = true;
-                }
-
-                CheckClick();
+                var pos = new Vector3(basePos.x + PlayerOffsetX, startY - idx * StackSpacing, basePos.z);
+                kv.Value.GameObject.transform.position = pos;
+                idx++;
             }
-            else if (_visible)
+
+            CheckClicks();
+        }
+
+        private void AddEntry(InteractableObject target)
+        {
+            var go = new GameObject("Prompt_" + (target.Def != null ? target.Def.name : "null"));
+            go.SetActive(false);
+            DontDestroyOnLoad(go);
+
+            var sr = go.AddComponent<SpriteRenderer>();
+            sr.sortingLayerName = PopupLayer;
+            sr.sortingOrder = 50;
+
+            var col = go.AddComponent<BoxCollider2D>();
+            col.isTrigger = true;
+            col.size = Vector2.one;
+            go.layer = LayerMask.NameToLayer("UI");
+
+            var entry = new PromptEntry { GameObject = go, Sprite = sr, Collider = col, Target = target };
+            _entries[target] = entry;
+
+            // 加载图标
+            var iconKey = target.Def?.PromptIconKey;
+            if (!string.IsNullOrEmpty(iconKey))
             {
-                _visible = false;
-                if (_sr != null) _sr.enabled = false;
+                LoadIcon(entry, iconKey);
+            }
+            else
+            {
+                ApplyDefaultSprite(entry);
+                var defName = target.Def != null ? target.Def.name : "(null)";
+                if (_warnedDefs.Add(defName))
+                    Debug.LogWarning($"[InteractionPrompt] InteractionDef '{defName}' 未配置 PromptIconKey，使用默认图标");
+            }
+
+            go.SetActive(true);
+        }
+
+        private void RemoveEntry(InteractableObject target)
+        {
+            if (_entries.TryGetValue(target, out var entry))
+            {
+                if (entry.IconHandle.IsValid()) Addressables.Release(entry.IconHandle);
+                if (entry.GameObject != null) Destroy(entry.GameObject);
+                _entries.Remove(target);
             }
         }
 
+        private void CheckClicks()
+        {
+            var mouse = Mouse.current;
+            var touch = Touchscreen.current;
+            bool clicked;
+
+            Vector2 pointerPos;
+            if (mouse != null)
+            {
+                pointerPos = mouse.position.ReadValue();
+                clicked = mouse.leftButton.wasPressedThisFrame;
+            }
+            else if (touch != null && touch.primaryTouch.press.isPressed)
+            {
+                pointerPos = touch.primaryTouch.position.ReadValue();
+                clicked = touch.primaryTouch.press.wasPressedThisFrame;
+            }
+            else
+            {
+                return;
+            }
+
+            if (!clicked || _cam == null) return;
+
+            var worldPos = (Vector2)_cam.ScreenToWorldPoint(pointerPos);
+            var hits = new List<Collider2D>();
+            Physics2D.OverlapPoint(worldPos, new ContactFilter2D().NoFilter(), hits);
+
+            foreach (var hit in hits)
+            {
+                foreach (var kv in _entries)
+                {
+                    if (hit.gameObject == kv.Value.GameObject)
+                    {
+                        kv.Key.Fire();
+                        return;
+                    }
+                }
+            }
+        }
+
+        // ==================== Icon loading ====================
+
+        private async void LoadIcon(PromptEntry entry, string key)
+        {
+            try
+            {
+                entry.IconHandle = Addressables.LoadAssetAsync<Sprite>(key);
+                await entry.IconHandle.Task;
+                if (entry.IconHandle.Status == AsyncOperationStatus.Succeeded && entry.Sprite != null)
+                {
+                    entry.Sprite.sprite = entry.IconHandle.Result;
+                    if (entry.Sprite.sprite != null)
+                        entry.Collider.size = entry.Sprite.sprite.bounds.size;
+                }
+                else
+                {
+                    ApplyDefaultSprite(entry);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.LogWarning($"[InteractionPrompt] Error loading icon '{key}': {ex.Message}");
+                ApplyDefaultSprite(entry);
+            }
+        }
+
+        private static void ApplyDefaultSprite(PromptEntry entry)
+        {
+            if (entry.Sprite != null)
+            {
+                entry.Sprite.sprite = GetDefaultPromptSprite();
+                entry.Collider.size = Vector2.one * 1.2f;
+            }
+        }
+
+        private static Sprite GetDefaultPromptSprite()
+        {
+            if (_defaultPromptSprite != null) return _defaultPromptSprite;
+            var w = 96; var h = 48;
+            var tex = new Texture2D(w, h);
+            var cx = w * 0.5f; var cy = h * 0.5f;
+            var rx = 44f; var ry = 20f;
+            for (int y = 0; y < h; y++)
+                for (int x = 0; x < w; x++)
+                {
+                    var dx = (x - cx) / rx; var dy = (y - cy) / ry;
+                    var d = Mathf.Sqrt(dx * dx + dy * dy);
+                    var alpha = 1f - Mathf.Clamp01((d - 0.9f) / 0.15f);
+                    var edge = Mathf.Clamp01((1f - d) * 10f);
+                    tex.SetPixel(x, y, new Color(1f, 1f, 1f, alpha * (0.25f + edge * 0.75f)));
+                }
+            tex.Apply();
+            _defaultPromptSprite = Sprite.Create(tex, new Rect(0, 0, w, h), new Vector2(0.5f, 0.5f));
+            return _defaultPromptSprite;
+        }
+
+        // ==================== Helpers ====================
+
         private void RefreshCamera()
         {
-            // 场景切换后 Camera.main 会变，每帧刷新
             if (_cam == null || !_cam.gameObject.activeInHierarchy)
                 _cam = Camera.main;
         }
@@ -132,110 +228,23 @@ namespace Gameplay.Interactions
             }
         }
 
-        private void UpdatePosition()
-        {
-            if (_playerTransform == null || _cam == null) return;
-            var p = _playerTransform.position;
-            _promptGo.transform.position = new Vector3(p.x + PlayerOffsetX, p.y, p.z);
-        }
-
-        private void CheckClick()
-        {
-            var mouse = Mouse.current;
-            if (mouse == null || _cam == null || _currentTarget == null) return;
-            if (!mouse.leftButton.wasPressedThisFrame) return;
-
-            var worldPos = (Vector2)_cam.ScreenToWorldPoint(mouse.position.ReadValue());
-            var hits = new List<Collider2D>();
-            Physics2D.OverlapPoint(worldPos, new ContactFilter2D().NoFilter(), hits);
-
-            foreach (var hit in hits)
-            {
-                if (hit.gameObject == _promptGo)
-                {
-                    _currentTarget.Fire();
-                    return;
-                }
-            }
-        }
-
-        private void ApplyDefaultSprite()
-        {
-            _loadedIconKey = null;
-            _usingDefaultSprite = true;
-
-            if (_iconLoadHandle.IsValid())
-                Addressables.Release(_iconLoadHandle);
-
-            if (_sr != null)
-            {
-                _sr.sprite = GetDefaultPromptSprite();
-                _col.size = Vector2.one * 1.2f;
-            }
-        }
-
-        private static Sprite GetDefaultPromptSprite()
-        {
-            if (_defaultPromptSprite != null) return _defaultPromptSprite;
-
-            var tex = new Texture2D(64, 64);
-            var cx = 32f;
-            var cy = 32f;
-            var r = 28f;
-            for (int y = 0; y < 64; y++)
-            {
-                for (int x = 0; x < 64; x++)
-                {
-                    var dist = Mathf.Sqrt((x - cx) * (x - cx) + (y - cy) * (y - cy));
-                    var alpha = 1f - Mathf.Clamp01((dist - r + 2f) / 4f);
-                    var edge = Mathf.Clamp01((r - dist) * 10f);
-                    var a = alpha * (0.25f + edge * 0.75f);
-                    tex.SetPixel(x, y, new Color(1f, 1f, 1f, a));
-                }
-            }
-            tex.Apply();
-            _defaultPromptSprite = Sprite.Create(tex, new Rect(0, 0, 64, 64), new Vector2(0.5f, 0.5f));
-            return _defaultPromptSprite;
-        }
-
-        private async void LoadIcon(string key)
-        {
-            if (string.IsNullOrEmpty(key)) return;
-
-            if (_iconLoadHandle.IsValid())
-                Addressables.Release(_iconLoadHandle);
-
-            _loadedIconKey = key;
-            _usingDefaultSprite = false;
-
-            try
-            {
-                _iconLoadHandle = Addressables.LoadAssetAsync<Sprite>(key);
-                await _iconLoadHandle.Task;
-
-                if (_iconLoadHandle.Status == AsyncOperationStatus.Succeeded && _sr != null)
-                {
-                    _sr.sprite = _iconLoadHandle.Result;
-                    if (_sr.sprite != null)
-                        _col.size = _sr.sprite.bounds.size;
-                }
-                else
-                {
-                    Debug.LogWarning($"[InteractionPrompt] Failed to load icon: {key}, using default");
-                    ApplyDefaultSprite();
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.LogWarning($"[InteractionPrompt] Error loading icon '{key}': {ex.Message}, using default");
-                ApplyDefaultSprite();
-            }
-        }
-
         protected override void OnShutdown()
         {
-            if (_promptGo != null) Destroy(_promptGo);
-            if (_iconLoadHandle.IsValid()) Addressables.Release(_iconLoadHandle);
+            foreach (var kv in _entries)
+            {
+                if (kv.Value.IconHandle.IsValid()) Addressables.Release(kv.Value.IconHandle);
+                if (kv.Value.GameObject != null) Destroy(kv.Value.GameObject);
+            }
+            _entries.Clear();
+        }
+
+        private class PromptEntry
+        {
+            public GameObject GameObject;
+            public SpriteRenderer Sprite;
+            public BoxCollider2D Collider;
+            public InteractableObject Target;
+            public AsyncOperationHandle<Sprite> IconHandle;
         }
     }
 }

@@ -28,6 +28,7 @@ namespace Gameplay.Inventory
 
         public IReadOnlyList<InteractionDef> CollectedItems => _collected;
         public event Action<InteractionDef> OnItemCollected;
+        public event Action OnCleared;
 
         public void Initialize()
         {
@@ -48,6 +49,12 @@ namespace Gameplay.Inventory
             _audio?.PlaySfx(ItemPickupSfxKey);
             Debug.Log($"[Inventory] Item collected: {e.Def.name}");
             OnItemCollected?.Invoke(e.Def);
+        }
+
+        public void Clear()
+        {
+            _collected.Clear();
+            OnCleared?.Invoke();
         }
 
         /// <summary>读档时恢复已收集的道具</summary>

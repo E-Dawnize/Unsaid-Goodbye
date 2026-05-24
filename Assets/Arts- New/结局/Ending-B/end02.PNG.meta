@@ -1,19 +1,10 @@
 fileFormatVersion: 2
-guid: 78018a6a8244d2647891eaf9502a92af
+guid: 24bac9fc4cc6c7b498e228e65c2cf259
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8528711358652261051
-    second: Ending-B-3_0
-  - first:
-      213: 13366865503699933
-    second: Ending-B-3_1
-  - first:
-      213: 348609376615189809
-    second: Ending-B-3_2
-  - first:
-      213: -1492751116961206582
-    second: Ending-B-3_3
+      213: 17746841053518363
+    second: end02_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -55,7 +46,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -105,17 +96,43 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Ending-B-3_0
+      name: end02_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 200
-        width: 612
-        height: 344
+        y: 0
+        width: 2752
+        height: 1536
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -124,74 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: bb2ae4c2bc11c5670800000000000000
-      internalID: 8528711358652261051
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Ending-B-3_1
-      rect:
-        serializedVersion: 2
-        x: 591
-        y: 360
-        width: 311
-        height: 190
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: dd3cb16e71d7f2000800000000000000
-      internalID: 13366865503699933
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Ending-B-3_2
-      rect:
-        serializedVersion: 2
-        x: 679
-        y: 210
-        width: 846
-        height: 311
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 13dc48a816286d400800000000000000
-      internalID: 348609376615189809
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Ending-B-3_3
-      rect:
-        serializedVersion: 2
-        x: 529
-        y: 232
-        width: 119
-        height: 105
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: acea57f94cea84be0800000000000000
-      internalID: -1492751116961206582
+      spriteID: b1a51ec68ac0f3000800000000000000
+      internalID: 17746841053518363
       vertices: []
       indices: 
       edges: []
@@ -200,7 +151,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -210,10 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Ending-B-3_0: 8528711358652261051
-      Ending-B-3_1: 13366865503699933
-      Ending-B-3_2: 348609376615189809
-      Ending-B-3_3: -1492751116961206582
+      end02_0: 17746841053518363
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

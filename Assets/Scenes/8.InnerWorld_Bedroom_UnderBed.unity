@@ -514,7 +514,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!61 &200002002
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -549,7 +549,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 1.9339747, y: -1.7077794}
+  m_Offset: {x: 1.7843161, y: -3.2723923}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -559,7 +559,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 5.267951, y: 4.2155585}
+  m_Size: {x: 14.329098, y: 7.344784}
   m_EdgeRadius: 0
 --- !u!114 &200002003
 MonoBehaviour:
@@ -573,7 +573,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d1e79154ff427344bde47ad48b6f439, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Interactions.InteractableObject
-  _def: {fileID: 11400000, guid: 019d131cf3c14aff9ee4c5582821229d, type: 2}
+  _def: {fileID: 11400000, guid: 3d291dc7fb7448d0baa827e6c9c5fbf1, type: 2}
   _mode: 2
   _interactOnce: 1
   _playerTag: Player
@@ -1387,15 +1387,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2632301321880726589, guid: 08079728d43edd346a5a6aebc9e2e87b, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.7
+      value: 0.35
       objectReference: {fileID: 0}
     - target: {fileID: 2632301321880726589, guid: 08079728d43edd346a5a6aebc9e2e87b, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.7
+      value: 0.35
       objectReference: {fileID: 0}
     - target: {fileID: 2632301321880726589, guid: 08079728d43edd346a5a6aebc9e2e87b, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.7
+      value: 0.35
       objectReference: {fileID: 0}
     - target: {fileID: 2632301321880726589, guid: 08079728d43edd346a5a6aebc9e2e87b, type: 3}
       propertyPath: m_LocalPosition.x

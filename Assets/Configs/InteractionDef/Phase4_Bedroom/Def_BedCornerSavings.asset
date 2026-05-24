@@ -11,9 +11,9 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 76318d37cfabf10458b2b392b256d322, type: 3}
   m_Name: Def_BedCornerSavings
-  m_EditorClassIdentifier:
-  _description: 床底存钱罐(H4) — 小猪存钱罐，纸条'给小橘看腿'，带血创可贴
+  m_EditorClassIdentifier: 
+  _description: "\u5E8A\u5E95\u5B58\u94B1\u7F50(H4) \u2014 \u5C0F\u732A\u5B58\u94B1\u7F50\uFF0C\u7EB8\u6761'\u7ED9\u5C0F\u6A58\u770B\u817F'\uFF0C\u5E26\u8840\u521B\u53EF\u8D34"
   Dialogue: {fileID: 11400000, guid: 443ba25f450e49608eafd77f19792183, type: 2}
   OneShot: 1
-  PromptIconKey: 
+  PromptIconKey: InteractUI/Check1
   SfxKey: SFX/CheckSavings

@@ -11,9 +11,9 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 76318d37cfabf10458b2b392b256d322, type: 3}
   m_Name: Def_BalconyCorner
-  m_EditorClassIdentifier:
-  _description: 阳台角落(H3) — 半杯发绿的水，绿色羽毛，排水口
+  m_EditorClassIdentifier: 
+  _description: "\u9633\u53F0\u89D2\u843D(H3) \u2014 \u534A\u676F\u53D1\u7EFF\u7684\u6C34\uFF0C\u7EFF\u8272\u7FBD\u6BDB\uFF0C\u6392\u6C34\u53E3"
   Dialogue: {fileID: 11400000, guid: 414203c908f844808df7f4e31f1b634c, type: 2}
   OneShot: 1
-  PromptIconKey: 
+  PromptIconKey: InteractUI/Check1
   SfxKey: 

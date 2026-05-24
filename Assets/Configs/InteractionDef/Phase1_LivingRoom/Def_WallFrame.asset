@@ -11,9 +11,9 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 76318d37cfabf10458b2b392b256d322, type: 3}
   m_Name: Def_WallFrame
-  m_EditorClassIdentifier:
-  _description: 墙壁相框(H2) — 空相框，金色狗毛残留，墙漆色差
+  m_EditorClassIdentifier: 
+  _description: "\u5899\u58C1\u76F8\u6846(H2) \u2014 \u7A7A\u76F8\u6846\uFF0C\u91D1\u8272\u72D7\u6BDB\u6B8B\u7559\uFF0C\u5899\u6F06\u8272\u5DEE"
   Dialogue: {fileID: 11400000, guid: e9316ba3a5c04d2a854103e2d460f624, type: 2}
   OneShot: 1
-  PromptIconKey: 
+  PromptIconKey: InteractUI/Investigate1
   SfxKey: SFX/CheckFrame

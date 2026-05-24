@@ -11,9 +11,9 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 76318d37cfabf10458b2b392b256d322, type: 3}
   m_Name: Def_DogCollar
-  m_EditorClassIdentifier:
-  _description: 叼项圈(L1) — 流浪狗枕着项圈，138号码闭环，公园项圈
+  m_EditorClassIdentifier: 
+  _description: "\u53FC\u9879\u5708(L1) \u2014 \u6D41\u6D6A\u72D7\u6795\u7740\u9879\u5708\uFF0C138\u53F7\u7801\u95ED\u73AF\uFF0C\u516C\u56ED\u9879\u5708"
   Dialogue: {fileID: 11400000, guid: a824ddd424a341559756697201c46d50, type: 2}
   OneShot: 1
-  PromptIconKey: 
+  PromptIconKey: InteractUI/Pickup1
   SfxKey: SFX/PickupCollar

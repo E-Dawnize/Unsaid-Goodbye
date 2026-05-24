@@ -31,25 +31,64 @@ namespace MVVM.View
             if (_pauseMenu != null && _pauseMenu.IsOpen) return;
 
             var mouse = Mouse.current;
-            if (mouse == null || _cam == null) return;
+            var touch = Touchscreen.current;
+            if (_cam == null) return;
 
-            var worldPos = (Vector2)_cam.ScreenToWorldPoint(mouse.position.ReadValue());
+            // 获取指针位置（优先鼠标，其次触摸）
+            Vector2 pointerPos;
+            bool isPointerDown;
+            bool isPointerClicked;
+            if (mouse != null)
+            {
+                pointerPos = mouse.position.ReadValue();
+                isPointerDown = mouse.leftButton.isPressed;
+                isPointerClicked = mouse.leftButton.wasPressedThisFrame;
+            }
+            else if (touch != null && touch.primaryTouch.press.isPressed)
+            {
+                pointerPos = touch.primaryTouch.position.ReadValue();
+                isPointerDown = true;
+                isPointerClicked = touch.primaryTouch.press.wasPressedThisFrame;
+            }
+            else
+            {
+                return;
+            }
+
+            var worldPos = (Vector2)_cam.ScreenToWorldPoint(pointerPos);
             var hits = new List<Collider2D>();
             Physics2D.OverlapPoint(worldPos, new ContactFilter2D().NoFilter(), hits);
 
             foreach (var btn in _buttons)
             {
-                var hovered = false;
+                var isOver = false;
                 foreach (var hit in hits)
                 {
                     if (hit.gameObject == btn.GameObject)
                     {
-                        hovered = true;
+                        isOver = true;
                         break;
                     }
                 }
 
-                if (hovered && mouse.leftButton.wasPressedThisFrame)
+                var pressed = isOver && isPointerDown;
+
+                // 颜色：按下 0.6，悬停 0.8，正常 original
+                Color targetColor;
+                if (pressed)
+                    targetColor = new Color(btn.OriginalColor.r * 0.6f, btn.OriginalColor.g * 0.6f, btn.OriginalColor.b * 0.6f, btn.OriginalColor.a);
+                else if (isOver)
+                    targetColor = new Color(btn.OriginalColor.r * 0.8f, btn.OriginalColor.g * 0.8f, btn.OriginalColor.b * 0.8f, btn.OriginalColor.a);
+                else
+                    targetColor = btn.OriginalColor;
+
+                if (btn.CurrentColor != targetColor)
+                {
+                    btn.Sprite.color = targetColor;
+                    btn.CurrentColor = targetColor;
+                }
+
+                if (isOver && isPointerClicked)
                     btn.OnClick?.Invoke();
             }
         }
@@ -78,11 +117,16 @@ namespace MVVM.View
                 return;
             }
 
+            var sr = go.GetComponent<SpriteRenderer>();
             var col = go.AddComponent<BoxCollider2D>();
             col.isTrigger = true;
-            col.size = go.GetComponent<SpriteRenderer>().sprite.bounds.size;
+            col.size = sr.sprite.bounds.size;
 
-            _buttons.Add(new MenuButton { GameObject = go, Collider = col, OnClick = handler });
+            _buttons.Add(new MenuButton
+            {
+                GameObject = go, Collider = col, Sprite = sr,
+                OriginalColor = sr.color, OnClick = handler
+            });
         }
 
         private static GameObject FindSpriteInScene(string name)
@@ -112,6 +156,9 @@ namespace MVVM.View
         {
             public GameObject GameObject;
             public Collider2D Collider;
+            public SpriteRenderer Sprite;
+            public Color OriginalColor;
+            public Color CurrentColor;
             public System.Action OnClick;
         }
     }

@@ -11,9 +11,10 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 76318d37cfabf10458b2b392b256d322, type: 3}
   m_Name: Def_CrateLabel
-  m_EditorClassIdentifier:
-  _description: 航空箱标签(L3) — 箱门敞开，橘猫已经卧在 CatBox 里
+  m_EditorClassIdentifier: 
+  _description: "\u822A\u7A7A\u7BB1\u6807\u7B7E(L3) \u2014 \u7BB1\u95E8\u655E\u5F00\uFF0C\u6A58\u732B\u5DF2\u7ECF\u5367\u5728
+    CatBox \u91CC"
   Dialogue: {fileID: 11400000, guid: 545c1ee75da3462d8b370b8a7ecf79af, type: 2}
   OneShot: 1
-  PromptIconKey: 
+  PromptIconKey: InteractUI/Check1
   SfxKey: SFX/OpenCrate

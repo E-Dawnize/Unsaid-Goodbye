@@ -11,9 +11,9 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 76318d37cfabf10458b2b392b256d322, type: 3}
   m_Name: Def_BuryOrangeCat
-  m_EditorClassIdentifier:
-  _description: 安葬橘猫 — 触碰额头，橘猫闭眼，干瘪如橘子皮被风吹散
+  m_EditorClassIdentifier: 
+  _description: "\u5B89\u846C\u6A58\u732B \u2014 \u89E6\u78B0\u989D\u5934\uFF0C\u6A58\u732B\u95ED\u773C\uFF0C\u5E72\u762A\u5982\u6A58\u5B50\u76AE\u88AB\u98CE\u5439\u6563"
   Dialogue: {fileID: 11400000, guid: a5ad5450390a445eb363c3d9005a1f94, type: 2}
   OneShot: 1
-  PromptIconKey: 
+  PromptIconKey: InteractUI/Touch1
   SfxKey: SFX/BuryOrangeCat

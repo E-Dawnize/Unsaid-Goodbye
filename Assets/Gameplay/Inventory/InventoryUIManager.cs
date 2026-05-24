@@ -62,7 +62,6 @@ namespace Gameplay.Inventory
         private GameObject _backpackRoot;
         private readonly Dictionary<string, SpriteRenderer> _slotRenderers = new();
         private readonly Dictionary<string, string> _slotDefs = new();
-        private AsyncOperationHandle<GameObject> _loadHandle;
 
         // world-space overlay + buttons
         private GameObject _overlayGo;
@@ -86,6 +85,7 @@ namespace Gameplay.Inventory
         {
             _cam = Camera.main;
             _inventory.OnItemCollected += OnItemCollected;
+            _inventory.OnCleared += OnInventoryCleared;
             _flow.OnPhaseChanged += OnGamePhaseChanged;
             // 主菜单不初始化背包 UI，等进入游戏后再建
             if (_flow.CurrentConfig != null)
@@ -95,13 +95,13 @@ namespace Gameplay.Inventory
         public void Dispose()
         {
             _inventory.OnItemCollected -= OnItemCollected;
+            _inventory.OnCleared -= OnInventoryCleared;
             _flow.OnPhaseChanged -= OnGamePhaseChanged;
             if (_backpackRoot != null) Object.Destroy(_backpackRoot);
             if (_overlayGo != null) Object.Destroy(_overlayGo);
             if (_toggleBtn != null) Object.Destroy(_toggleBtn.gameObject);
             if (_closeBtn != null) Object.Destroy(_closeBtn.gameObject);
             if (_detailCanvasGo != null) Object.Destroy(_detailCanvasGo);
-            if (_loadHandle.IsValid()) Addressables.Release(_loadHandle);
         }
 
         private void OnGamePhaseChanged(GamePhase phase)
@@ -148,6 +148,7 @@ namespace Gameplay.Inventory
         private void BuildOverlay()
         {
             _overlayGo = new GameObject("BackpackOverlay");
+            _overlayGo.SetActive(false);
             Object.DontDestroyOnLoad(_overlayGo);
 
             var camZ = _cam != null ? _cam.transform.position.z : -10f;
@@ -166,7 +167,6 @@ namespace Gameplay.Inventory
                 _overlayGo.transform.localScale = new Vector3(halfW * 2f, halfH * 2f, 1f);
             }
 
-            _overlayGo.SetActive(false);
         }
 
         private static Sprite CreateWhiteSprite()
@@ -182,19 +182,21 @@ namespace Gameplay.Inventory
         private void BuildToggleBtn()
         {
             var go = CreateCameraChild("BackpackToggleBtn");
+            go.SetActive(false);
             var hh = _cam.orthographicSize;
             var hw = hh * _cam.aspect;
-            go.transform.position = _cam.transform.position + new Vector3(hw - 0.7f, -hh + 0.7f, 5f);
+            go.transform.position = _cam.transform.position + new Vector3(hw - 0.55f, -hh + 0.55f, 5f);
+            go.transform.localScale = Vector3.one * 0.65f;
 
             _toggleBtn = go.AddComponent<WorldButton>();
             _toggleBtn.Init(PopupLayer, 100, new Vector2(1f, 1f), new Vector2(0.95f, 0.05f));
             _toggleBtn.OnClick += Toggle;
-            _toggleBtn.gameObject.SetActive(false); // 初始化隐藏，由 SyncBagVisibility 决定
         }
 
         private void CreateCloseBtnOnBackpack()
         {
             var go = CreateCameraChild("BackpackCloseBtn");
+            go.SetActive(false);
             var hh = _cam.orthographicSize;
             var hw = hh * _cam.aspect;
             go.transform.position = _cam.transform.position + new Vector3(hw - 2.45f, hh - 2.01f, 5f);
@@ -202,7 +204,6 @@ namespace Gameplay.Inventory
             _closeBtn = go.AddComponent<WorldButton>();
             _closeBtn.Init(PopupLayer, 110, new Vector2(0.4f, 0.4f), new Vector2(0.86f, 0.80f));
             _closeBtn.OnClick += Close;
-            _closeBtn.gameObject.SetActive(false);
         }
 
         private static GameObject CreateCameraChild(string name)
@@ -313,18 +314,19 @@ namespace Gameplay.Inventory
         {
             try
             {
-                _loadHandle = Addressables.InstantiateAsync(PrefabKey);
-                await _loadHandle.Task;
+                var assetHandle = Addressables.LoadAssetAsync<GameObject>(PrefabKey);
+                await assetHandle.Task;
 
-                if (_loadHandle.Status != AsyncOperationStatus.Succeeded)
+                if (assetHandle.Status != AsyncOperationStatus.Succeeded)
                 {
                     Debug.LogError($"[InventoryUI] Failed to load prefab: {PrefabKey}");
                     return;
                 }
 
-                _backpackRoot = _loadHandle.Result;
+                _backpackRoot = Object.Instantiate(assetHandle.Result);
                 _backpackRoot.SetActive(false);
                 Object.DontDestroyOnLoad(_backpackRoot);
+                Addressables.Release(assetHandle);
 
                 // 移除多余的 back 子物体
                 var backChild = _backpackRoot.transform.Find("back");
@@ -378,6 +380,12 @@ namespace Gameplay.Inventory
         }
 
         // ==================== items ====================
+
+        private void OnInventoryCleared()
+        {
+            foreach (var kv in _slotRenderers)
+                kv.Value.enabled = false;
+        }
 
         private void OnItemCollected(InteractionDef def)
         {

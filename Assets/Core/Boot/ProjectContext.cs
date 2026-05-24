@@ -7,6 +7,7 @@ using Core.Architecture;
 using Core.Architecture.Interfaces;
 using Core.DI;
 using Core.Events.EventInterfaces;
+using Gameplay.Ending;
 using Gameplay.Interactions;
 using Gameplay.SceneFlow;
 using UnityEngine;
@@ -148,6 +149,11 @@ namespace Core.Boot
             DontDestroyOnLoad(promptViewObject);
             promptViewObject.AddComponent<InteractionPromptView>();
             Debug.Log("[ProjectContext] Global InteractionPromptView created");
+
+            var endingDirectorObject = new GameObject("EndingDirector");
+            DontDestroyOnLoad(endingDirectorObject);
+            endingDirectorObject.AddComponent<EndingDirector>();
+            Debug.Log("[ProjectContext] Global EndingDirector created");
         }
 
         private void ExecuteLifecycle()

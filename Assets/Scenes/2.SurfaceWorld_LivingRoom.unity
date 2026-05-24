@@ -255,6 +255,12 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 564698867068239724, guid: 551d3590430eca547b658bc86073c355, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 584905753}
+    - targetCorrespondingSourceObject: {fileID: 564698867068239724, guid: 551d3590430eca547b658bc86073c355, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 584905752}
     - targetCorrespondingSourceObject: {fileID: 5079478018858342862, guid: 551d3590430eca547b658bc86073c355, type: 3}
       insertIndex: -1
       addedObject: {fileID: 73289266}
@@ -380,7 +386,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Interactions.InteractableObject
   _def: {fileID: 11400000, guid: 44c9ee428722423682eb1a216cf1ef45, type: 2}
   _mode: 2
-  _interactOnce: 1
+  _interactOnce: 0
   _playerTag: Player
   _sceneToLoad: Scenes/3.Surface_Balcony
   _enableHoverEffect: 1
@@ -484,7 +490,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.4548335, y: 0.21289992}
+  m_Offset: {x: -0.39031994, y: -0.81010485}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -494,7 +500,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 2.059667, y: 1.6457999}
+  m_Size: {x: 2.1886942, y: 3.6918097}
   m_EdgeRadius: 0
 --- !u!1 &359668919 stripped
 GameObject:
@@ -624,7 +630,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.48386478, y: -1.5193365}
+  m_Offset: {x: -0.10346341, y: -1.5193365}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -634,7 +640,77 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 6.0777445, y: 1.6419649}
+  m_Size: {x: 6.838547, y: 1.6419649}
+  m_EdgeRadius: 0
+--- !u!1 &584905750 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 564698867068239724, guid: 551d3590430eca547b658bc86073c355, type: 3}
+  m_PrefabInstance: {fileID: 73289264}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &584905752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 584905750}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d1e79154ff427344bde47ad48b6f439, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Interactions.InteractableObject
+  _def: {fileID: 11400000, guid: a3550824ce0f412e9289030ccecb5358, type: 2}
+  _mode: 2
+  _interactOnce: 1
+  _playerTag: Player
+  _sceneToLoad: 
+  _enableHoverEffect: 1
+  _hoverColor: {r: 1, g: 1, b: 0.8, a: 1}
+--- !u!61 &584905753
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 584905750}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: -0.09100509, y: -0.50052786}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1.19, y: 1.07}
+    newSize: {x: 1.19, y: 1.07}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 2.1000504, y: 2.071056}
   m_EdgeRadius: 0
 --- !u!1001 &662588637
 PrefabInstance:

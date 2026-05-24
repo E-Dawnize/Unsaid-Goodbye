@@ -2,6 +2,7 @@ using Core.Architecture;
 using Core.DI;
 using Gameplay.Audio;
 using Gameplay.Dialogue;
+using Gameplay.Ending;
 using Gameplay.Interfaces;
 using Gameplay.Inventory;
 using Gameplay.Pause;
@@ -79,7 +80,7 @@ namespace Gameplay.Player
 
         protected override void Tick(float deltaTime)
         {
-            var blocked = _dialogue.IsPlaying || (_backpack != null && _backpack.IsOpen) || (_pauseMenu != null && _pauseMenu.IsOpen);
+            var blocked = _dialogue.IsPlaying || (_backpack != null && _backpack.IsOpen) || (_pauseMenu != null && _pauseMenu.IsOpen) || EndingDirector.IsAnimating;
             var direction = blocked ? Vector2.zero : _input.MoveDirection;
 
             _manager.Move(direction, deltaTime);

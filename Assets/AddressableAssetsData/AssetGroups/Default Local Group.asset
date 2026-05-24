@@ -108,7 +108,7 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: da62f5a82c1948e4086e5614bd88e5d3
-    m_Address: Scenes/11.SurfaceWorld_LivingRoom
+    m_Address: Scenes/11.InnerWorld_LivingRoom
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -238,7 +238,7 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 60977f7562fd2fd48b9c7c421a33bc6c
-    m_Address: InteractUI/Investigate
+    m_Address: InteractUI/Investigate1
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -399,6 +399,42 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: afdcfd8a9eb24738a98e93d1c823ac56
     m_Address: InteractionDef/Def_EpilogueStay
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - InteractionDef
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a3550824ce0f412e9289030ccecb5358
+    m_Address: InteractionDef/Def_KnockOverPillBottle
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - InteractionDef
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3b90aa6127a44732b094e9fad55ece30
+    m_Address: Assets/Configs/Dialogue/Phase7_Epilogue/EpilogueStay.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - DialogueSequence
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d4c3a56d3c3b478abec11818b2948e61
+    m_Address: Assets/Configs/Dialogue/Phase7_Epilogue/EpilogueLeave.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - DialogueSequence
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0aba692a18a044568b227b6016f6142b
+    m_Address: Assets/Configs/Dialogue/Phase2_Park/InnerParkIntro.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - DialogueSequence
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 02b4b489f88746aba0b258c90de738e7
+    m_Address: Assets/Configs/Dialogue/Phase1_LivingRoom/KnockOverPillBottle.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - DialogueSequence
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6df2f54516e84625b61fe19aa4a9a9a7
+    m_Address: InteractionDef/Def_BalconyParrotAppear
     m_ReadOnly: 0
     m_SerializedLabels:
     - InteractionDef
@@ -610,6 +646,91 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - SFX
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2e77942df9b51da4f8c12c7396011e2d
+    m_Address: InteractUI/OverturnBottle1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4633e175540f9a646afa48b0d1571702
+    m_Address: InteractUI/Check1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1671bc45b931cf64a923adba85bf327f
+    m_Address: InteractUI/Pickup1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3a871219b3d54a74280cf4679b176edc
+    m_Address: InteractUI/Bury1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cd1e900c7e8339744afedbb112b5b628
+    m_Address: InteractUI/Lookback1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0f5c60beee13cf642b989e699478fae4
+    m_Address: "Assets/Arts- New/UI\uFF08\u5F85\u8865\u5145\u80CC\u5305\u672C\u8EAB\u56FE\u6837\u548C\u80CC\u5305\u5185\u7269\u54C1\u70B9\u51FB\u653E\u5927\u56FE\uFF09/\u4EA4\u4E92\u6309\u94AE/\u6DE1\u91D1\u8272-\u6B63\u5E38\u5C3A\u5BF8/touch2.png"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c24611c78277af24aa9c60d9b640078f
+    m_Address: Arts/Ending/Ending-A
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5f1f99919c790864fa3ed2b8034b41f4
+    m_Address: Arts/Ending/AfterAB
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f8a6236325e0bb34bad680a444eb6ece
+    m_Address: Arts/Ending/B/end01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 24bac9fc4cc6c7b498e228e65c2cf259
+    m_Address: Arts/Ending/B/end02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 968e2767b4a5bb048b128d46f3ef9cd5
+    m_Address: Arts/Ending/B/end03
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3631b9b9f59d4504fb90696592052bb7
+    m_Address: Arts/Ending/B/end04
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d65db7e5345ec764ba63b6988cbad7b8
+    m_Address: Arts/Ending/B/end05
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5cbcba4a7e64abb43b75269e59b4e472
+    m_Address: Arts/Ending/B/end06
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8bdb004a3e4b1224e9c8e4cb37082158
+    m_Address: Arts/Ending/B/end07
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d8a12765c0dde4146bf3b1a35a530ede
+    m_Address: Ending/Master
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 83dcd65e361b4b5449fcc6d69aa63050
+    m_Address: Arts/Ending/character-moon
+    m_ReadOnly: 0
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 7c5bd9b7bb52d8241aa7765b96bcd1e5, type: 2}

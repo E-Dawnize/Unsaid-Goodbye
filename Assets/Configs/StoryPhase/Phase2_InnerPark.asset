@@ -16,7 +16,7 @@ MonoBehaviour:
   DisplayName: Inner Park Truth
   SceneAssetPath: Scenes/5.InnerWorld_Park
   BackgroundMusic: BGM/InnerPark
-  EntryDialogueId: 
+  EntryDialogueId: dialogue_inner_park_intro
   ExitDialogueId: 
   RequiredBeats:
   - {fileID: 11400000, guid: 5a8f9c8a3a2d46dabd85d1a562d72553, type: 2}

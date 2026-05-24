@@ -4,6 +4,7 @@ using System.Linq;
 using Core.DI;
 using Core.Events.EventInterfaces;
 using Core.Identity;
+using Gameplay.Interactions;
 using Gameplay.Interfaces;
 using Gameplay.Inventory;
 using Gameplay.Save;
@@ -177,18 +178,35 @@ namespace Gameplay.SceneFlow
         #endregion
 
         #region 阶段判定
+        /// <summary>玩家在结局选择中选择的结局：0=未选，10=留下，11=离开</summary>
+        public static GamePhase ChosenEnding { get; set; }
+
         private GamePhase DetermineNextPhase()
         {
             if (_currentConfig.IsEndingBranch)
             {
-                // TODO: 接入 IEndingDeterminer + IInventoryManager
-                // var ending = _ending.DetermineEnding(_inventory);
-                // return ending == EndingType.B_Leave
-                //     ? GamePhase.Phase7_Epilogue_B
-                //     : GamePhase.Phase7_Epilogue_A;
-                return _currentConfig.DefaultNextPhase;
+                if (ChosenEnding == GamePhase.Phase7_Epilogue_A || ChosenEnding == GamePhase.Phase7_Epilogue_B)
+                {
+                    Debug.Log($"[GameFlow] Ending branch: player chose {ChosenEnding}");
+                    var result = ChosenEnding;
+                    ChosenEnding = GamePhase.None; // 重置
+                    return result;
+                }
+                // 玩家还没选 → 不推进，等 EndingDirector 来触发
+                Debug.Log("[GameFlow] Waiting for ending choice...");
+                return GamePhase.None;
             }
             return _currentConfig.DefaultNextPhase;
+        }
+
+        /// <summary>EndingDirector 调用：玩家做出选择后手动推进阶段</summary>
+        public void TriggerEndingTransition(GamePhase endingPhase)
+        {
+            ChosenEnding = endingPhase;
+            _model.SetTransitioning(true);
+            var nextPhase = DetermineNextPhase();
+            Debug.Log($"[GameFlow] Ending transition triggered: {CurrentPhase} -> {nextPhase}");
+            OnPhaseComplete?.Invoke(nextPhase);
         }
         #endregion
 
@@ -271,16 +289,29 @@ namespace Gameplay.SceneFlow
 
             if (_currentConfig != null)
             {
-                if (TryGetPhaseForActiveScene(out var curPhase) && curPhase == CurrentPhase)
+                if (TryGetPhaseForActiveScene(out var curPhase))
                 {
-                    Debug.Log($"[GameFlow] Scene loaded but phase already active ({CurrentPhase}), skipping init");
+                    // 加载的是游戏场景（可能是当前阶段重载，也可能是阶段转场），交给正常流程处理
+                    if (curPhase == CurrentPhase)
+                        Debug.Log($"[GameFlow] Scene reload for phase ({CurrentPhase}), skipping init");
+                    else
+                        Debug.Log($"[GameFlow] Phase transition in progress ({CurrentPhase} -> {curPhase}), waiting for ConfirmTransition");
                     return;
                 }
-                // 加载的是非游戏场景（如主菜单），重置阶段状态，隐藏背包/暂停按钮
-                _currentConfig = null;
-                _model.ApplyPhase(GamePhase.None, 0, 0);
-                OnPhaseChanged?.Invoke(GamePhase.None);
-                Debug.Log("[GameFlow] Phase reset — loaded a non-game scene");
+                // 场景不匹配任何 PhaseConfig
+                // 只有主菜单场景才重置阶段，其余子场景（如阳台）保持当前状态
+                var sceneName = SceneManager.GetActiveScene().name;
+                if (sceneName == "Start New")
+                {
+                    _currentConfig = null;
+                    _model.ApplyPhase(GamePhase.None, 0, 0);
+                    OnPhaseChanged?.Invoke(GamePhase.None);
+                    Debug.Log("[GameFlow] Phase reset — returned to main menu");
+                }
+                else
+                {
+                    Debug.Log($"[GameFlow] Sub-scene '{sceneName}' — keeping current phase ({CurrentPhase})");
+                }
                 return;
             }
 
@@ -346,12 +377,26 @@ namespace Gameplay.SceneFlow
             FlushPendingBeats();
 
             RestoreInventoryFromSave();
+            SyncInteractableObjectsToBeats();
 
             Debug.Log($"[GameFlow] 从存档恢复: {phase}");
         }
 
+        /// <summary>读档后同步场景中的 InteractableObject：已完成的 beat 对应的交互物标记为已使用</summary>
+        private void SyncInteractableObjectsToBeats()
+        {
+            var allObjects = UnityEngine.Object.FindObjectsByType<InteractableObject>(FindObjectsSortMode.None);
+            foreach (var obj in allObjects)
+            {
+                if (obj.Def != null && obj.Def.OneShot && _completedBeats.Contains(obj.Def))
+                    obj.MarkUsed();
+            }
+        }
+
         private void RestoreInventoryFromSave()
         {
+            _inventory.Clear();
+
             if (GameData.CollectedItemIds == null || GameData.CollectedItemIds.Count == 0)
                 return;
 

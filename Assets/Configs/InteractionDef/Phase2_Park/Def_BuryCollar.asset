@@ -11,9 +11,9 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 76318d37cfabf10458b2b392b256d322, type: 3}
   m_Name: Def_BuryCollar
-  m_EditorClassIdentifier:
-  _description: 埋项圈 — 卡车引擎声，铁笼碰撞，狗吠骤停，项圈散开
+  m_EditorClassIdentifier: 
+  _description: "\u57CB\u9879\u5708 \u2014 \u5361\u8F66\u5F15\u64CE\u58F0\uFF0C\u94C1\u7B3C\u78B0\u649E\uFF0C\u72D7\u5420\u9AA4\u505C\uFF0C\u9879\u5708\u6563\u5F00"
   Dialogue: {fileID: 11400000, guid: 92a34bfeeaa64d4188d3c1085f729358, type: 2}
   OneShot: 1
-  PromptIconKey: 
+  PromptIconKey: InteractUI/Bury1
   SfxKey: SFX/BuryCollar

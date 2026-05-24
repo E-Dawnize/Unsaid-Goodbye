@@ -37,15 +37,19 @@ namespace Gameplay.Pause
         private SpriteRenderer _toggleSr;
         private BoxCollider2D _toggleCol;
         private bool _toggleHovered;
+        private bool _togglePressed;
 
         // Overlay
         private GameObject _overlayGo;
 
         // Prefab
         private GameObject _menuRoot;
-        private AsyncOperationHandle<GameObject> _prefabHandle;
         private GameObject _backToMainGo;
         private GameObject _backGo;
+        private SpriteRenderer _backToMainSr;
+        private SpriteRenderer _backSr;
+        private Color _backToMainOrigColor;
+        private Color _backOrigColor;
         private bool _uiBuilt;
 
         public void Initialize()
@@ -62,7 +66,6 @@ namespace Gameplay.Pause
             if (_menuRoot != null) Object.Destroy(_menuRoot);
             if (_overlayGo != null) Object.Destroy(_overlayGo);
             if (_toggleGo != null) Object.Destroy(_toggleGo);
-            if (_prefabHandle.IsValid()) Addressables.Release(_prefabHandle);
         }
 
         private void OnPhaseChanged(GamePhase phase)
@@ -93,6 +96,7 @@ namespace Gameplay.Pause
         private void BuildOverlay()
         {
             _overlayGo = new GameObject("PauseOverlay");
+            _overlayGo.SetActive(false);
             Object.DontDestroyOnLoad(_overlayGo);
 
             var camZ = _cam != null ? _cam.transform.position.z : -10f;
@@ -111,7 +115,6 @@ namespace Gameplay.Pause
                 _overlayGo.transform.localScale = new Vector3(halfW * 2f, halfH * 2f, 1f);
             }
 
-            _overlayGo.SetActive(false);
         }
 
         // ==================== Toggle Button ====================
@@ -119,6 +122,7 @@ namespace Gameplay.Pause
         private void BuildToggleBtn()
         {
             _toggleGo = new GameObject("PauseToggleBtn");
+            _toggleGo.SetActive(false);
             Object.DontDestroyOnLoad(_toggleGo);
 
             _toggleSr = _toggleGo.AddComponent<SpriteRenderer>();
@@ -151,18 +155,19 @@ namespace Gameplay.Pause
         {
             try
             {
-                _prefabHandle = Addressables.InstantiateAsync(PrefabKey);
-                await _prefabHandle.Task;
+                var assetHandle = Addressables.LoadAssetAsync<GameObject>(PrefabKey);
+                await assetHandle.Task;
 
-                if (_prefabHandle.Status != AsyncOperationStatus.Succeeded)
+                if (assetHandle.Status != AsyncOperationStatus.Succeeded)
                 {
                     Debug.LogError($"[PauseMenu] Failed to load prefab: {PrefabKey}");
                     return;
                 }
 
-                _menuRoot = _prefabHandle.Result;
+                _menuRoot = Object.Instantiate(assetHandle.Result);
                 _menuRoot.SetActive(false);
                 Object.DontDestroyOnLoad(_menuRoot);
+                Addressables.Release(assetHandle);
 
                 // 设置所有 SpriteRenderer 的 sorting layer（基准 106，高于背包的 100）
                 foreach (var sr in _menuRoot.GetComponentsInChildren<SpriteRenderer>(true))
@@ -178,12 +183,20 @@ namespace Gameplay.Pause
                 if (_backToMainGo == null)
                     Debug.LogWarning($"[PauseMenu] Child 'backtomain' not found in prefab {PrefabKey}");
                 else
+                {
                     SetupClickTarget(_backToMainGo);
+                    _backToMainSr = _backToMainGo.GetComponent<SpriteRenderer>();
+                    if (_backToMainSr != null) _backToMainOrigColor = _backToMainSr.color;
+                }
 
                 if (_backGo == null)
                     Debug.LogWarning($"[PauseMenu] Child 'back' not found in prefab {PrefabKey}");
                 else
+                {
                     SetupClickTarget(_backGo);
+                    _backSr = _backGo.GetComponent<SpriteRenderer>();
+                    if (_backSr != null) _backOrigColor = _backSr.color;
+                }
             }
             catch (Exception ex)
             {
@@ -276,54 +289,94 @@ namespace Gameplay.Pause
             UpdateTogglePosition();
 
             var mouse = Mouse.current;
-            if (mouse == null) return;
+            var touch = Touchscreen.current;
 
-            var worldPos = (Vector2)_cam.ScreenToWorldPoint(mouse.position.ReadValue());
+            // 获取指针位置和按下状态
+            Vector2 pointerPos;
+            bool isPointerDown;
+            bool isPointerClicked;
+            if (mouse != null)
+            {
+                pointerPos = mouse.position.ReadValue();
+                isPointerDown = mouse.leftButton.isPressed;
+                isPointerClicked = mouse.leftButton.wasPressedThisFrame;
+            }
+            else if (touch != null && touch.primaryTouch.press.isPressed)
+            {
+                pointerPos = touch.primaryTouch.position.ReadValue();
+                isPointerDown = true;
+                isPointerClicked = touch.primaryTouch.press.wasPressedThisFrame;
+            }
+            else
+            {
+                return;
+            }
+
+            var worldPos = (Vector2)_cam.ScreenToWorldPoint(pointerPos);
             var hits = new List<Collider2D>();
             Physics2D.OverlapPoint(worldPos, new ContactFilter2D().NoFilter(), hits);
 
-            // Toggle button hover + click
+            // Toggle button: 检查悬停 + 按下
             var isOverToggle = false;
             foreach (var hit in hits)
-            {
-                if (hit.gameObject == _toggleGo)
-                {
-                    isOverToggle = true;
-                    if (mouse.leftButton.wasPressedThisFrame)
-                    {
-                        Toggle();
-                        return;
-                    }
-                }
-            }
+                if (hit.gameObject == _toggleGo) { isOverToggle = true; break; }
 
-            if (isOverToggle != _toggleHovered)
+            var isPressToggle = isOverToggle && isPointerDown;
+
+            // Toggle 颜色：按下 0.6，悬停 0.8
+            Color toggleColor;
+            if (isPressToggle)
+                toggleColor = new Color(0.6f, 0.6f, 0.6f, 0.7f);
+            else if (isOverToggle)
+                toggleColor = new Color(0.8f, 0.8f, 0.8f, 0.7f);
+            else
+                toggleColor = new Color(1f, 1f, 1f, 0.7f);
+
+            if (_toggleHovered != isOverToggle || _togglePressed != isPressToggle)
             {
                 _toggleHovered = isOverToggle;
-                _toggleSr.color = isOverToggle
-                    ? new Color(1f, 1f, 1f, 1f)
-                    : new Color(1f, 1f, 1f, 0.7f);
+                _togglePressed = isPressToggle;
+                _toggleSr.color = toggleColor;
+            }
+
+            // Toggle 点击
+            if (isOverToggle && isPointerClicked)
+            {
+                Toggle();
+                return;
             }
 
             if (!IsOpen) return;
 
-            // Menu 内按钮点击
+            // Menu 内按钮: back / backtomain
+            var isOverBack = false;
+            var isOverBackToMain = false;
             foreach (var hit in hits)
             {
-                if (mouse.leftButton.wasPressedThisFrame)
-                {
-                    if (_backToMainGo != null && hit.gameObject == _backToMainGo)
-                    {
-                        OnBackToMain();
-                        return;
-                    }
-                    if (_backGo != null && hit.gameObject == _backGo)
-                    {
-                        Close();
-                        return;
-                    }
-                }
+                if (_backGo != null && hit.gameObject == _backGo) isOverBack = true;
+                if (_backToMainGo != null && hit.gameObject == _backToMainGo) isOverBackToMain = true;
             }
+
+            // 按钮颜色更新
+            UpdateButtonColor(_backSr, _backOrigColor, isOverBack, isOverBack && isPointerDown);
+            UpdateButtonColor(_backToMainSr, _backToMainOrigColor, isOverBackToMain, isOverBackToMain && isPointerDown);
+
+            // 按钮点击
+            if (isPointerClicked)
+            {
+                if (isOverBackToMain) { OnBackToMain(); return; }
+                if (isOverBack) { Close(); return; }
+            }
+        }
+
+        private static void UpdateButtonColor(SpriteRenderer sr, Color orig, bool isOver, bool isPressed)
+        {
+            if (sr == null) return;
+            Color target;
+            if (isPressed)      target = new Color(orig.r * 0.6f, orig.g * 0.6f, orig.b * 0.6f, orig.a);
+            else if (isOver)    target = new Color(orig.r * 0.8f, orig.g * 0.8f, orig.b * 0.8f, orig.a);
+            else                target = orig;
+            if (sr.color != target) sr.color = target;
         }
 
         // ==================== Back to Main ====================
@@ -338,9 +391,22 @@ namespace Gameplay.Pause
 
             Debug.Log("[PauseMenu] 返回主菜单");
 
-            // Addressables 加载主菜单场景
-            const string mainMenuScene = "Scenes/Start New";
-            var handle = Addressables.LoadSceneAsync(mainMenuScene, LoadSceneMode.Single);
+            // 黑屏淡入
+            var fadeGo = new GameObject("ReturnFade");
+            var canvas = fadeGo.AddComponent<Canvas>();
+            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+            canvas.sortingOrder = short.MaxValue;
+            var img = fadeGo.AddComponent<UnityEngine.UI.Image>();
+            img.color = Color.black;
+            var cg = fadeGo.AddComponent<CanvasGroup>();
+            cg.alpha = 0f;
+            Object.DontDestroyOnLoad(fadeGo);
+            var elapsed = 0f;
+            while (elapsed < 1f) { elapsed += Time.deltaTime; cg.alpha = Mathf.Clamp01(elapsed / 1f); await System.Threading.Tasks.Task.Yield(); }
+            cg.alpha = 1f;
+
+            // 加载主菜单场景
+            var handle = Addressables.LoadSceneAsync("Scenes/Start New", LoadSceneMode.Single);
             await handle.Task;
             Debug.Log("[PauseMenu] 主菜单场景加载完成");
         }

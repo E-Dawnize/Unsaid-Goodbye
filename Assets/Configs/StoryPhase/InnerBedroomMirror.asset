@@ -16,7 +16,7 @@ MonoBehaviour:
   DisplayName: InnerBedroomMirror
   SceneAssetPath: Scenes/9.InnerWorld_Bedroom
   BackgroundMusic: BGM/InnerBedroom
-  EntryDialogueId: 
+  EntryDialogueId: dialogue_bedroom_mirror_hint
   ExitDialogueId: 
   RequiredBeats:
   - {fileID: 11400000, guid: df7343633e984f72a83bc6d313e1e0c0, type: 2}

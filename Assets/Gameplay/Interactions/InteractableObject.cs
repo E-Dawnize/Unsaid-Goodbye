@@ -1,4 +1,5 @@
-﻿using Core.Architecture;
+﻿using System.Collections.Generic;
+using Core.Architecture;
 using Core.DI;
 using Core.Events.EventInterfaces;
 using Core.Identity;
@@ -45,12 +46,20 @@ namespace Gameplay.Interactions
         private bool _playerInRange;
 
         /// <summary>
-        /// 当前玩家范围内最近的 Proximity 模式交互物，供 InteractionPromptView 读取。
+        /// 当前玩家范围内所有 Proximity 模式交互物，供 InteractionPromptView 多图标显示。
         /// </summary>
-        public static InteractableObject CurrentProximityTarget { get; private set; }
+        public static readonly List<InteractableObject> ProximityTargets = new();
 
         /// <summary>是否仍可交互（未被一次性消耗）</summary>
         public bool CanInteract => !_used || !(_def != null && _def.OneShot && _interactOnce);
+
+        /// <summary>读档时标记为已使用，防止一次性交互物被重复触发</summary>
+        public void MarkUsed()
+        {
+            _used = true;
+            SetHover(false);
+            ProximityTargets.Remove(this);
+        }
 
         [Header("视觉反馈（点击交互模式下生效）")]
         [SerializeField] private bool _enableHoverEffect = true;
@@ -91,9 +100,12 @@ namespace Gameplay.Interactions
                     break;
                 case InteractMode.Proximity:
                     _playerInRange = true;
-                    SetHover(true);
                     if (CanInteract)
-                        CurrentProximityTarget = this;
+                    {
+                        SetHover(true);
+                        if (!ProximityTargets.Contains(this))
+                            ProximityTargets.Add(this);
+                    }
                     break;
             }
         }
@@ -105,8 +117,7 @@ namespace Gameplay.Interactions
             {
                 _playerInRange = false;
                 SetHover(false);
-                if (CurrentProximityTarget == this)
-                    CurrentProximityTarget = null;
+                ProximityTargets.Remove(this);
             }
         }
         #endregion
@@ -156,9 +167,9 @@ namespace Gameplay.Interactions
 
             _used = true;
 
-            // 一次性交互：消耗后立即清除提示图标
-            if (effectiveOnce && CurrentProximityTarget == this)
-                CurrentProximityTarget = null;
+            // 一次性交互：消耗后立即从列表移除
+            if (effectiveOnce)
+                ProximityTargets.Remove(this);
 
             _events.Publish(new InteractionEvent { Def = _def });
 

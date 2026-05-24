@@ -51,7 +51,7 @@ namespace MVVM.ViewModel
             await LoadAndEnterScene(save.currentPhase);
         }
 
-        /// <summary>继续游戏：仅当存档存在时有效</summary>
+        /// <summary>继续游戏：仅当存档存在时有效。通关后从 Phase1 重开但保留道具。</summary>
         private async Task ContinueGameAsync()
         {
             if (!_saveManager.SaveExists())
@@ -62,6 +62,18 @@ namespace MVVM.ViewModel
 
             var save = _saveManager.LoadSave();
             Debug.Log($"[MainMenu] 继续游戏: Phase={save.currentPhase}");
+
+            // 通关后继续 → 从 Phase1 重开，保留道具
+            if (save.currentPhase == GamePhase.Phase7_Epilogue_A ||
+                save.currentPhase == GamePhase.Phase7_Epilogue_B)
+            {
+                Debug.Log("[MainMenu] 存档已通关，从 Phase1 重开并保留道具");
+                var newSave = GameSaveDto.CreateDefault();
+                newSave.collectedItemIds = save.collectedItemIds; // 保留道具
+                _saveManager.WriteSave(newSave);
+                await LoadAndEnterScene(GamePhase.Phase1_SurfaceLivingRoom_Initial);
+                return;
+            }
 
             await LoadAndEnterScene(save.currentPhase);
         }

@@ -89,6 +89,7 @@ namespace Gameplay.SceneFlow
 
         private async void HandlePhaseComplete(GamePhase nextPhase)
         {
+            if (nextPhase == GamePhase.None) return;
             var config = await LoadPhaseConfig(nextPhase);
             if (config == null) return;
 
@@ -131,6 +132,8 @@ namespace Gameplay.SceneFlow
 
         private async void HandlePhaseChanged(GamePhase newPhase)
         {
+            if (newPhase == GamePhase.None) return; // 非游戏场景，无需加载配置
+
             var config = await LoadPhaseConfig(newPhase);
             if (config == null) return;
 

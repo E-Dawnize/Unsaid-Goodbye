@@ -8,5 +8,7 @@ namespace Gameplay.Dialogue
         bool IsPlaying { get; }
         Task PlayAndWait(string dialogueId);
         Task PlayAndWait(DialogueSequence sequence);
+        /// <summary>每行对话显示时触发 (lineIndex, totalLines)</summary>
+        event System.Action<int, int> OnLineDisplayed;
     }
 }
