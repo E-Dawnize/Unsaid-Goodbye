@@ -10,5 +10,6 @@ namespace Gameplay.Interfaces
         void SetPosition(Vector3 position);
         void Move(Vector2 direction, float deltaTime);
         void SetWalkableArea(IWalkableArea area);
+        void SetSpeedMultiplier(float multiplier);
     }
 }

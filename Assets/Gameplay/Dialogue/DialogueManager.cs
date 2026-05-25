@@ -31,6 +31,7 @@ namespace Gameplay.Dialogue
 
         private CanvasGroup _dialogueGroup;
         private Image _panelImage;
+        private RectTransform _dialoguePanel;
         private Text _speakerText;
         private Text _dialogueText;
         private RectTransform _choiceRoot;
@@ -41,6 +42,8 @@ namespace Gameplay.Dialogue
 
         public bool IsPlaying => _isPlaying;
         public event System.Action<int, int> OnLineDisplayed;
+        /// <summary>最后一次选择结果（ResultDialogueId），供外部读取做分支</summary>
+        public static string LastChoiceResultId { get; private set; }
 
         private int _currentLineIndex;
         private int _totalLines;
@@ -206,6 +209,7 @@ namespace Gameplay.Dialogue
             panelObject.transform.SetParent(root.transform, false);
 
             var panelRect = panelObject.AddComponent<RectTransform>();
+            _dialoguePanel = panelRect;
             panelRect.anchorMin = new Vector2(0.07f, 0.03f);
             panelRect.anchorMax = new Vector2(0.93f, 0.30f);
             panelRect.offsetMin = Vector2.zero;
@@ -251,16 +255,17 @@ namespace Gameplay.Dialogue
             choicesObject.transform.SetParent(panelObject.transform, false);
             _choiceRoot = choicesObject.AddComponent<RectTransform>();
             _choiceRoot.anchorMin = new Vector2(0f, 0f);
-            _choiceRoot.anchorMax = new Vector2(1f, 0.26f);
-            _choiceRoot.offsetMin = new Vector2(72f, 14f);
-            _choiceRoot.offsetMax = new Vector2(-72f, 0f);
+            _choiceRoot.anchorMax = new Vector2(1f, 0.35f);
+            _choiceRoot.offsetMin = new Vector2(160f, 20f);
+            _choiceRoot.offsetMax = new Vector2(-160f, -10f);
 
             var layout = choicesObject.AddComponent<HorizontalLayoutGroup>();
-            layout.spacing = 16f;
+            layout.spacing = 40f;
+            layout.childAlignment = TextAnchor.MiddleCenter;
             layout.childControlWidth = true;
             layout.childControlHeight = true;
-            layout.childForceExpandWidth = true;
-            layout.childForceExpandHeight = true;
+            layout.childForceExpandWidth = false;
+            layout.childForceExpandHeight = false;
         }
 
         private static Text CreateText(string name, Transform parent, int size, FontStyle style)
@@ -340,39 +345,63 @@ namespace Gameplay.Dialogue
             _selectedChoiceIndex = -1;
 
             for (var i = 0; i < entry.Choices.Count; i++)
-                CreateChoiceButton(i, entry.Choices[i].Text);
+                CreateChoiceButton(i, entry.Choices[i].Text, entry.Choices[i].SpriteKey);
 
             while (_selectedChoiceIndex < 0)
                 await Task.Yield();
 
             var selected = entry.Choices[_selectedChoiceIndex];
             ClearChoices();
+            LastChoiceResultId = selected.ResultDialogueId ?? "";
 
             if (!string.IsNullOrWhiteSpace(selected.ResultDialogueId))
                 await PlayAndWait(selected.ResultDialogueId);
         }
 
-        private void CreateChoiceButton(int index, string label)
+        private async void CreateChoiceButton(int index, string label, string spriteKey)
         {
-            var buttonObject = new GameObject($"Choice_{index}");
+            var buttonObject = new GameObject($"Choice_{index}", typeof(RectTransform));
             buttonObject.transform.SetParent(_choiceRoot, false);
 
-            var image = buttonObject.AddComponent<Image>();
-            image.color = new Color(1f, 1f, 1f, 0.92f);
-
             var button = buttonObject.AddComponent<Button>();
-            button.onClick.AddListener(() => _selectedChoiceIndex = index);
+            var capturedIndex = index;
+            button.onClick.AddListener(() => _selectedChoiceIndex = capturedIndex);
 
-            var text = CreateText("Text", buttonObject.transform, 24, FontStyle.Normal);
-            text.text = $"「{label}」";
-            text.alignment = TextAnchor.MiddleCenter;
-            text.color = new Color(0.27f, 0.16f, 0.09f, 1f);
+            if (!string.IsNullOrEmpty(spriteKey))
+            {
+                // 挂到对话面板上，用锚点定位
+                buttonObject.transform.SetParent(_dialoguePanel, false);
+                var rt = buttonObject.GetComponent<RectTransform>();
+                rt.anchorMin = new Vector2(index == 0 ? 0.20f : 0.58f, 0f);
+                rt.anchorMax = new Vector2(index == 0 ? 0.42f : 0.80f, 0.60f);
+                rt.offsetMin = Vector2.zero;
+                rt.offsetMax = Vector2.zero;
 
-            var rect = text.GetComponent<RectTransform>();
-            rect.anchorMin = Vector2.zero;
-            rect.anchorMax = Vector2.one;
-            rect.offsetMin = new Vector2(12f, 4f);
-            rect.offsetMax = new Vector2(-12f, -4f);
+                var image = buttonObject.AddComponent<Image>();
+                var canInteract = !(label == "离开" && !EndingDirector.IsEndingBAvailable);
+                image.color = canInteract ? Color.white : Color.gray;
+                button.interactable = canInteract;
+                var handle = Addressables.LoadAssetAsync<Sprite>(spriteKey);
+                await handle.Task;
+                if (handle.Status == AsyncOperationStatus.Succeeded)
+                    image.sprite = handle.Result;
+            }
+            else
+            {
+                var image = buttonObject.AddComponent<Image>();
+                image.color = new Color(1f, 1f, 1f, 0.92f);
+
+                var text = CreateText("Text", buttonObject.transform, 24, FontStyle.Normal);
+                text.text = $"「{label}」";
+                text.alignment = TextAnchor.MiddleCenter;
+                text.color = new Color(0.27f, 0.16f, 0.09f, 1f);
+
+                var rect = text.GetComponent<RectTransform>();
+                rect.anchorMin = Vector2.zero;
+                rect.anchorMax = Vector2.one;
+                rect.offsetMin = new Vector2(12f, 4f);
+                rect.offsetMax = new Vector2(-12f, -4f);
+            }
 
             _choiceObjects.Add(buttonObject);
         }
@@ -391,7 +420,6 @@ namespace Gameplay.Dialogue
 
         private async Task WaitForAdvance()
         {
-            // 跳过当前帧的残余点击，等下一帧再开始检测
             await Task.Yield();
             await Task.Yield();
 
@@ -473,7 +501,8 @@ namespace Gameplay.Dialogue
                         data.Choices.Add(new DialogueChoiceData
                         {
                             Text = choice.Text,
-                            ResultDialogueId = choice.ResultDialogueId
+                            ResultDialogueId = choice.ResultDialogueId,
+                            SpriteKey = choice.SpriteKey
                         });
                     }
                 }
@@ -486,6 +515,7 @@ namespace Gameplay.Dialogue
         {
             public string Text;
             public string ResultDialogueId;
+            public string SpriteKey;
         }
     }
 }

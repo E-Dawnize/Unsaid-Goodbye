@@ -25,6 +25,7 @@ namespace Gameplay.Ending
         [Inject] private IGameFlowManager _flow;
         [Inject] private IDialogueManager _dialogue;
         [Inject] private IEventCenter _events;
+        [Inject] private Audio.IAudioManager _audio;
 
         private const string PopupLayer = "Popup";
         private const string MasterKey = "Ending/Master";
@@ -34,6 +35,8 @@ namespace Gameplay.Ending
 
         /// <summary>动画进行中禁止移动/对话/切图</summary>
         public static bool IsAnimating { get; private set; }
+        /// <summary>B 结局是否可选（L1-L5 + H0-H4 全收集）</summary>
+        public static bool IsEndingBAvailable { get; private set; }
         private float _cooldownUntil;
         private bool _masterSpawned;
 
@@ -56,8 +59,8 @@ namespace Gameplay.Ending
         // State
         private bool _active;
         private GamePhase _endingType;
-        private int _imageIndex;
         private bool _dialogueFinished;
+        private bool _dialogueStarted;
         private bool _showingAfter;
         private readonly List<Sprite> _bSprites = new();
         private Sprite _afterABSprite;
@@ -65,9 +68,6 @@ namespace Gameplay.Ending
         private bool _spritePreloaded;
 
         // Choice UI
-        private GameObject _stayBtn;
-        private GameObject _leaveBtn;
-        private GameObject _choiceLabelGo;
         private bool _choiceActive;
 
         protected override void OnInitialize()
@@ -220,8 +220,12 @@ namespace Gameplay.Ending
         {
             _active = true;
             _endingType = type;
-            _imageIndex = 0;
             _dialogueFinished = false;
+
+            // 隐藏摇杆
+            var js = Object.FindObjectOfType<Input.UI.WorldSpaceJoystick>(true);
+            if (js != null) js.gameObject.SetActive(false);
+            _dialogueStarted = false;
             _showingAfter = false;
             _spritePreloaded = false;
 
@@ -277,12 +281,28 @@ namespace Gameplay.Ending
 
         protected override void Tick(float dt)
         {
-            if (_choiceActive) { CheckChoiceClick(); return; }
+            if (_choiceActive) return;
             if (!_active || !_spritePreloaded) return;
 
-            // 检测对话是否播完
-            if (!_dialogueFinished && _dialogue != null && !_dialogue.IsPlaying)
+            // 跟踪对话是否开始过
+            if (!_dialogueStarted && _dialogue != null && _dialogue.IsPlaying)
+                _dialogueStarted = true;
+
+            // 对话播完检测（必须对话先开始过，避免启动时的竞态）
+            if (_dialogueStarted && !_dialogueFinished && _dialogue != null && !_dialogue.IsPlaying)
+            {
                 _dialogueFinished = true;
+                // Ending A：对话结束自动切 AfterAB
+                if (_endingType == GamePhase.Phase7_Epilogue_A && !_showingAfter)
+                {
+                    ShowAfter();
+                    return;
+                }
+            }
+
+            // Ending A 对话期间点击不处理（只推进对话，不切图）
+            if (_endingType == GamePhase.Phase7_Epilogue_A && !_showingAfter)
+                return;
 
             var mouse = Mouse.current;
             var touch = Touchscreen.current;
@@ -293,16 +313,18 @@ namespace Gameplay.Ending
 
             if (!clicked) return;
 
+            // AfterAB 点击 → 回主页（A/B 共用）
             if (_showingAfter)
             {
                 ReturnToMainMenu();
                 return;
             }
 
-            // 对话播完 + 所有图展示完 + 动画结束
-            if (_dialogueFinished && IsAllShown() && !_transitioning && !_showingAfter)
+            // Ending B：对话播完 + 所有图展示完 + 动画结束 → 点一下切 AfterAB
+            if (_endingType == GamePhase.Phase7_Epilogue_B &&
+                _dialogueFinished && IsAllShown() && !_transitioning && !_showingAfter)
             {
-                ShowAfter(); // 显示 AfterAB 结尾图
+                ShowAfter();
                 return;
             }
         }
@@ -435,7 +457,11 @@ namespace Gameplay.Ending
                 quad.transform.localScale = Vector3.one;
 
                 var qr = quad.GetComponent<MeshRenderer>();
-                qr.material = new Material(Shader.Find("Unlit/Texture"));
+                // 用 Unlit/Color shader 避免打包后被裁剪（Unlit/Texture 可能不在 build 中）
+                var shader = Shader.Find("Unlit/Texture");
+                if (shader == null) shader = Shader.Find("Unlit/Color");
+                if (shader == null) shader = Shader.Find("Sprites/Default");
+                qr.material = new Material(shader);
                 qr.material.mainTexture = _videoRT;
                 qr.sortingLayerName = PopupLayer;
                 qr.sortingOrder = 201;
@@ -471,129 +497,25 @@ namespace Gameplay.Ending
 
         // ==================== Choice UI ====================
 
-        private void ShowEndingChoice()
+        private async void ShowEndingChoice()
         {
             if (_choiceActive) return;
             _choiceActive = true;
             IsAnimating = true;
 
-            var cam = Camera.main;
-            if (cam == null) return;
+            // B 结局条件
+            IsEndingBAvailable = (_flow.GameData?.CollectedItemIds?.Count ?? 0) >= 10;
 
-            var camPos = cam.transform.position;
-            var hh = cam.orthographicSize;
-            var hw = hh * cam.aspect;
+            // 对话系统处理选择
+            await (_dialogue?.PlayAndWait("dialogue_ending_choice") ?? System.Threading.Tasks.Task.CompletedTask);
 
-            var labelGo = new GameObject("ChoiceLabel");
-            labelGo.transform.position = new Vector3(camPos.x, camPos.y + 1.5f, camPos.z + 7f);
-            var labelSr = labelGo.AddComponent<SpriteRenderer>();
-            labelSr.sortingLayerName = PopupLayer;
-            labelSr.sortingOrder = 195;
-            labelSr.sprite = CreateTextSprite("你要怎么选择呢？", 48, Color.white);
-            labelSr.transform.localScale = Vector3.one * 0.8f * hh / 5.4f;
-            Object.DontDestroyOnLoad(labelGo);
+            var result = Dialogue.DialogueManager.LastChoiceResultId;
+            var ending = (result == "LEAVE" && IsEndingBAvailable)
+                ? GamePhase.Phase7_Epilogue_B : GamePhase.Phase7_Epilogue_A;
+            _flow.TriggerEndingTransition(ending);
 
-            _stayBtn = CreateChoiceButton("留下", new Vector3(camPos.x - 1.2f, camPos.y - 0.2f, camPos.z + 7f));
-            _leaveBtn = CreateChoiceButton("离开", new Vector3(camPos.x + 1.2f, camPos.y - 0.2f, camPos.z + 7f));
-
-            // 点击时隐藏选择 UI
-            _choiceLabelGo = labelGo;
-        }
-
-        private GameObject CreateChoiceButton(string text, Vector3 pos)
-        {
-            var go = new GameObject($"Choice_{text}");
-            go.transform.position = pos;
-            Object.DontDestroyOnLoad(go);
-
-            var sr = go.AddComponent<SpriteRenderer>();
-            sr.sortingLayerName = PopupLayer;
-            sr.sortingOrder = 196;
-            sr.sprite = CreateButtonSprite(text);
-            sr.color = new Color(1f, 1f, 1f, 0.85f);
-
-            var col = go.AddComponent<BoxCollider2D>();
-            col.isTrigger = true;
-            col.size = new Vector2(2.5f, 1.2f);
-            go.layer = LayerMask.NameToLayer("UI");
-
-            return go;
-        }
-
-        private void CheckChoiceClick()
-        {
-            if (!_choiceActive) return;
-
-            var mouse = Mouse.current;
-            var touch = Touchscreen.current;
-            bool clicked;
-            Vector2 pointerPos;
-
-            if (mouse != null)
-            {
-                pointerPos = mouse.position.ReadValue();
-                clicked = mouse.leftButton.wasPressedThisFrame;
-            }
-            else if (touch != null)
-            {
-                pointerPos = touch.primaryTouch.position.ReadValue();
-                clicked = touch.primaryTouch.press.wasPressedThisFrame;
-            }
-            else return;
-
-            if (!clicked) return;
-
-            var cam = Camera.main;
-            if (cam == null) return;
-
-            var worldPos = (Vector2)cam.ScreenToWorldPoint(pointerPos);
-            var hits = new List<Collider2D>();
-            Physics2D.OverlapPoint(worldPos, new ContactFilter2D().NoFilter(), hits);
-
-            foreach (var hit in hits)
-            {
-                if (_stayBtn != null && hit.gameObject == _stayBtn)
-                {
-                    CleanupChoice();
-                    _flow.TriggerEndingTransition(GamePhase.Phase7_Epilogue_A);
-                    return;
-                }
-                if (_leaveBtn != null && hit.gameObject == _leaveBtn)
-                {
-                    CleanupChoice();
-                    _flow.TriggerEndingTransition(GamePhase.Phase7_Epilogue_B);
-                    return;
-                }
-            }
-        }
-
-        private void CleanupChoice()
-        {
             _choiceActive = false;
             IsAnimating = false;
-            if (_stayBtn != null) { Object.Destroy(_stayBtn); _stayBtn = null; }
-            if (_leaveBtn != null) { Object.Destroy(_leaveBtn); _leaveBtn = null; }
-            if (_choiceLabelGo != null) { Object.Destroy(_choiceLabelGo); _choiceLabelGo = null; }
-        }
-
-        private static Sprite CreateTextSprite(string text, int fontSize, Color color)
-        {
-            var tex = new Texture2D(512, 64);
-            var pixels = tex.GetPixels();
-            for (int i = 0; i < pixels.Length; i++) pixels[i] = Color.clear;
-            tex.SetPixels(pixels);
-            tex.Apply();
-            return Sprite.Create(tex, new Rect(0, 0, 512, 64), new Vector2(0.5f, 0.5f));
-        }
-
-        private static Sprite CreateButtonSprite(string text)
-        {
-            var tex = new Texture2D(256, 96);
-            var pixels = tex.GetPixels();
-            for (int i = 0; i < pixels.Length; i++) pixels[i] = new Color(0.2f, 0.15f, 0.3f, 0.9f);
-            tex.SetPixels(pixels);
-            tex.Apply();
-            return Sprite.Create(tex, new Rect(0, 0, 256, 96), new Vector2(0.5f, 0.5f));
         }
 
         // ==================== Cleanup ====================
@@ -601,6 +523,10 @@ namespace Gameplay.Ending
         private async void ReturnToMainMenu()
         {
             _flow.GetSaveState();
+            _audio?.PlayBgm("BGM/Title");
+            // 恢复摇杆
+            var js = Object.FindObjectOfType<Input.UI.WorldSpaceJoystick>(true);
+            if (js != null) js.gameObject.SetActive(true);
             Debug.Log("[EndingDirector] Returning to main menu...");
             try
             {

@@ -11,20 +11,22 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dce1219f7e574d74bb9b228883e22b88, type: 3}
   m_Name: EndingChoice
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier:
   DialogueId: dialogue_ending_choice
   CompletionId: {fileID: 11400000, guid: e1aa8025286f4feaaeb48c0ca7b50e5d, type: 2}
   Lines:
-  - "\u4e00\u53ea\u6c38\u8fdc\u4e0d\u4f1a\u79bb\u5f00\u7684\u732b\u3002"
+  - "你的选择是"
   Entries:
   - Type: 3
-    Speaker: "\u5267\u60c5"
-    Text: "\u4e00\u53ea\u6c38\u8fdc\u4e0d\u4f1a\u79bb\u5f00\u7684\u732b\u3002"
+    Speaker:
+    Text: "你的选择是"
     TextColor: {r: 0.78, g: 0.62, b: 1, a: 1}
     AutoAdvance: 0
     AutoAdvanceDelay: 1.5
     Choices:
-    - Text: "\u7559\u4e0b"
-      ResultDialogueId: dialogue_epilogue_stay
-    - Text: "\u79bb\u5f00"
-      ResultDialogueId: dialogue_epilogue_leave
+    - Text: "留下"
+      ResultDialogueId: STAY
+      SpriteKey: End/A
+    - Text: "离开"
+      ResultDialogueId: LEAVE
+      SpriteKey: End/B

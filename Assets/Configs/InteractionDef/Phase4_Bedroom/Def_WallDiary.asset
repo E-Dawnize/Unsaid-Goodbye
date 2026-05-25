@@ -11,9 +11,9 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 76318d37cfabf10458b2b392b256d322, type: 3}
   m_Name: Def_WallDiary
-  m_EditorClassIdentifier:
-  _description: 墙上日记(L4) — 童年字迹日记，碎片拼贴解谜，红色文字
+  m_EditorClassIdentifier: 
+  _description: "\u5899\u4E0A\u65E5\u8BB0(L4) \u2014 \u7AE5\u5E74\u5B57\u8FF9\u65E5\u8BB0\uFF0C\u788E\u7247\u62FC\u8D34\u89E3\u8C1C\uFF0C\u7EA2\u8272\u6587\u5B57"
   Dialogue: {fileID: 11400000, guid: f4cfe047857e42cab23b244ad52b0f80, type: 2}
   OneShot: 1
-  PromptIconKey: 
+  PromptIconKey: InteractUI/Read
   SfxKey: 

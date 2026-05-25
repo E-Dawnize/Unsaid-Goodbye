@@ -21,8 +21,15 @@ namespace Input.Manager
             ? _actions.Gameplay.MousePosition.ReadValue<Vector2>()
             : Vector2.zero;
 
-        public bool IsClickTriggered => _enabled
-            && _actions.Gameplay.Click.WasPressedThisFrame();
+        public bool IsClickTriggered
+        {
+            get
+            {
+                if (!_enabled) return false;
+                if (_actions.Gameplay.Click.WasPressedThisFrame()) return true;
+                return false;
+            }
+        }
 
         public bool BackpackToggleTriggered => _enabled
             && UnityEngine.InputSystem.Keyboard.current != null

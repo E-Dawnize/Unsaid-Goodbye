@@ -421,6 +421,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - DialogueSequence
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 07bc9132de1647b2b8189430fc574edd
+    m_Address: Assets/Configs/Dialogue/Phase6_Mirror/EndingChoice.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - DialogueSequence
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 0aba692a18a044568b227b6016f6142b
     m_Address: Assets/Configs/Dialogue/Phase2_Park/InnerParkIntro.asset
     m_ReadOnly: 0
@@ -729,6 +735,71 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 83dcd65e361b4b5449fcc6d69aa63050
     m_Address: Arts/Ending/character-moon
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f58cea706fe143b4583300cac1f3fda2
+    m_Address: UI/Joystick
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e046d19d22cee564b9dbfca30f56f895
+    m_Address: Setting/Operate
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a486a3b2f992a1d48ac429bd37be4c16
+    m_Address: Setting/Operate-PC
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5fd648fbd2969184d944df63a7f445b0
+    m_Address: Setting/Screen
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9d95bb919f8a764449e2b8162aac519a
+    m_Address: Setting/Screen-PC
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3fdbdf3004273d34b9d24f3ffae2c5a1
+    m_Address: Setting/Sound
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ec73730cb6ec4ab4da1d793b520e2d98
+    m_Address: InteractUI/ToBac
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9cff98df7fa4cc141b29685bb6e040f4
+    m_Address: InteractUI/Jump
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6fca0cf9588b620458c3c017e7bad586
+    m_Address: InteractUI/Read
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e650d2ed1117e6f4f93a1c249ab1ebdd
+    m_Address: InteractUI/Touch1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7be2e768638a5354484c4dfa0e679f6c
+    m_Address: InteractUI/Push
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0bc1c42de09a92746937d9195bf4d507
+    m_Address: End/B
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c67cec95ff518f04080ded2cdce3e527
+    m_Address: End/A
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

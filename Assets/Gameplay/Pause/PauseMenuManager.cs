@@ -4,6 +4,7 @@ using Core.Architecture.Interfaces;
 using Core.DI;
 using Gameplay.Interfaces;
 using Gameplay.Save;
+using Gameplay.Settings;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.InputSystem;
@@ -19,6 +20,8 @@ namespace Gameplay.Pause
         [Inject] private IGameFlowManager _flow;
         [Inject] private ISaveManager _save;
         [Inject] private Inventory.IBackpackUI _backpack;
+        [Inject] private Settings.SettingsManager _settings;
+        [Inject] private Audio.IAudioManager _audio;
 
         public bool IsOpen { get; private set; }
 
@@ -27,8 +30,7 @@ namespace Gameplay.Pause
 
         private const string PrefabKey = "Arts/UI/Settings";
         private const string PopupLayer = "Popup";
-        private const float ToggleOffsetX = 0.7f;
-        private const float ToggleOffsetY = 0.7f;
+        private static readonly Vector3 ToggleFixedOffset = new(8.5f, 4.5f, 5f);
 
         private Camera _cam;
 
@@ -46,8 +48,17 @@ namespace Gameplay.Pause
         private GameObject _menuRoot;
         private GameObject _backToMainGo;
         private GameObject _backGo;
+        private GameObject _soundGo;
+        private GameObject _screenGo;
+        private GameObject _operateGo;
         private SpriteRenderer _backToMainSr;
         private SpriteRenderer _backSr;
+        private SpriteRenderer _soundSr;
+        private SpriteRenderer _screenSr;
+        private SpriteRenderer _operateSr;
+        private Color _soundOrigColor;
+        private Color _screenOrigColor;
+        private Color _operateOrigColor;
         private Color _backToMainOrigColor;
         private Color _backOrigColor;
         private bool _uiBuilt;
@@ -137,16 +148,14 @@ namespace Gameplay.Pause
 
             _toggleGo.layer = LayerMask.NameToLayer("UI");
 
-            UpdateTogglePosition();
+            _toggleGo.transform.position = (Camera.main?.transform.position ?? Vector3.zero) + ToggleFixedOffset;
             _toggleGo.SetActive(false);
         }
 
         private void UpdateTogglePosition()
         {
             if (_cam == null || _toggleGo == null) return;
-            var hh = _cam.orthographicSize;
-            var hw = hh * _cam.aspect;
-            _toggleGo.transform.position = _cam.transform.position + new Vector3(hw - ToggleOffsetX, hh - ToggleOffsetY, 5f);
+            _toggleGo.transform.position = _cam.transform.position + ToggleFixedOffset;
         }
 
         // ==================== Prefab ====================
@@ -179,6 +188,10 @@ namespace Gameplay.Pause
                 // 找到按钮子物体（名称以 Prefab 中实际命名为准）
                 _backToMainGo = FindChildRecursive(_menuRoot.transform, "从选区 图像_5");
                 _backGo = FindChildRecursive(_menuRoot.transform, "从选区 图像");
+                _soundGo = FindChildRecursive(_menuRoot.transform, "从选区 图像_2");
+                _screenGo = FindChildRecursive(_menuRoot.transform, "从选区 图像_3");
+                _operateGo = FindChildRecursive(_menuRoot.transform, "从选区 图像_4");
+                Debug.Log($"[PauseMenu] Buttons found: back={_backGo != null}, backToMain={_backToMainGo != null}, sound={_soundGo != null}, screen={_screenGo != null}, operate={_operateGo != null}");
 
                 if (_backToMainGo == null)
                     Debug.LogWarning($"[PauseMenu] Child 'backtomain' not found in prefab {PrefabKey}");
@@ -197,6 +210,21 @@ namespace Gameplay.Pause
                     _backSr = _backGo.GetComponent<SpriteRenderer>();
                     if (_backSr != null) _backOrigColor = _backSr.color;
                 }
+
+                if (_soundGo != null) SetupClickTarget(_soundGo);
+                if (_screenGo != null)
+                {
+                    SetupClickTarget(_screenGo);
+                    var col = _screenGo.GetComponent<BoxCollider2D>();
+                    if (col != null) { col.offset = new Vector2(0, 1); col.size = new Vector2(6, 1.5f); }
+                }
+                if (_operateGo != null) SetupClickTarget(_operateGo);
+                _soundSr = _soundGo != null ? _soundGo.GetComponent<SpriteRenderer>() : null;
+                _screenSr = _screenGo != null ? _screenGo.GetComponent<SpriteRenderer>() : null;
+                _operateSr = _operateGo != null ? _operateGo.GetComponent<SpriteRenderer>() : null;
+                if (_soundSr != null) _soundOrigColor = _soundSr.color;
+                if (_screenSr != null) _screenOrigColor = _screenSr.color;
+                if (_operateSr != null) _operateOrigColor = _operateSr.color;
             }
             catch (Exception ex)
             {
@@ -346,26 +374,47 @@ namespace Gameplay.Pause
                 return;
             }
 
-            if (!IsOpen) return;
+            if (!IsOpen || Settings.SettingsManager.IsSettingsOpen) return;
 
-            // Menu 内按钮: back / backtomain
+            // Menu 内按钮
             var isOverBack = false;
             var isOverBackToMain = false;
+            var isOverSound = false;
+            var isOverScreen = false;
+            var isOverOperate = false;
+            var clickedSound = false;
+            var clickedScreen = false;
+            var clickedOperate = false;
             foreach (var hit in hits)
             {
                 if (_backGo != null && hit.gameObject == _backGo) isOverBack = true;
                 if (_backToMainGo != null && hit.gameObject == _backToMainGo) isOverBackToMain = true;
+                if (_soundGo != null && hit.gameObject == _soundGo) isOverSound = true;
+                if (_screenGo != null && hit.gameObject == _screenGo) isOverScreen = true;
+                if (_operateGo != null && hit.gameObject == _operateGo) isOverOperate = true;
+                if (isPointerClicked)
+                {
+                    if (_soundGo != null && hit.gameObject == _soundGo) clickedSound = true;
+                    if (_screenGo != null && hit.gameObject == _screenGo) clickedScreen = true;
+                    if (_operateGo != null && hit.gameObject == _operateGo) clickedOperate = true;
+                }
             }
 
             // 按钮颜色更新
             UpdateButtonColor(_backSr, _backOrigColor, isOverBack, isOverBack && isPointerDown);
             UpdateButtonColor(_backToMainSr, _backToMainOrigColor, isOverBackToMain, isOverBackToMain && isPointerDown);
+            UpdateButtonColor(_soundSr, _soundOrigColor, isOverSound, isOverSound && isPointerDown);
+            UpdateButtonColor(_screenSr, _screenOrigColor, isOverScreen, isOverScreen && isPointerDown);
+            UpdateButtonColor(_operateSr, _operateOrigColor, isOverOperate, isOverOperate && isPointerDown);
 
             // 按钮点击
             if (isPointerClicked)
             {
                 if (isOverBackToMain) { OnBackToMain(); return; }
                 if (isOverBack) { Close(); return; }
+                if (clickedSound) { _settings.OpenSound(); return; }
+                if (clickedScreen) { _settings.OpenScreen(); return; }
+                if (clickedOperate) { _settings.OpenOperate(); return; }
             }
         }
 
@@ -385,9 +434,13 @@ namespace Gameplay.Pause
         {
             Close();
 
+            // 已经在主菜单 → 直接关闭
+            if (_flow.CurrentConfig == null)
+                return;
+
             // 保存存档
-            if (_flow.CurrentConfig != null)
-                _flow.GetSaveState();
+            _flow.GetSaveState();
+            _audio?.PlayBgm("BGM/Title");
 
             Debug.Log("[PauseMenu] 返回主菜单");
 
@@ -408,6 +461,7 @@ namespace Gameplay.Pause
             // 加载主菜单场景
             var handle = Addressables.LoadSceneAsync("Scenes/Start New", LoadSceneMode.Single);
             await handle.Task;
+            Object.Destroy(fadeGo);
             Debug.Log("[PauseMenu] 主菜单场景加载完成");
         }
 

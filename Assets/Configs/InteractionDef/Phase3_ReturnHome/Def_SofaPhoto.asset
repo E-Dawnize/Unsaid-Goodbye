@@ -11,9 +11,9 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 76318d37cfabf10458b2b392b256d322, type: 3}
   m_Name: Def_SofaPhoto
-  m_EditorClassIdentifier:
-  _description: 沙发照片(L2) — 童年牵狗照，背面铅笔字，光源解谜
+  m_EditorClassIdentifier: 
+  _description: "\u6C99\u53D1\u7167\u7247(L2) \u2014 \u7AE5\u5E74\u7275\u72D7\u7167\uFF0C\u80CC\u9762\u94C5\u7B14\u5B57\uFF0C\u5149\u6E90\u89E3\u8C1C"
   Dialogue: {fileID: 11400000, guid: 419ad1fd6c004c9cafa1f1eb61201dbe, type: 2}
   OneShot: 1
-  PromptIconKey: 
+  PromptIconKey: InteractUI/Investigate1
   SfxKey: 

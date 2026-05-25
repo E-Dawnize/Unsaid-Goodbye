@@ -183,13 +183,12 @@ namespace Gameplay.Inventory
         {
             var go = CreateCameraChild("BackpackToggleBtn");
             go.SetActive(false);
-            var hh = _cam.orthographicSize;
-            var hw = hh * _cam.aspect;
-            go.transform.position = _cam.transform.position + new Vector3(hw - 0.55f, -hh + 0.55f, 5f);
+            go.transform.position = _cam.transform.position + new Vector3(8.5f, -4.5f, 5f);
             go.transform.localScale = Vector3.one * 0.65f;
 
             _toggleBtn = go.AddComponent<WorldButton>();
             _toggleBtn.Init(PopupLayer, 100, new Vector2(1f, 1f), new Vector2(0.95f, 0.05f));
+            _toggleBtn.UseFixedPosition = true;
             _toggleBtn.OnClick += Toggle;
         }
 
@@ -515,6 +514,7 @@ namespace Gameplay.Inventory
             private Sprite _normal, _hover;
             private bool _hovered;
             private float _anchorX, _anchorY;
+            public bool UseFixedPosition;
 
             public void Init(string sortingLayer, int sortingOrder, Vector2 defaultSize, Vector2 viewportAnchor)
             {
@@ -562,13 +562,16 @@ namespace Gameplay.Inventory
                 var cam = Camera.main;
                 if (cam == null) return;
 
-                // 每帧跟随当前相机，防止场景切换后相机被销毁导致按钮丢失
-                var camPos = cam.transform.position;
-                var hh = cam.orthographicSize;
-                var hw = hh * cam.aspect;
-                var worldX = camPos.x + (_anchorX - 0.5f) * 2f * hw;
-                var worldY = camPos.y + (_anchorY - 0.5f) * 2f * hh;
-                transform.position = new Vector3(worldX, worldY, transform.position.z);
+                // 每帧跟随当前相机
+                if (!UseFixedPosition)
+                {
+                    var camPos = cam.transform.position;
+                    var hh = cam.orthographicSize;
+                    var hw = hh * cam.aspect;
+                    var worldX = camPos.x + (_anchorX - 0.5f) * 2f * hw;
+                    var worldY = camPos.y + (_anchorY - 0.5f) * 2f * hh;
+                    transform.position = new Vector3(worldX, worldY, transform.position.z);
+                }
 
                 var worldPos = (Vector2)cam.ScreenToWorldPoint(mouse.position.ReadValue());
                 var hits = new List<Collider2D>();

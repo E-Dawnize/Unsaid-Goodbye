@@ -17,6 +17,8 @@ namespace Gameplay.SO
     {
         public string Text;
         public string ResultDialogueId;
+        /// <summary>选项按钮的 Sprite Addressables Key，为空则显示文字</summary>
+        public string SpriteKey;
     }
 
     [System.Serializable]

@@ -27,6 +27,11 @@ namespace Gameplay.Player
             _walkableArea = area;
         }
 
+        public void SetSpeedMultiplier(float multiplier)
+        {
+            _model.Speed = 3f * multiplier;
+        }
+
         public void Move(Vector2 direction, float deltaTime)
         {
             _model.ApplyMovement(direction, deltaTime);

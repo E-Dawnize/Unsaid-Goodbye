@@ -8,6 +8,7 @@ using Gameplay.Inventory;
 using Gameplay.Pause;
 using Gameplay.Player;
 using Gameplay.Save;
+using Gameplay.Settings;
 using Gameplay.SceneFlow;
 using Gameplay.SO;
 using UnityEngine;
@@ -51,6 +52,10 @@ namespace Gameplay.Installer
             container.RegisterSingleton<IPauseMenu>(pauseMenu);
             container.RegisterSingleton<IInitializable>(pauseMenu);
             container.RegisterSingleton<ITickable>(pauseMenu);
+
+            // Settings
+            container.RegisterSingleton<SettingsManager, SettingsManager>();
+            container.RegisterSingleton<IInitializable, SettingsManager>();
 
             // Model — 纯运行时类，Manager 在加载存档时填充数据
             container.RegisterSingleton<GameFlowModel>(new GameFlowModel());

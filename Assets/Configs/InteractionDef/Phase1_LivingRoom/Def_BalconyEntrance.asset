@@ -15,5 +15,5 @@ MonoBehaviour:
   _description: "\u9633\u53F0\u95E8 \u2014 \u9760\u8FD1\u540E\u70B9\u51FB\u8FDB\u5165\u9633\u53F0\u573A\u666F\uFF0C\u540CPhase\u5185\u573A\u666F\u5207\u6362"
   Dialogue: {fileID: 0}
   OneShot: 1
-  PromptIconKey: InteractUI/Investigate1
+  PromptIconKey: InteractUI/ToBac
   SfxKey: SFX/EnterBalconyInner

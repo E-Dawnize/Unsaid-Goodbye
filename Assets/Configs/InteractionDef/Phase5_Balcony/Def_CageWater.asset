@@ -11,9 +11,9 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 76318d37cfabf10458b2b392b256d322, type: 3}
   m_Name: Def_CageWater
-  m_EditorClassIdentifier:
-  _description: 检查食槽 — 半杯发绿的水，与表世界阳台共享
+  m_EditorClassIdentifier: 
+  _description: "\u68C0\u67E5\u98DF\u69FD \u2014 \u534A\u676F\u53D1\u7EFF\u7684\u6C34\uFF0C\u4E0E\u8868\u4E16\u754C\u9633\u53F0\u5171\u4EAB"
   Dialogue: {fileID: 11400000, guid: 624a338bab2b4cf8b2f7fcbb78736998, type: 2}
   OneShot: 1
-  PromptIconKey: 
+  PromptIconKey: InteractUI/Check1
   SfxKey: SFX/CheckFoodTrough

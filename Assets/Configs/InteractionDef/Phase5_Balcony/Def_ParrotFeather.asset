@@ -11,9 +11,9 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 76318d37cfabf10458b2b392b256d322, type: 3}
   m_Name: Def_ParrotFeather
-  m_EditorClassIdentifier:
-  _description: 叼羽毛(L5) — 风铃频率解谜，叼起绿羽毛，鹦鹉散成尘埃
+  m_EditorClassIdentifier: 
+  _description: "\u53FC\u7FBD\u6BDB(L5) \u2014 \u98CE\u94C3\u9891\u7387\u89E3\u8C1C\uFF0C\u53FC\u8D77\u7EFF\u7FBD\u6BDB\uFF0C\u9E66\u9E49\u6563\u6210\u5C18\u57C3"
   Dialogue: {fileID: 11400000, guid: 79f080bd376d4d4ea53b0b105ebb922f, type: 2}
   OneShot: 1
-  PromptIconKey: 
+  PromptIconKey: InteractUI/Pickup1
   SfxKey: SFX/BuryParrot

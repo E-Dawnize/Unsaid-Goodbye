@@ -1,34 +1,37 @@
+using Input.Manager;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.InputSystem.UI;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 namespace Input.UI
 {
     public static class RuntimeJoystickInstaller
     {
-        private const string RootName = "RuntimeJoystickCanvas";
-        private const string JoystickPrefabPath = "Joystick Pack/Prefabs/Fixed Joystick";
+        private const string RootName = "MobileJoystick";
+        private const string PrefabKey = "UI/Joystick";
+        private const string KnobName = "N4";
+        public static float JoystickRadius = 1f;
+        public static float JoystickScale = 0.35f;
+        public static float JoystickAlpha = 0.5f;
+        public static Vector3 JoystickPosition = new(-7.29f, -4.82f, 0f);
 
-        public static void Ensure()
+        public static async void Ensure()
         {
             if (!Application.isPlaying)
                 return;
 
-            // 只在移动端创建摇杆
+#if !UNITY_EDITOR
             if (!Application.isMobilePlatform)
                 return;
+#endif
 
-            EnsureEventSystem();
-
-            var existing = Object.FindObjectOfType<RuntimeJoystickInput>(true);
+            var existing = Object.FindObjectOfType<WorldSpaceJoystick>(true);
             if (!ShouldShowInActiveScene())
             {
                 if (existing != null)
                     existing.gameObject.SetActive(false);
-
-                global::Input.Manager.VirtualJoystickInput.SetDirection(Vector2.zero);
+                VirtualJoystickInput.SetDirection(Vector2.zero);
                 return;
             }
 
@@ -38,43 +41,48 @@ namespace Input.UI
                 return;
             }
 
-            var joystickPrefab = Resources.Load<GameObject>(JoystickPrefabPath);
-            if (joystickPrefab == null)
+            var handle = Addressables.LoadAssetAsync<GameObject>(PrefabKey);
+            await handle.Task;
+            if (handle.Status != AsyncOperationStatus.Succeeded)
             {
-                Debug.LogWarning($"[Joystick] Missing Resources prefab: {JoystickPrefabPath}");
+                Debug.LogWarning($"[Joystick] Failed to load prefab: {PrefabKey}");
                 return;
             }
 
-            var canvasObject = new GameObject(RootName);
-            Object.DontDestroyOnLoad(canvasObject);
+            var go = Object.Instantiate(handle.Result);
+            go.name = RootName;
+            Object.DontDestroyOnLoad(go);
 
-            var canvas = canvasObject.AddComponent<Canvas>();
-            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-            canvas.sortingOrder = 900;
-
-            var scaler = canvasObject.AddComponent<CanvasScaler>();
-            scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
-            scaler.referenceResolution = new Vector2(1920f, 1080f);
-            scaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
-            scaler.matchWidthOrHeight = 0.5f;
-
-            canvasObject.AddComponent<GraphicRaycaster>();
-
-            var joystickObject = Object.Instantiate(joystickPrefab, canvasObject.transform);
-            joystickObject.name = "MobileMoveJoystick";
-
-            if (joystickObject.transform is RectTransform rect)
+            // 设置层级高于场景物体
+            foreach (var sr in go.GetComponentsInChildren<SpriteRenderer>(true))
             {
-                rect.anchorMin = Vector2.zero;
-                rect.anchorMax = Vector2.zero;
-                rect.pivot = new Vector2(0.5f, 0.5f);
-                rect.anchoredPosition = new Vector2(210f, 190f);
-                rect.sizeDelta = new Vector2(230f, 230f);
+                sr.sortingLayerName = "Popup";
+                sr.sortingOrder = 900;
             }
 
-            var runtimeInput = canvasObject.AddComponent<RuntimeJoystickInput>();
-            var joystick = joystickObject.GetComponent<Joystick>();
-            runtimeInput.Initialize(joystick);
+            var knob = go.transform.Find(KnobName);
+            if (knob == null)
+            {
+                Debug.LogWarning($"[Joystick] Knob '{KnobName}' not found in prefab");
+                Object.Destroy(go);
+                return;
+            }
+
+            var joystick = go.AddComponent<WorldSpaceJoystick>();
+            go.transform.position = JoystickPosition;
+            go.transform.localScale = Vector3.one * JoystickScale;
+            SetAlpha(go, JoystickAlpha);
+
+            joystick.Init(knob, JoystickRadius);
+        }
+
+        private static void SetAlpha(GameObject go, float alpha)
+        {
+            foreach (var sr in go.GetComponentsInChildren<SpriteRenderer>(true))
+            {
+                var c = sr.color;
+                sr.color = new Color(c.r, c.g, c.b, alpha);
+            }
         }
 
         private static bool ShouldShowInActiveScene()
@@ -83,26 +91,6 @@ namespace Input.UI
             return sceneName != "Start"
                 && sceneName != "Start New"
                 && sceneName != "SampleScene";
-        }
-
-        private static void EnsureEventSystem()
-        {
-            var eventSystem = Object.FindObjectOfType<EventSystem>(true);
-            if (eventSystem == null)
-            {
-                var eventSystemObject = new GameObject("EventSystem");
-                Object.DontDestroyOnLoad(eventSystemObject);
-                eventSystem = eventSystemObject.AddComponent<EventSystem>();
-            }
-
-            if (eventSystem.TryGetComponent<StandaloneInputModule>(out var oldInputModule))
-            {
-                oldInputModule.enabled = false;
-                Object.Destroy(oldInputModule);
-            }
-
-            if (!eventSystem.TryGetComponent<InputSystemUIInputModule>(out _))
-                eventSystem.gameObject.AddComponent<InputSystemUIInputModule>();
         }
     }
 }

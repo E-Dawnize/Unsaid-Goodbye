@@ -25,12 +25,7 @@ namespace Core.Boot
             if (!Application.isPlaying) return;
             Debug.Log("Boot");
 
-            // 移动端强制横屏
-            Screen.orientation = ScreenOrientation.AutoRotation;
-            Screen.autorotateToPortrait = false;
-            Screen.autorotateToPortraitUpsideDown = false;
-            Screen.autorotateToLandscapeLeft = true;
-            Screen.autorotateToLandscapeRight = true;
+            // 横屏设置（BeforeSceneLoad 阶段先设一次）
 
             SceneManager.sceneLoaded -= OnSceneLoaded;
             SceneManager.sceneLoaded += OnSceneLoaded;
@@ -40,6 +35,17 @@ namespace Core.Boot
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         private static void SceneBuild()
         {
+            // 移动端再次强制横屏（AfterSceneLoad 阶段，确保生效）
+            if (Application.isMobilePlatform)
+            {
+                Screen.autorotateToPortrait = false;
+                Screen.autorotateToPortraitUpsideDown = false;
+                Screen.autorotateToLandscapeLeft = true;
+                Screen.autorotateToLandscapeRight = true;
+                Screen.orientation = ScreenOrientation.LandscapeLeft;
+                Debug.Log($"[Bootstrap] Orientation forced to Landscape, current={Screen.orientation}");
+            }
+
             FixEventSystemInputModules();
             RuntimeJoystickInstaller.Ensure();
         }
@@ -61,6 +67,7 @@ namespace Core.Boot
                 if (cam != null && cam.orthographic)
                 {
                     cam.orthographicSize = 5.4f;
+                    cam.backgroundColor = new Color(0.85f, 0.72f, 0.55f); // 淡棕色
                     break;
                 }
             }
