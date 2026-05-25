@@ -1,3 +1,4 @@
+using Gameplay.Player;
 using Input.Manager;
 using UnityEngine;
 
@@ -14,6 +15,12 @@ namespace Input.UI
 
         private void Update()
         {
+            if (PlayerView.IsInputBlocked)
+            {
+                VirtualJoystickInput.SetDirection(Vector2.zero);
+                return;
+            }
+
             VirtualJoystickInput.SetDirection(_joystick != null ? _joystick.Direction : Vector2.zero);
         }
 

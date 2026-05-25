@@ -78,9 +78,13 @@ namespace Gameplay.Player
                 _manager.SetWalkableArea(walkableArea);
         }
 
+        /// <summary>供摇杆等外部模块读取的输入屏蔽状态</summary>
+        public static bool IsInputBlocked { get; private set; }
+
         protected override void Tick(float deltaTime)
         {
             var blocked = _dialogue.IsPlaying || (_backpack != null && _backpack.IsOpen) || (_pauseMenu != null && _pauseMenu.IsOpen) || EndingDirector.IsAnimating;
+            IsInputBlocked = blocked;
             var direction = blocked ? Vector2.zero : _input.MoveDirection;
 
             _manager.Move(direction, deltaTime);

@@ -16,6 +16,10 @@ namespace Input.UI
             if (!Application.isPlaying)
                 return;
 
+            // 只在移动端创建摇杆
+            if (!Application.isMobilePlatform)
+                return;
+
             EnsureEventSystem();
 
             var existing = Object.FindObjectOfType<RuntimeJoystickInput>(true);

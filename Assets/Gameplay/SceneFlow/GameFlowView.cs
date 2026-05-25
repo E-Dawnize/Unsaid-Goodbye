@@ -30,7 +30,7 @@ namespace Gameplay.SceneFlow
         private AsyncOperationHandle<SceneInstance> _sceneHandle;
         private static GameFlowView _instance;
         private CanvasGroup _fadeGroup;
-        private bool _playedCurrentEntryDialogue;
+        private string _lastPlayedEntryDialogue;
         private const string PhaseConfigLabel = "GamePhaseConfig";
 
         protected override void OnInitialize()
@@ -56,7 +56,6 @@ namespace Gameplay.SceneFlow
             SceneManager.sceneLoaded += OnSceneLoaded;
 
             Debug.Log("[GameFlowView] Subscribed to GameFlow events");
-            PlayCurrentEntryDialogueIfNeeded();
         }
 
         protected override void OnShutdown()
@@ -146,53 +145,12 @@ namespace Gameplay.SceneFlow
             // 6. 黑屏淡出
             await FadeFromBlack(config.TransitionDuration);
 
-            // 7. 播放进入对话
-            if (!string.IsNullOrEmpty(config.EntryDialogueId))
+            // 7. 播放进入对话（防止同阶段重复播放）
+            if (!string.IsNullOrEmpty(config.EntryDialogueId) && config.EntryDialogueId != _lastPlayedEntryDialogue)
             {
-                _playedCurrentEntryDialogue = true;
+                _lastPlayedEntryDialogue = config.EntryDialogueId;
                 await _dialogue.PlayAndWait(config.EntryDialogueId);
             }
-        }
-
-        private async void PlayCurrentEntryDialogueIfNeeded()
-        {
-            if (_playedCurrentEntryDialogue || _manager == null)
-                return;
-
-            var waitedFrames = 0;
-            while (!_playedCurrentEntryDialogue &&
-                   _manager.CurrentPhase == GamePhase.None &&
-                   waitedFrames < 120)
-            {
-                waitedFrames++;
-                await System.Threading.Tasks.Task.Yield();
-            }
-
-            if (_playedCurrentEntryDialogue)
-                return;
-
-            if (_manager.CurrentPhase == GamePhase.None)
-            {
-                Debug.LogWarning("[GameFlowView] Entry dialogue skipped: current phase is not ready.");
-                return;
-            }
-
-            var config = _manager.CurrentConfig ?? await LoadPhaseConfig(_manager.CurrentPhase);
-            if (config == null)
-            {
-                Debug.LogWarning($"[GameFlowView] Entry dialogue skipped: no config for {_manager.CurrentPhase}.");
-                return;
-            }
-
-            if (string.IsNullOrEmpty(config.EntryDialogueId))
-            {
-                Debug.Log($"[GameFlowView] Entry dialogue skipped: no EntryDialogueId for {_manager.CurrentPhase}.");
-                return;
-            }
-
-            _playedCurrentEntryDialogue = true;
-            Debug.Log($"[GameFlowView] Playing current phase entry dialogue: {config.EntryDialogueId}");
-            await _dialogue.PlayAndWait(config.EntryDialogueId);
         }
 
         private async System.Threading.Tasks.Task<GamePhaseConfig> LoadPhaseConfig(GamePhase phase)

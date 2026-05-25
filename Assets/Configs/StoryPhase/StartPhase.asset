@@ -16,7 +16,7 @@ MonoBehaviour:
   DisplayName: 
   SceneAssetPath: Scenes/2.SurfaceWorld_LivingRoom
   BackgroundMusic: BGM/SurfaceLivingRoom
-  EntryDialogueId: dialogue_phase1_wakeup
+  EntryDialogueId:
   ExitDialogueId: 
   RequiredBeats:
   - {fileID: 11400000, guid: e0038a836d0042638efb2157006112b2, type: 2}
