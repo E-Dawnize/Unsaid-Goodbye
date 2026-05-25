@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Input.InputInterface
 {
@@ -8,13 +8,13 @@ namespace Input.InputInterface
     /// </summary>
     public interface IPlayerInput
     {
-        /// <summary>当前帧移动方向 (WASD)，未按下时返回 Vector2.zero</summary>
+        /// <summary>当前帧移动方向，键盘和虚拟摇杆共存。</summary>
         Vector2 MoveDirection { get; }
 
-        /// <summary>当前鼠标位置</summary>
+        /// <summary>当前鼠标位置。</summary>
         Vector2 MousePosition { get; }
 
-        /// <summary>当前帧是否点击（鼠标左键按下）</summary>
+        /// <summary>当前帧是否点击。</summary>
         bool IsClickTriggered { get; }
 
         /// <summary>当前帧是否按下背包切换键 (Tab)</summary>

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 
 using Core.Architecture;
+using Input.UI;
 
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem.UI;
@@ -40,6 +41,7 @@ namespace Core.Boot
         private static void SceneBuild()
         {
             FixEventSystemInputModules();
+            RuntimeJoystickInstaller.Ensure();
         }
 
         private static void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -62,6 +64,7 @@ namespace Core.Boot
                     break;
                 }
             }
+            RuntimeJoystickInstaller.Ensure();
         }
 
         private static void FixEventSystemInputModules()
