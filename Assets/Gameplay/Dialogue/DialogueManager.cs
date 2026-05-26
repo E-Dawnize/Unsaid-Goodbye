@@ -20,6 +20,9 @@ namespace Gameplay.Dialogue
         private const string DialogueLabel = "DialogueSequence";
         private const string DialogueBoxResourcePath = "UI/Dialogue/DialogBox";
         private const string DialogueFontResourcePath = "Fonts/HongLeiXiaozhitiao";
+        private const string BlackCatPortraitAddress = "Setting/Sound[Catlogo ]";
+        private static readonly Vector2 BlackCatPortraitSize = new(200f, 200f);
+        private static readonly Vector2 BlackCatPortraitPosition = new(200f, 80f);
 
         private static Font _dialogueFont;
 
@@ -32,11 +35,15 @@ namespace Gameplay.Dialogue
         private CanvasGroup _dialogueGroup;
         private Image _panelImage;
         private RectTransform _dialoguePanel;
+        private Image _speakerPortrait;
         private Text _speakerText;
         private Text _dialogueText;
         private RectTransform _choiceRoot;
         private readonly List<GameObject> _choiceObjects = new();
         private readonly Queue<DialogueSequence> _pendingSequences = new();
+        private AsyncOperationHandle<Sprite> _blackCatPortraitHandle;
+        private Sprite _blackCatPortraitSprite;
+        private bool _blackCatPortraitLoadAttempted;
         private int _selectedChoiceIndex = -1;
         private bool _isPlaying;
 
@@ -63,6 +70,9 @@ namespace Gameplay.Dialogue
         public void Dispose()
         {
             _events?.Unsubscribe<InteractionEvent>(OnInteraction);
+
+            if (_blackCatPortraitHandle.IsValid())
+                Addressables.Release(_blackCatPortraitHandle);
         }
 
         private void OnInteraction(InteractionEvent e)
@@ -117,8 +127,10 @@ namespace Gameplay.Dialogue
                 _panelImage.enabled = !entry.HidePanel;
 
                 ApplyEntryStyle(entry);
-                if (!entry.HidePanel)
-                    _speakerText.text = BuildSpeakerText(entry);
+                if (entry.HidePanel)
+                    ClearSpeakerVisual();
+                else
+                    await ApplySpeakerVisual(entry);
                 _dialogueText.text = entry.Text ?? string.Empty;
                 _audio?.PlaySfx(DialogueAdvanceSfxKey);
                 OnLineDisplayed?.Invoke(_currentLineIndex, _totalLines);
@@ -241,6 +253,18 @@ namespace Gameplay.Dialogue
             artRect.offsetMin = Vector2.zero;
             artRect.offsetMax = Vector2.zero;
 
+            var portraitObject = new GameObject("SpeakerPortrait");
+            portraitObject.transform.SetParent(panelObject.transform, false);
+            _speakerPortrait = portraitObject.AddComponent<Image>();
+            _speakerPortrait.preserveAspect = true;
+            _speakerPortrait.enabled = false;
+            var portraitRect = _speakerPortrait.GetComponent<RectTransform>();
+            portraitRect.anchorMin = new Vector2(0f, 0.58f);
+            portraitRect.anchorMax = new Vector2(0f, 0.88f);
+            portraitRect.pivot = new Vector2(0.5f, 0.5f);
+            portraitRect.anchoredPosition = BlackCatPortraitPosition;
+            portraitRect.sizeDelta = BlackCatPortraitSize;
+
             _speakerText = CreateText("SpeakerText", panelObject.transform, 26, FontStyle.Bold);
             var speakerRect = _speakerText.GetComponent<RectTransform>();
             speakerRect.anchorMin = new Vector2(0f, 0.58f);
@@ -343,6 +367,74 @@ namespace Gameplay.Dialogue
                 DialogueLineType.StoryText => "剧情",
                 _ => string.Empty
             };
+        }
+
+        private async Task ApplySpeakerVisual(DialogueEntryData entry)
+        {
+            var showBlackCatPortrait = IsBlackCatLine(entry);
+            if (showBlackCatPortrait)
+            {
+                var portrait = await GetBlackCatPortrait();
+                if (portrait != null)
+                {
+                    _speakerText.text = string.Empty;
+                    _speakerPortrait.sprite = portrait;
+                    _speakerPortrait.enabled = true;
+                    return;
+                }
+            }
+
+            if (_speakerPortrait != null)
+            {
+                _speakerPortrait.enabled = false;
+                _speakerPortrait.sprite = null;
+            }
+
+            _speakerText.text = showBlackCatPortrait ? string.Empty : BuildSpeakerText(entry);
+        }
+
+        private void ClearSpeakerVisual()
+        {
+            if (_speakerPortrait != null)
+            {
+                _speakerPortrait.enabled = false;
+                _speakerPortrait.sprite = null;
+            }
+
+            _speakerText.text = string.Empty;
+        }
+
+        private static bool IsBlackCatLine(DialogueEntryData entry)
+        {
+            if (entry.Type == DialogueLineType.InnerMonologue)
+                return true;
+
+            if (!string.IsNullOrWhiteSpace(entry.Speaker) && entry.Speaker.Trim() == "\u9ed1\u732b")
+                return true;
+
+            return !string.IsNullOrWhiteSpace(entry.Speaker) && entry.Speaker.Trim() == "黑猫";
+        }
+
+        private async Task<Sprite> GetBlackCatPortrait()
+        {
+            if (_blackCatPortraitSprite != null)
+                return _blackCatPortraitSprite;
+
+            if (_blackCatPortraitLoadAttempted)
+                return null;
+
+            _blackCatPortraitLoadAttempted = true;
+            _blackCatPortraitHandle = Addressables.LoadAssetAsync<Sprite>(BlackCatPortraitAddress);
+            await _blackCatPortraitHandle.Task;
+
+            if (_blackCatPortraitHandle.Status != AsyncOperationStatus.Succeeded || _blackCatPortraitHandle.Result == null)
+            {
+                Debug.LogWarning($"[Dialogue] Black cat portrait not found: {BlackCatPortraitAddress}");
+                return null;
+            }
+
+            _blackCatPortraitSprite = _blackCatPortraitHandle.Result;
+            return _blackCatPortraitSprite;
         }
 
         private async Task WaitForChoice(DialogueEntryData entry)
