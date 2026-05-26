@@ -67,6 +67,56 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 29866eaabf008d5418671714fe5f1998
+    m_Address: Scenes/2.SurfaceWorld_LivingRoom
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 588afd79b431420092ae74dd864fc8c2
+    m_Address: Scenes/4.SurfaceWorld_Park
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bc7109ccfdee9cd45a37f1d7542bd47c
+    m_Address: Scenes/5.InnerWorld_Park
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9dccfe6e96a24b947b46cf6ae8fa9fe2
+    m_Address: Scenes/6.SurfaceWorld_LivingRoom
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 06e9a3034a0ae2b4caf95be942202e4f
+    m_Address: Scenes/7.SurfaceWorld_Bedroom_UnderBed
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a0949c91acb7d784090a8bc156e020aa
+    m_Address: Scenes/8.InnerWorld_Bedroom_UnderBed
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ca0976b9d6955334dbfb347464492e84
+    m_Address: Scenes/9.InnerWorld_Bedroom
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fad80fcf07d89b148a75f6e3e5395fba
+    m_Address: Scenes/10.InnerWorld_Balcony
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: da62f5a82c1948e4086e5614bd88e5d3
+    m_Address: Scenes/11.InnerWorld_LivingRoom
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 540525098c1945e42b7543711b26ea12
+    m_Address: Scenes/3.Surface_Balcony
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5d0316f5a562464d912c9b122a186151
     m_Address: Assets/Configs/StoryPhase/Phase2_InnerPark.asset
     m_ReadOnly: 0
@@ -397,6 +447,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d28c1849ec7df2c4886dbd84cfe4166d
     m_Address: Arts/UI/Settings
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a2e9d313190f90e45b36f35673d9e599
+    m_Address: Scenes/Start New
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

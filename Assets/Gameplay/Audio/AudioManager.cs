@@ -107,8 +107,8 @@ namespace Gameplay.Audio
             var source = _sfxSources[_sfxIndex];
             _sfxIndex = (_sfxIndex + 1) % SfxSourceCount;
 
-            source.volume = _sfxVolume;
-            source.PlayOneShot(clip);
+            Debug.Log($"[Audio] Playing SFX: {clipAddress} vol={_sfxVolume}");
+            source.PlayOneShot(clip, _sfxVolume);
         }
 
         private async Task<AudioClip> LoadClip(string address, string label)

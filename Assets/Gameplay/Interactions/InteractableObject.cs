@@ -28,7 +28,7 @@ namespace Gameplay.Interactions
         [Inject] private IEventCenter _events;
         [Inject] private IPlayerInput _input;
         [Inject] private IDialogueManager _dialogue;
-        [InjectOptional] private IAudioManager _audio;
+        [Inject] private IAudioManager _audio;
 
         [Header("交互定义")]
         [SerializeField] private InteractionDef _def;

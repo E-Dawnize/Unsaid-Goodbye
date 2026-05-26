@@ -46,11 +46,11 @@ namespace Gameplay.Inventory
 
         private static readonly Dictionary<string, string> DetailKeys = new()
         {
-            ["Def_DogCollar"]       = "Arts/open-items/open-l0",
-            ["Def_SofaPhoto"]       = "Arts/open-items/open-l1",
-            ["Def_CrateLabel"]      = "Arts/open-items/open-l2",
-            ["Def_WallDiary"]       = "Arts/open-items/open-l3",
-            ["Def_ParrotFeather"]   = "Arts/open-items/open-l4",
+            ["Def_DogCollar"]       = "Arts/open-items/open-l1",
+            ["Def_SofaPhoto"]       = "Arts/open-items/open-l2",
+            ["Def_CrateLabel"]      = "Arts/open-items/open-l3",
+            ["Def_WallDiary"]       = "Arts/open-items/open-l4",
+            ["Def_ParrotFeather"]   = "Arts/open-items/open-l5",
             ["Def_PillBottle"]      = "Arts/open-items/open-h0",
             ["Def_SofaPhone"]       = "Arts/open-items/open-h1",
             ["Def_WallFrame"]       = "Arts/open-items/open-h2",
