@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dce1219f7e574d74bb9b228883e22b88, type: 3}
+  m_Name: Phase4BedroomIntro
+  m_EditorClassIdentifier: 
+  DialogueId: dialogue_phase4_bedroom_intro
+  CompletionId: {fileID: 0}
+  Lines:
+  - "\u8fd9\u4e0d\u662f\u6211\u5bb6\u7684\u5367\u5ba4\uff0c\u8fd9\u662f\u54ea\u91cc\uff1f"
+  Entries:
+  - Type: 1
+    Speaker: "\u9ed1\u732b"
+    Text: "\u8fd9\u4e0d\u662f\u6211\u5bb6\u7684\u5367\u5ba4\uff0c\u8fd9\u662f\u54ea\u91cc\uff1f"
+    TextColor: {r: 0, g: 0, b: 0, a: 0}
+    AutoAdvance: 0
+    AutoAdvanceDelay: 1.5
+    Choices: []

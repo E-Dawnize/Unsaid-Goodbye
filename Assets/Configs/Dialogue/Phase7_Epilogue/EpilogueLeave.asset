@@ -1,0 +1,74 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dce1219f7e574d74bb9b228883e22b88, type: 3}
+  m_Name: EpilogueLeave
+  m_EditorClassIdentifier: 
+  DialogueId: dialogue_epilogue_leave
+  CompletionId: {fileID: 11400000, guid: ab12f81e53dc407fb262cb8cfda45245, type: 2}
+  Lines:
+  - "\u5979\u505c\u836f\u4e86\u3002\u7b2c\u4e00\u5468\u5f88\u96be\u71ac\uff0c\u5979\u5bf9\u7740\u7a7a\u623f\u95f4\u558a\u6211\u7684\u540d\u5b57\u3002"
+  - "\u7b2c\u4e8c\u5468\uff0c\u5979\u628a\u836f\u74f6\u6254\u8fdb\u4e86\u5783\u573e\u6876\u3002"
+  - "\u7b2c\u4e09\u5468\uff0c\u5979\u5728\u65e5\u8bb0\u91cc\u5199\uff1a\u201c\u8c22\u8c22\u4f60\u966a\u6211\u8d70\u8fc7\u6700\u96be\u7684\u65e5\u5b50\u3002\u73b0\u5728\u6211\u8981\u81ea\u5df1\u8d70\u4e86\u3002\u201d"
+  - "\u7a97\u5916\u6709\u9633\u5149\u3002\u98ce\u94c3\u5728\u54cd\u3002\u9633\u53f0\u6ca1\u6709\u5c01\u7a97\uff0c\u4f46\u5979\u4e0d\u4f1a\u518d\u517b\u9e1f\u4e86\u3002"
+  - "\u4e3b\u4eba\u62ff\u8d77\u5305\uff0c\u51fa\u95e8\u524d\u56de\u5934\u770b\u4e86\u4e00\u773c\u7a7a\u623f\u95f4\u3002"
+  - "\u2026\u2026\u518d\u89c1\uff0c\u5c0f\u732b\u3002"
+  - "\u518d\u89c1\u3002"
+  Entries:
+  - Type: 0
+    Speaker:
+    Text: "\u5979\u505c\u836f\u4e86\u3002\u7b2c\u4e00\u5468\u5f88\u96be\u71ac\uff0c\u5979\u5bf9\u7740\u7a7a\u623f\u95f4\u558a\u6211\u7684\u540d\u5b57\u3002"
+    TextColor: {r: 0, g: 0, b: 0, a: 0}
+    AutoAdvance: 0
+    AutoAdvanceDelay: 1.5
+    Choices: []
+  - Type: 0
+    Speaker:
+    Text: "\u7b2c\u4e8c\u5468\uff0c\u5979\u628a\u836f\u74f6\u6254\u8fdb\u4e86\u5783\u573e\u6876\u3002"
+    TextColor: {r: 0, g: 0, b: 0, a: 0}
+    AutoAdvance: 0
+    AutoAdvanceDelay: 1.5
+    Choices: []
+  - Type: 0
+    Speaker:
+    Text: "\u7b2c\u4e09\u5468\uff0c\u5979\u5728\u65e5\u8bb0\u91cc\u5199\uff1a\u201c\u8c22\u8c22\u4f60\u966a\u6211\u8d70\u8fc7\u6700\u96be\u7684\u65e5\u5b50\u3002\u73b0\u5728\u6211\u8981\u81ea\u5df1\u8d70\u4e86\u3002\u201d"
+    TextColor: {r: 0, g: 0, b: 0, a: 0}
+    AutoAdvance: 0
+    AutoAdvanceDelay: 1.5
+    Choices: []
+  - Type: 0
+    Speaker:
+    Text: "\u7a97\u5916\u6709\u9633\u5149\u3002\u98ce\u94c3\u5728\u54cd\u3002\u9633\u53f0\u6ca1\u6709\u5c01\u7a97\uff0c\u4f46\u5979\u4e0d\u4f1a\u518d\u517b\u9e1f\u4e86\u3002"
+    TextColor: {r: 0, g: 0, b: 0, a: 0}
+    AutoAdvance: 0
+    AutoAdvanceDelay: 1.5
+    Choices: []
+  - Type: 0
+    Speaker:
+    Text: "\u4e3b\u4eba\u62ff\u8d77\u5305\uff0c\u51fa\u95e8\u524d\u56de\u5934\u770b\u4e86\u4e00\u773c\u7a7a\u623f\u95f4\u3002"
+    TextColor: {r: 0, g: 0, b: 0, a: 0}
+    AutoAdvance: 0
+    AutoAdvanceDelay: 1.5
+    Choices: []
+  - Type: 3
+    Speaker: "\u4e3b\u4eba"
+    Text: "\u2026\u2026\u518d\u89c1\uff0c\u5c0f\u732b\u3002"
+    TextColor: {r: 0.78, g: 0.62, b: 1, a: 1}
+    AutoAdvance: 0
+    AutoAdvanceDelay: 1.5
+    Choices: []
+  - Type: 1
+    Speaker: "\u9ed1\u732b"
+    Text: "\u518d\u89c1\u3002"
+    TextColor: {r: 0, g: 0, b: 0, a: 0}
+    AutoAdvance: 0
+    AutoAdvanceDelay: 1.5
+    Choices: []

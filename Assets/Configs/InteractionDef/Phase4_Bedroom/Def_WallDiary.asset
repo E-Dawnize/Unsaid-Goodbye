@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76318d37cfabf10458b2b392b256d322, type: 3}
+  m_Name: Def_WallDiary
+  m_EditorClassIdentifier: 
+  _description: "\u5899\u4E0A\u65E5\u8BB0(L4) \u2014 \u7AE5\u5E74\u5B57\u8FF9\u65E5\u8BB0\uFF0C\u788E\u7247\u62FC\u8D34\u89E3\u8C1C\uFF0C\u7EA2\u8272\u6587\u5B57"
+  Dialogue: {fileID: 11400000, guid: f4cfe047857e42cab23b244ad52b0f80, type: 2}
+  OneShot: 1
+  PromptIconKey: InteractUI/Read
+  SfxKey: 

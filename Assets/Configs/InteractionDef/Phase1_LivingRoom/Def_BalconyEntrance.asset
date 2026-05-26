@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76318d37cfabf10458b2b392b256d322, type: 3}
+  m_Name: Def_BalconyEntrance
+  m_EditorClassIdentifier: 
+  _description: "\u9633\u53F0\u95E8 \u2014 \u9760\u8FD1\u540E\u70B9\u51FB\u8FDB\u5165\u9633\u53F0\u573A\u666F\uFF0C\u540CPhase\u5185\u573A\u666F\u5207\u6362"
+  Dialogue: {fileID: 0}
+  OneShot: 1
+  PromptIconKey: InteractUI/ToBac
+  SfxKey: SFX/EnterBalconyInner

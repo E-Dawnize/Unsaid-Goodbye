@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76318d37cfabf10458b2b392b256d322, type: 3}
+  m_Name: Def_KnockOverPillBottle
+  m_EditorClassIdentifier: 
+  _description: "\u63A8\u7FFB\u836F\u74F6 \u2014 \u836F\u74F6\u88AB\u78B0\u5012\uFF0C\u9732\u51FA\u91CC\u9762\u7684\u836F\u7247\u6570\u91CF"
+  Dialogue: {fileID: 11400000, guid: 02b4b489f88746aba0b258c90de738e7, type: 2}
+  OneShot: 1
+  PromptIconKey: InteractUI/OverturnBottle1
+  SfxKey: 

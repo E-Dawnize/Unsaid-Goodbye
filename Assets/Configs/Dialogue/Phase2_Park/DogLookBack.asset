@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dce1219f7e574d74bb9b228883e22b88, type: 3}
+  m_Name: DogLookBack
+  m_EditorClassIdentifier:
+  DialogueId: dialogue_dog_lookback
+  CompletionId: {fileID: 11400000, guid: 5a8f9c8a3a2d46dabd85d1a562d72553, type: 2}
+  Lines:
+  - "\u6211\u56de\u5934\u770b\u5411\u516c\u56ed\u5165\u53e3\u3002\u5730\u4e0a\u6709\u4e24\u9053\u5e76\u6392\u7684\u811a\u5370\uff1a\u4e00\u9053\u662f\u5c0f\u5973\u5b69\u7684\u80f6\u978b\u5370\uff0c\u4e00\u9053\u662f\u72d7\u7684\u722a\u5370\uff0c\u6d88\u5931\u5728\u9ec4\u660f\u65b9\u5411\u3002"
+  - "\u8fdc\u5904\u4f20\u6765\u5361\u8f66\u5f15\u64ce\u58f0\uff0c\u4e0d\u662f\u666e\u901a\u7684\u5361\u8f66\uff0c\u662f\u90a3\u79cd\u2026\u2026\u88c5\u5f88\u591a\u94c1\u7b3c\u5b50\u548c\u5f88\u591a\u72d7\u7684\u8f66\u3002\u58f0\u97f3\u8d8a\u6765\u8d8a\u8fdc\uff0c\u7136\u540e\u505c\u4e86\u3002\u72ac\u5420\u58f0\u4e5f\u505c\u4e86\u3002"
+  Entries:
+  - Type: 1
+    Speaker: "\u9ed1\u732b"
+    Text: "\u6211\u56de\u5934\u770b\u5411\u516c\u56ed\u5165\u53e3\u3002\u5730\u4e0a\u6709\u4e24\u9053\u5e76\u6392\u7684\u811a\u5370\uff1a\u4e00\u9053\u662f\u5c0f\u5973\u5b69\u7684\u80f6\u978b\u5370\uff0c\u4e00\u9053\u662f\u72d7\u7684\u722a\u5370\uff0c\u6d88\u5931\u5728\u9ec4\u660f\u65b9\u5411\u3002"
+    TextColor: {r: 0, g: 0, b: 0, a: 0}
+    AutoAdvance: 0
+    AutoAdvanceDelay: 1.5
+    Choices: []
+  - Type: 0
+    Speaker:
+    Text: "\u8fdc\u5904\u4f20\u6765\u5361\u8f66\u5f15\u64ce\u58f0\uff0c\u4e0d\u662f\u666e\u901a\u7684\u5361\u8f66\uff0c\u662f\u90a3\u79cd\u2026\u2026\u88c5\u5f88\u591a\u94c1\u7b3c\u5b50\u548c\u5f88\u591a\u72d7\u7684\u8f66\u3002\u58f0\u97f3\u8d8a\u6765\u8d8a\u8fdc\uff0c\u7136\u540e\u505c\u4e86\u3002\u72ac\u5420\u58f0\u4e5f\u505c\u4e86\u3002"
+    TextColor: {r: 0, g: 0, b: 0, a: 0}
+    AutoAdvance: 0
+    AutoAdvanceDelay: 1.5
+    Choices: []

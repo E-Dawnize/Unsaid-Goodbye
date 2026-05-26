@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dce1219f7e574d74bb9b228883e22b88, type: 3}
+  m_Name: BuryCollar
+  m_EditorClassIdentifier:
+  DialogueId: dialogue_bury_collar
+  CompletionId: {fileID: 11400000, guid: 9d1fbc92b2aa4a8b9055db3c0c0ae678, type: 2}
+  Lines:
+  - "\u9879\u5708\u57cb\u8fdb\u6ce5\u571f\uff0c\u5fae\u5149\u4e00\u95ea\uff0c\u4fbf\u8f7b\u8f7b\u6d88\u6563\u4e86\u3002\u5c31\u50cf\u5b83\u4ece\u672a\u771f\u6b63\u79bb\u5f00\uff0c\u73b0\u5728\u7ec8\u4e8e\u56de\u5bb6\u4e86\u3002"
+  Entries:
+  - Type: 0
+    Speaker:
+    Text: "\u9879\u5708\u57cb\u8fdb\u6ce5\u571f\uff0c\u5fae\u5149\u4e00\u95ea\uff0c\u4fbf\u8f7b\u8f7b\u6d88\u6563\u4e86\u3002\u5c31\u50cf\u5b83\u4ece\u672a\u771f\u6b63\u79bb\u5f00\uff0c\u73b0\u5728\u7ec8\u4e8e\u56de\u5bb6\u4e86\u3002"
+    TextColor: {r: 0, g: 0, b: 0, a: 0}
+    AutoAdvance: 0
+    AutoAdvanceDelay: 1.5
+    Choices: []

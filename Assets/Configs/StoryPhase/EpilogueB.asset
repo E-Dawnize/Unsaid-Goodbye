@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92d24d3ed91b43ac84aa5dc98c5bfeb0, type: 3}
+  m_Name: EpilogueB
+  m_EditorClassIdentifier:
+  PhaseId: 11
+  DisplayName: EpilogueB
+  SceneAssetPath:
+  BackgroundMusic: BGM/EndingB
+  EntryDialogueId: dialogue_epilogue_leave
+  ExitDialogueId:
+  RequiredBeats:
+  - {fileID: 11400000, guid: ab12f81e53dc407fb262cb8cfda45245, type: 2}
+  DefaultNextPhase: 0
+  AltNextPhase: 0
+  IsEndingBranch: 0
+  TransitionSFX:
+  TransitionDuration: 2

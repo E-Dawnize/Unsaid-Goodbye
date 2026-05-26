@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76318d37cfabf10458b2b392b256d322, type: 3}
+  m_Name: Def_CatBowl
+  m_EditorClassIdentifier:
+  _description: 猫碗触发器 — 醒来后靠近猫碗触发内心独白，完成推进Phase1
+  Dialogue: {fileID: 11400000, guid: 4f32857b2b77d4a4bbec26e6f2be9339, type: 2}
+  OneShot: 1
+  PromptIconKey: 
+  SfxKey: SFX/CatFood
