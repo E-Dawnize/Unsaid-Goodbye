@@ -550,7 +550,7 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
---- !u!1 &1094742718
+--- !u!1 &1078461192
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -558,26 +558,38 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1094742720}
-  - component: {fileID: 1094742719}
-  - component: {fileID: 1094742722}
-  - component: {fileID: 1094742721}
-  - component: {fileID: 1094742723}
+  - component: {fileID: 1078461193}
+  - component: {fileID: 1078461194}
   m_Layer: 0
-  m_Name: tudui_0
+  m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!212 &1094742719
+--- !u!4 &1078461193
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1078461192}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 6.14, y: -2.06, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &1078461194
 SpriteRenderer:
   serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1094742718}
+  m_GameObject: {fileID: 1078461192}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -615,9 +627,9 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 5
+  m_SortingLayerID: 3
+  m_SortingLayer: 3
+  m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 2486447894804227200, guid: f2b9c68431c45e84e92494291a60f134, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -629,6 +641,25 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!1 &1094742718
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1094742720}
+  - component: {fileID: 1094742722}
+  - component: {fileID: 1094742721}
+  - component: {fileID: 1094742723}
+  m_Layer: 0
+  m_Name: tudui_0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
 --- !u!4 &1094742720
 Transform:
   m_ObjectHideFlags: 0
@@ -661,6 +692,9 @@ MonoBehaviour:
   _interactOnce: 1
   _playerTag: Player
   _sceneToLoad: 
+  _prerequisite: {fileID: 0}
+  _targetsToActivateOnInteract: []
+  _targetsToHideOnInteract: []
   _enableHoverEffect: 1
   _hoverColor: {r: 1, g: 1, b: 0.8, a: 1}
 --- !u!61 &1094742722
@@ -1301,6 +1335,9 @@ MonoBehaviour:
   _interactOnce: 1
   _playerTag: Player
   _sceneToLoad: 
+  _prerequisite: {fileID: 0}
+  _targetsToActivateOnInteract:
+  - {fileID: 1094742718}
   _targetsToHideOnInteract:
   - {fileID: 704274822}
   _enableHoverEffect: 1
@@ -1486,6 +1523,9 @@ MonoBehaviour:
   _interactOnce: 1
   _playerTag: Player
   _sceneToLoad: 
+  _prerequisite: {fileID: 0}
+  _targetsToActivateOnInteract: []
+  _targetsToHideOnInteract: []
   _enableHoverEffect: 1
   _hoverColor: {r: 1, g: 1, b: 0.8, a: 1}
 --- !u!1660057539 &9223372036854775807
@@ -1500,5 +1540,6 @@ SceneRoots:
   - {fileID: 2100000012}
   - {fileID: 704274824}
   - {fileID: 1854747629}
+  - {fileID: 1078461193}
   - {fileID: 1094742720}
   - {fileID: 829112118}

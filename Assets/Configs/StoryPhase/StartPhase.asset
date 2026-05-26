@@ -16,6 +16,7 @@ MonoBehaviour:
   DisplayName: 
   SceneAssetPath: Scenes/2.SurfaceWorld_LivingRoom
   BackgroundMusic: BGM/SurfaceLivingRoom
+  BgmVolume: 0.86
   EntryDialogueId:
   ExitDialogueId: 
   RequiredBeats:

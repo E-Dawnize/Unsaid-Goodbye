@@ -16,6 +16,7 @@ MonoBehaviour:
   DisplayName: EpilogueB
   SceneAssetPath:
   BackgroundMusic: BGM/EndingB
+  BgmVolume: 0.5
   EntryDialogueId: dialogue_epilogue_leave
   ExitDialogueId:
   RequiredBeats:

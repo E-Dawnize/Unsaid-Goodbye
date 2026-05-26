@@ -16,6 +16,7 @@ MonoBehaviour:
   DisplayName: ReturnHome
   SceneAssetPath: Scenes/6.SurfaceWorld_LivingRoom
   BackgroundMusic: BGM/SurfaceLivingRoom
+  BgmVolume: 0.86
   EntryDialogueId: dialogue_phase3_return_home
   ExitDialogueId: 
   RequiredBeats:

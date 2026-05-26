@@ -171,6 +171,7 @@ MonoBehaviour:
   _interactOnce: 1
   _playerTag: Player
   _sceneToLoad: Scenes/2.SurfaceWorld_LivingRoom
+  _targetsToHideOnInteract: []
   _enableHoverEffect: 1
   _hoverColor: {r: 1, g: 1, b: 0.8, a: 1}
 --- !u!61 &65719355

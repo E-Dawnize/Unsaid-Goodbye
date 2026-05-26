@@ -15,7 +15,8 @@ MonoBehaviour:
   PhaseId: 6
   DisplayName: InnerBedroomUnderBed
   SceneAssetPath: Scenes/8.InnerWorld_Bedroom_UnderBed
-  BackgroundMusic: BGM/InnerBedroom
+  BackgroundMusic: BGM/SurfaceBedroom
+  BgmVolume: 1
   EntryDialogueId: 
   ExitDialogueId: 
   RequiredBeats:

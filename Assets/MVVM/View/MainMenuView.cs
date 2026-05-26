@@ -14,7 +14,7 @@ namespace MVVM.View
     {
         [Inject] private MainMenuViewModel _viewModel;
         [Inject] private IPauseMenu _pauseMenu;
-        [InjectOptional] private IAudioManager _audio;
+        [Inject] private IAudioManager _audio;
 
         private readonly List<MenuButton> _buttons = new();
         private Camera _cam;
@@ -26,9 +26,19 @@ namespace MVVM.View
             BuildButtons();
         }
 
+        private float _bgmCheckTimer;
+
         protected override void Tick(float dt)
         {
             if (_pauseMenu != null && _pauseMenu.IsOpen) return;
+
+            // BGM 兜底：每 3 秒检查一次，防止被意外停止
+            _bgmCheckTimer += dt;
+            if (_bgmCheckTimer > 3f)
+            {
+                _bgmCheckTimer = 0f;
+                _audio?.PlayBgm("BGM/Title");
+            }
 
             var mouse = Mouse.current;
             var touch = Touchscreen.current;

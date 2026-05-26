@@ -16,6 +16,7 @@ MonoBehaviour:
   DisplayName: InnerBalcony
   SceneAssetPath: Scenes/10.InnerWorld_Balcony
   BackgroundMusic: BGM/InnerBalcony
+  BgmVolume: 1
   EntryDialogueId: dialogue_phase5_balcony_intro
   ExitDialogueId: 
   RequiredBeats:

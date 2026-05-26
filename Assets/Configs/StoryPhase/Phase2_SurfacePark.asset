@@ -16,6 +16,7 @@ MonoBehaviour:
   DisplayName: Surface Park
   SceneAssetPath: Scenes/4.SurfaceWorld_Park
   BackgroundMusic: BGM/SurfacePark
+  BgmVolume: 1
   EntryDialogueId: dialogue_phase2_intro
   ExitDialogueId: 
   RequiredBeats:

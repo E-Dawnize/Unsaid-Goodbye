@@ -37,7 +37,15 @@ namespace Gameplay.Audio
         public float SfxVolume
         {
             get => _sfxVolume;
-            set => _sfxVolume = Mathf.Clamp01(value);
+            set
+            {
+                _sfxVolume = Mathf.Clamp01(value);
+                for (var i = 0; i < SfxSourceCount; i++)
+                {
+                    if (_sfxSources[i] != null)
+                        _sfxSources[i].volume = _sfxVolume;
+                }
+            }
         }
 
         public AudioManager()

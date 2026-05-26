@@ -16,6 +16,7 @@ MonoBehaviour:
   DisplayName: SurfaceBedroomUnderBed
   SceneAssetPath: Scenes/7.SurfaceWorld_Bedroom_UnderBed
   BackgroundMusic: BGM/SurfaceBedroom
+  BgmVolume: 0.75
   EntryDialogueId: dialogue_phase4_bedroom_intro
   ExitDialogueId: 
   RequiredBeats:

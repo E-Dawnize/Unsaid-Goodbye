@@ -29,6 +29,7 @@ namespace Gameplay.Interactions
         [Inject] private IPlayerInput _input;
         [Inject] private IDialogueManager _dialogue;
         [Inject] private IAudioManager _audio;
+        [InjectOptional] private Inventory.IInventoryManager _inventory;
 
         [Header("交互定义")]
         [SerializeField] private InteractionDef _def;
@@ -43,6 +44,14 @@ namespace Gameplay.Interactions
         [Tooltip("触发后加载的目标场景路径，如 Scenes/3.Surface_Balcony")]
         [SerializeField] private string _sceneToLoad;
 
+        [Header("前置条件")]
+        [Tooltip("需要先触发此交互物后才能交互")]
+        [SerializeField] private InteractionDef _prerequisite;
+
+        [Header("交互后激活")]
+        [Tooltip("交互触发后需要显示的场景物体")]
+        [SerializeField] private GameObject[] _targetsToActivateOnInteract;
+
         [Header("交互后隐藏")]
         [Tooltip("交互触发后需要隐藏的场景物体，例如被拾取的道具实体。")]
         [SerializeField] private GameObject[] _targetsToHideOnInteract;
@@ -54,8 +63,21 @@ namespace Gameplay.Interactions
         /// </summary>
         public static readonly List<InteractableObject> ProximityTargets = new();
 
-        /// <summary>是否仍可交互（未被一次性消耗）</summary>
-        public bool CanInteract => !_used || !(_def != null && _def.OneShot && _interactOnce);
+        /// <summary>是否仍可交互（未被一次性消耗 + 前置条件满足）</summary>
+        public bool CanInteract
+        {
+            get
+            {
+                if (_used && _def != null && _def.OneShot && _interactOnce) return false;
+                if (_prerequisite != null && _inventory != null)
+                {
+                    foreach (var item in _inventory.CollectedItems)
+                        if (item == _prerequisite) return true;
+                    return false; // 前置未收集
+                }
+                return true;
+            }
+        }
 
         /// <summary>读档时标记为已使用，防止一次性交互物被重复触发</summary>
         public void MarkUsed()
@@ -64,6 +86,7 @@ namespace Gameplay.Interactions
             SetHover(false);
             ProximityTargets.Remove(this);
             HideTargetsAfterInteract();
+            ActivateTargetsAfterInteract();
         }
 
         [Header("视觉反馈（点击交互模式下生效）")]
@@ -195,8 +218,16 @@ namespace Gameplay.Interactions
             if (effectiveOnce)
             {
                 HideTargetsAfterInteract();
+                ActivateTargetsAfterInteract();
                 SetHover(false);
             }
+        }
+
+        private void ActivateTargetsAfterInteract()
+        {
+            if (_targetsToActivateOnInteract == null) return;
+            foreach (var target in _targetsToActivateOnInteract)
+                if (target != null) target.SetActive(true);
         }
 
         private void HideTargetsAfterInteract()

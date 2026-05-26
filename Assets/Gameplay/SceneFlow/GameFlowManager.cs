@@ -385,7 +385,7 @@ namespace Gameplay.SceneFlow
         /// <summary>读档后同步场景中的 InteractableObject：已完成的 beat 对应的交互物标记为已使用</summary>
         private void SyncInteractableObjectsToBeats()
         {
-            var allObjects = UnityEngine.Object.FindObjectsByType<InteractableObject>(FindObjectsSortMode.None);
+            var allObjects = UnityEngine.Object.FindObjectsByType<InteractableObject>(FindObjectsInactive.Include, FindObjectsSortMode.None);
             foreach (var obj in allObjects)
             {
                 if (obj.Def != null && obj.Def.OneShot && _completedBeats.Contains(obj.Def))

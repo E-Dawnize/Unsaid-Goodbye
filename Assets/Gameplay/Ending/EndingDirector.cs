@@ -222,9 +222,10 @@ namespace Gameplay.Ending
             _endingType = type;
             _dialogueFinished = false;
 
-            // 隐藏摇杆
+            // 隐藏摇杆 + 静音 SFX
             var js = Object.FindObjectOfType<Input.UI.WorldSpaceJoystick>(true);
             if (js != null) js.gameObject.SetActive(false);
+            _audio.SfxVolume = 0f;
             _dialogueStarted = false;
             _showingAfter = false;
             _spritePreloaded = false;
@@ -270,6 +271,7 @@ namespace Gameplay.Ending
                         continue;
                     }
                     var s = await LoadSprite(EndingBKeys[i]);
+                    if (s == null) Debug.LogWarning($"[EndingDirector] Preload: {EndingBKeys[i]} failed");
                     _bSprites.Add(s);
                 }
             }
@@ -359,6 +361,18 @@ namespace Gameplay.Ending
             if (index != 5)
                 StopVideo();
 
+            // 视频索引特殊处理：直接切黑底 + 播放，不走淡入淡出
+            if (index == 5)
+            {
+                _bgSr.sprite = CreateBlackSprite();
+                FitToCamera(_overlayGo, 9f);
+                _bgSr.color = new Color(1f, 1f, 1f, 0f);
+                PlayVideo();
+                _transitioning = false;
+                IsAnimating = false;
+                return;
+            }
+
             // 2. 换图 + 设透明
             if (index == 6 && _bSprites[6] != null)
             {
@@ -422,6 +436,7 @@ namespace Gameplay.Ending
             _showingAfter = true;
             StopVideo();
             if (_end07Go != null) _end07Go.SetActive(false);
+            _audio?.PlayBgm("BGM/MainEnding");
 
             _bgSr.sprite = _afterABSprite ?? CreateBlackSprite();
             FitSpriteToCamera(_bgSr);
@@ -434,9 +449,10 @@ namespace Gameplay.Ending
             if (_videoGo == null)
             {
                 _videoGo = new GameObject("EndingVideo");
+                _videoGo.SetActive(false);
                 _videoGo.transform.SetParent(_overlayGo.transform, false);
                 _videoGo.transform.localPosition = Vector3.zero;
-                _videoGo.transform.localScale = Vector3.one; // 填满 overlay（overlay 已填满相机）
+                _videoGo.transform.localScale = Vector3.one;
 
                 _videoPlayer = _videoGo.AddComponent<VideoPlayer>();
                 _videoPlayer.renderMode = VideoRenderMode.RenderTexture;
@@ -452,12 +468,9 @@ namespace Gameplay.Ending
                 quad.transform.SetParent(_overlayGo.transform, false);
                 quad.transform.localPosition = Vector3.zero;
                 quad.transform.localRotation = Quaternion.identity;
-
-                // overlay 已缩放到填满相机，quad localScale=(1,1,1) 即可
                 quad.transform.localScale = Vector3.one;
 
                 var qr = quad.GetComponent<MeshRenderer>();
-                // 用 Unlit/Color shader 避免打包后被裁剪（Unlit/Texture 可能不在 build 中）
                 var shader = Shader.Find("Unlit/Texture");
                 if (shader == null) shader = Shader.Find("Unlit/Color");
                 if (shader == null) shader = Shader.Find("Sprites/Default");
@@ -466,10 +479,18 @@ namespace Gameplay.Ending
                 qr.sortingLayerName = PopupLayer;
                 qr.sortingOrder = 201;
 
+                // 加载视频
+                if (_videoClip == null)
+                {
+                    var vHandle = Addressables.LoadAssetAsync<VideoClip>(EndingBKeys[5]);
+                    await vHandle.Task;
+                    _videoClip = vHandle.Status == AsyncOperationStatus.Succeeded ? vHandle.Result : null;
+                }
             }
 
-            _videoGo.SetActive(true);
+            if (_videoClip == null) return;
             _videoPlayer.clip = _videoClip;
+            _videoGo.SetActive(true);
             _videoPlayer.Prepare();
             while (!_videoPlayer.isPrepared) await System.Threading.Tasks.Task.Yield();
             _videoPlayer.Play();
@@ -523,7 +544,9 @@ namespace Gameplay.Ending
         private async void ReturnToMainMenu()
         {
             _flow.GetSaveState();
-            _audio?.PlayBgm("BGM/Title");
+            _audio?.StopBgm(0.5f);
+            // 恢复 SFX 音量
+            _audio.SfxVolume = PlayerPrefs.GetFloat("SfxVolume", 1f);
             // 恢复摇杆
             var js = Object.FindObjectOfType<Input.UI.WorldSpaceJoystick>(true);
             if (js != null) js.gameObject.SetActive(true);
@@ -543,7 +566,7 @@ namespace Gameplay.Ending
                 while (elapsed < 0.8f) { elapsed += Time.deltaTime; cg.alpha = Mathf.Clamp01(elapsed / 0.8f); await System.Threading.Tasks.Task.Yield(); }
                 cg.alpha = 1f;
                 Cleanup();
-                Object.Destroy(fadeGo); // 销毁黑屏遮罩
+                Object.Destroy(fadeGo);
                 var handle = Addressables.LoadSceneAsync("Scenes/Start New", LoadSceneMode.Single);
                 await handle.Task;
             }
@@ -559,6 +582,7 @@ namespace Gameplay.Ending
         {
             _active = false;
             StopVideo();
+            _audio?.StopBgm(0f);
             if (_end07Go != null) _end07Go.SetActive(false);
             _overlayGo.SetActive(false);
             _bSprites.Clear();

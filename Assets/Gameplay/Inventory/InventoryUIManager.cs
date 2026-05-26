@@ -557,7 +557,24 @@ namespace Gameplay.Inventory
             private void Update()
             {
                 var mouse = UnityEngine.InputSystem.Mouse.current;
-                if (mouse == null) return;
+                var touch = UnityEngine.InputSystem.Touchscreen.current;
+
+                Vector2 pointerPos;
+                bool isPointerClicked;
+                if (mouse != null)
+                {
+                    pointerPos = mouse.position.ReadValue();
+                    isPointerClicked = mouse.leftButton.wasPressedThisFrame;
+                }
+                else if (touch != null && touch.primaryTouch.press.isPressed)
+                {
+                    pointerPos = touch.primaryTouch.position.ReadValue();
+                    isPointerClicked = touch.primaryTouch.press.wasPressedThisFrame;
+                }
+                else
+                {
+                    return;
+                }
 
                 var cam = Camera.main;
                 if (cam == null) return;
@@ -573,7 +590,7 @@ namespace Gameplay.Inventory
                     transform.position = new Vector3(worldX, worldY, transform.position.z);
                 }
 
-                var worldPos = (Vector2)cam.ScreenToWorldPoint(mouse.position.ReadValue());
+                var worldPos = (Vector2)cam.ScreenToWorldPoint(pointerPos);
                 var hits = new List<Collider2D>();
                 Physics2D.OverlapPoint(worldPos, new ContactFilter2D().NoFilter(), hits);
 
@@ -593,7 +610,7 @@ namespace Gameplay.Inventory
                 else if (!_hovered && wasHovered)
                     _sr.sprite = _normal ?? _sr.sprite;
 
-                if (_hovered && mouse.leftButton.wasPressedThisFrame && !Pause.PauseMenuManager.IsAnyOpen)
+                if (_hovered && isPointerClicked && !Pause.PauseMenuManager.IsAnyOpen)
                     OnClick?.Invoke();
             }
         }
@@ -621,10 +638,28 @@ namespace Gameplay.Inventory
                 // 每帧刷新，场景切换后 Camera.main 会变
                 if (Camera.main != null) _cam = Camera.main;
                 if (_cam == null) return;
-                var mouse = UnityEngine.InputSystem.Mouse.current;
-                if (mouse == null) return;
 
-                var worldPos = (Vector2)_cam.ScreenToWorldPoint(mouse.position.ReadValue());
+                var mouse = UnityEngine.InputSystem.Mouse.current;
+                var touch = UnityEngine.InputSystem.Touchscreen.current;
+
+                Vector2 pointerPos;
+                bool isPointerClicked;
+                if (mouse != null)
+                {
+                    pointerPos = mouse.position.ReadValue();
+                    isPointerClicked = mouse.leftButton.wasPressedThisFrame;
+                }
+                else if (touch != null && touch.primaryTouch.press.isPressed)
+                {
+                    pointerPos = touch.primaryTouch.position.ReadValue();
+                    isPointerClicked = touch.primaryTouch.press.wasPressedThisFrame;
+                }
+                else
+                {
+                    return;
+                }
+
+                var worldPos = (Vector2)_cam.ScreenToWorldPoint(pointerPos);
                 var hits = new List<Collider2D>();
                 Physics2D.OverlapPoint(worldPos, new ContactFilter2D().NoFilter(), hits);
 
@@ -649,7 +684,7 @@ namespace Gameplay.Inventory
                     _target.DOScale(_originalScale, 0.15f).SetEase(Ease.OutQuad);
                 }
 
-                if (_hovered && mouse.leftButton.wasPressedThisFrame && (BlockCheck == null || !BlockCheck()))
+                if (_hovered && isPointerClicked && (BlockCheck == null || !BlockCheck()))
                     OnClick?.Invoke();
             }
         }

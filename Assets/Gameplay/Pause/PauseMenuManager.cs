@@ -440,7 +440,7 @@ namespace Gameplay.Pause
 
             // 保存存档
             _flow.GetSaveState();
-            _audio?.PlayBgm("BGM/Title");
+            _audio?.StopBgm(0.5f);
 
             Debug.Log("[PauseMenu] 返回主菜单");
 

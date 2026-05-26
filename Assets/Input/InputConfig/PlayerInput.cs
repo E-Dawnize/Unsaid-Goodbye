@@ -191,6 +191,17 @@ namespace Input.InputConfig
                 },
                 {
                     ""name"": """",
+                    ""id"": ""e8c9d7a6-5b4f-4321-9876-fedcba098765"",
+                    ""path"": ""<Touchscreen>/press"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Click"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""1b050321-d4ee-44eb-be7d-7750eb47db62"",
                     ""path"": ""<Mouse>/position"",
                     ""interactions"": """",

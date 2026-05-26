@@ -285,6 +285,7 @@ MonoBehaviour:
   _interactOnce: 1
   _playerTag: Player
   _sceneToLoad: 
+  _targetsToHideOnInteract: []
   _enableHoverEffect: 1
   _hoverColor: {r: 1, g: 1, b: 0.8, a: 1}
 --- !u!61 &73289267
@@ -360,6 +361,7 @@ MonoBehaviour:
   _interactOnce: 1
   _playerTag: Player
   _sceneToLoad: Scenes/3.Surface_Balcony
+  _targetsToHideOnInteract: []
   _enableHoverEffect: 1
   _hoverColor: {r: 1, g: 1, b: 0.8, a: 1}
 --- !u!61 &73289273
@@ -425,6 +427,7 @@ MonoBehaviour:
   _interactOnce: 1
   _playerTag: Player
   _sceneToLoad: 
+  _targetsToHideOnInteract: []
   _enableHoverEffect: 1
   _hoverColor: {r: 1, g: 1, b: 0.8, a: 1}
 --- !u!61 &73289275
@@ -500,6 +503,7 @@ MonoBehaviour:
   _interactOnce: 1
   _playerTag: Player
   _sceneToLoad: 
+  _targetsToHideOnInteract: []
   _enableHoverEffect: 1
   _hoverColor: {r: 1, g: 1, b: 0.8, a: 1}
 --- !u!61 &359668922
@@ -565,6 +569,7 @@ MonoBehaviour:
   _interactOnce: 1
   _playerTag: Player
   _sceneToLoad: 
+  _targetsToHideOnInteract: []
   _enableHoverEffect: 1
   _hoverColor: {r: 1, g: 1, b: 0.8, a: 1}
 --- !u!61 &359668924
@@ -628,6 +633,112 @@ MonoBehaviour:
   _sortingAnchor: {fileID: 0}
   _orderOffset: 0
   _sortPrecision: 100
+--- !u!1001 &382907839
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8653719598885068355, guid: fb2b4ca29db16964db3251753ce33317, type: 3}
+      propertyPath: m_Name
+      value: Photo-light
+      objectReference: {fileID: 0}
+    - target: {fileID: -7552582706839291426, guid: fb2b4ca29db16964db3251753ce33317, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7552582706839291426, guid: fb2b4ca29db16964db3251753ce33317, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7552582706839291426, guid: fb2b4ca29db16964db3251753ce33317, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7552582706839291426, guid: fb2b4ca29db16964db3251753ce33317, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.914
+      objectReference: {fileID: 0}
+    - target: {fileID: -7552582706839291426, guid: fb2b4ca29db16964db3251753ce33317, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -2.052
+      objectReference: {fileID: 0}
+    - target: {fileID: -7552582706839291426, guid: fb2b4ca29db16964db3251753ce33317, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7552582706839291426, guid: fb2b4ca29db16964db3251753ce33317, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7552582706839291426, guid: fb2b4ca29db16964db3251753ce33317, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7552582706839291426, guid: fb2b4ca29db16964db3251753ce33317, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7552582706839291426, guid: fb2b4ca29db16964db3251753ce33317, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7552582706839291426, guid: fb2b4ca29db16964db3251753ce33317, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7552582706839291426, guid: fb2b4ca29db16964db3251753ce33317, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7552582706839291426, guid: fb2b4ca29db16964db3251753ce33317, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7552582706839291426, guid: fb2b4ca29db16964db3251753ce33317, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -4855681553128050412, guid: fb2b4ca29db16964db3251753ce33317, type: 3}
+      propertyPath: m_SortingLayer
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: -4855681553128050412, guid: fb2b4ca29db16964db3251753ce33317, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: -926764152626152312, guid: fb2b4ca29db16964db3251753ce33317, type: 3}
+      propertyPath: m_SortingLayer
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: -926764152626152312, guid: fb2b4ca29db16964db3251753ce33317, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 568954209937298726, guid: fb2b4ca29db16964db3251753ce33317, type: 3}
+      propertyPath: m_SortingLayer
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 568954209937298726, guid: fb2b4ca29db16964db3251753ce33317, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4923577224960967367, guid: fb2b4ca29db16964db3251753ce33317, type: 3}
+      propertyPath: m_SortingLayer
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4923577224960967367, guid: fb2b4ca29db16964db3251753ce33317, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 4
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects:
+    - {fileID: -7025855766124702615, guid: fb2b4ca29db16964db3251753ce33317, type: 3}
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 4843985084834002234, guid: fb2b4ca29db16964db3251753ce33317, type: 3}
 --- !u!1 &486326420
 GameObject:
   m_ObjectHideFlags: 0
@@ -664,6 +775,7 @@ MonoBehaviour:
   _interactOnce: 1
   _playerTag: Player
   _sceneToLoad: 
+  _targetsToHideOnInteract: []
   _enableHoverEffect: 1
   _hoverColor: {r: 1, g: 1, b: 0.8, a: 1}
 --- !u!61 &486326422
@@ -1044,6 +1156,7 @@ MonoBehaviour:
   _interactOnce: 1
   _playerTag: Player
   _sceneToLoad: 
+  _targetsToHideOnInteract: []
   _enableHoverEffect: 1
   _hoverColor: {r: 1, g: 1, b: 0.8, a: 1}
 --- !u!61 &1125687655
@@ -1270,3 +1383,4 @@ SceneRoots:
   - {fileID: 1289120412}
   - {fileID: 73289264}
   - {fileID: 574190060}
+  - {fileID: 382907839}

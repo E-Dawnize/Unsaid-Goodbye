@@ -113,8 +113,12 @@ namespace Gameplay.Dialogue
                 if (string.IsNullOrWhiteSpace(entry.Text) && entry.Choices.Count == 0)
                     continue;
 
+                // 隐藏/显示对话框背景
+                _panelImage.enabled = !entry.HidePanel;
+
                 ApplyEntryStyle(entry);
-                _speakerText.text = BuildSpeakerText(entry);
+                if (!entry.HidePanel)
+                    _speakerText.text = BuildSpeakerText(entry);
                 _dialogueText.text = entry.Text ?? string.Empty;
                 _audio?.PlaySfx(DialogueAdvanceSfxKey);
                 OnLineDisplayed?.Invoke(_currentLineIndex, _totalLines);
@@ -136,6 +140,7 @@ namespace Gameplay.Dialogue
             }
 
             ClearChoices();
+            _panelImage.enabled = true;
             _speakerText.text = string.Empty;
             _dialogueText.text = string.Empty;
             _dialogueGroup.alpha = 0f;
@@ -383,8 +388,10 @@ namespace Gameplay.Dialogue
                 button.interactable = canInteract;
                 var handle = Addressables.LoadAssetAsync<Sprite>(spriteKey);
                 await handle.Task;
-                if (handle.Status == AsyncOperationStatus.Succeeded)
+                if (handle.Status == AsyncOperationStatus.Succeeded && handle.Result != null)
                     image.sprite = handle.Result;
+                else
+                    Debug.LogWarning($"[Dialogue] Failed to load choice sprite: {spriteKey}, status={handle.Status}");
             }
             else
             {
@@ -480,6 +487,7 @@ namespace Gameplay.Dialogue
             public Color TextColor;
             public bool AutoAdvance;
             public float AutoAdvanceDelay;
+            public bool HidePanel;
             public readonly List<DialogueChoiceData> Choices = new();
 
             public static DialogueEntryData From(DialogueEntry entry)
@@ -491,7 +499,8 @@ namespace Gameplay.Dialogue
                     Text = entry.Text,
                     TextColor = entry.TextColor,
                     AutoAdvance = entry.AutoAdvance,
-                    AutoAdvanceDelay = entry.AutoAdvanceDelay
+                    AutoAdvanceDelay = entry.AutoAdvanceDelay,
+                    HidePanel = entry.HidePanel
                 };
 
                 if (entry.Choices != null)

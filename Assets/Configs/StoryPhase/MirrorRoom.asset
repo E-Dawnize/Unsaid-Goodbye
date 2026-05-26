@@ -16,6 +16,7 @@ MonoBehaviour:
   DisplayName: MirrorRoom
   SceneAssetPath: Scenes/11.InnerWorld_LivingRoom
   BackgroundMusic: BGM/InnerBedroom
+  BgmVolume: 0.75
   EntryDialogueId: dialogue_phase6_mirror_intro
   ExitDialogueId: 
   RequiredBeats:

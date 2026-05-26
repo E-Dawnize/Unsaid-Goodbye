@@ -578,6 +578,7 @@ MonoBehaviour:
   _interactOnce: 1
   _playerTag: Player
   _sceneToLoad: 
+  _targetsToHideOnInteract: []
   _enableHoverEffect: 0
   _hoverColor: {r: 1, g: 1, b: 0.8, a: 1}
 --- !u!4 &200002004
@@ -652,7 +653,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
 --- !u!1 &200003001
 GameObject:
@@ -736,6 +737,7 @@ MonoBehaviour:
   _interactOnce: 1
   _playerTag: Player
   _sceneToLoad: 
+  _targetsToHideOnInteract: []
   _enableHoverEffect: 0
   _hoverColor: {r: 1, g: 1, b: 0.8, a: 1}
 --- !u!4 &200003004
@@ -1001,6 +1003,7 @@ MonoBehaviour:
   _interactOnce: 1
   _playerTag: Player
   _sceneToLoad: 
+  _targetsToHideOnInteract: []
   _enableHoverEffect: 1
   _hoverColor: {r: 1, g: 1, b: 0.8, a: 1}
 --- !u!61 &200004006
@@ -1130,6 +1133,7 @@ MonoBehaviour:
   _interactOnce: 1
   _playerTag: Player
   _sceneToLoad: 
+  _targetsToHideOnInteract: []
   _enableHoverEffect: 0
   _hoverColor: {r: 1, g: 1, b: 0.8, a: 1}
 --- !u!4 &200005004
@@ -1387,15 +1391,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2632301321880726589, guid: 08079728d43edd346a5a6aebc9e2e87b, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.35
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 2632301321880726589, guid: 08079728d43edd346a5a6aebc9e2e87b, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.35
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 2632301321880726589, guid: 08079728d43edd346a5a6aebc9e2e87b, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.35
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 2632301321880726589, guid: 08079728d43edd346a5a6aebc9e2e87b, type: 3}
       propertyPath: m_LocalPosition.x

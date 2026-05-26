@@ -33,6 +33,7 @@ namespace Gameplay.SO
         public Color TextColor = Color.clear;
         public bool AutoAdvance;
         public float AutoAdvanceDelay = 1.5f;
+        public bool HidePanel;
         public List<DialogueChoice> Choices = new();
     }
 

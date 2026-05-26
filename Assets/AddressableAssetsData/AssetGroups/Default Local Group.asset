@@ -498,6 +498,12 @@ MonoBehaviour:
     - BGM
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 2e1d11aa2e66c7742bf2592b9253c183
+    m_Address: BGM/MainEnding
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - BGM
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1ee8c0ff0a4969f47b09f54b56f5ed51
     m_Address: BGM/EndingA
     m_ReadOnly: 0
     m_SerializedLabels:
@@ -613,12 +619,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a04fca0ea015f404686b0355b878a34d
     m_Address: SFX/OpenCrate
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - SFX
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 1ed339dc0f69d62448a4f12161e7bbf3
-    m_Address: SFX/TruthReveal
     m_ReadOnly: 0
     m_SerializedLabels:
     - SFX

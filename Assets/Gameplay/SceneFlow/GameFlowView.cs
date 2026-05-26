@@ -140,7 +140,10 @@ namespace Gameplay.SceneFlow
 
             // 5. 切换 BGM
             if (!string.IsNullOrEmpty(config.BackgroundMusic))
+            {
+                _audio.BgmVolume = config.BgmVolume;
                 _audio.PlayBgm(config.BackgroundMusic);
+            }
 
             // 6. 黑屏淡出
             await FadeFromBlack(config.TransitionDuration);

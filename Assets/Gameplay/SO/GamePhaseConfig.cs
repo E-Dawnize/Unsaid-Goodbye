@@ -13,6 +13,7 @@ namespace Gameplay.SO
         public string DisplayName;
         public string SceneAssetPath;
         public string BackgroundMusic;
+        [Range(0f, 1f)] public float BgmVolume = 1f;
 
         [Header("对话")]
         public string EntryDialogueId;
