@@ -56,6 +56,7 @@ MonoBehaviour:
     TextColor: {r: 0.78, g: 0.62, b: 1, a: 1}
     AutoAdvance: 0
     AutoAdvanceDelay: 1.5
+    HidePanel: 1
     Choices: []
   - Type: 1
     Speaker: "\u9ed1\u732b"

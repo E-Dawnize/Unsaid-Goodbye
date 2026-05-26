@@ -294,12 +294,15 @@ namespace Gameplay.Ending
             if (_dialogueStarted && !_dialogueFinished && _dialogue != null && !_dialogue.IsPlaying)
             {
                 _dialogueFinished = true;
-                // Ending A：对话结束自动切 AfterAB
-                if (_endingType == GamePhase.Phase7_Epilogue_A && !_showingAfter)
+                if (!_showingAfter)
                 {
+                    // Ending A：自动切 AfterAB
+                    // Ending B：自动切 end07+AfterAB
                     ShowAfter();
-                    return;
+                    if (_endingType == GamePhase.Phase7_Epilogue_B)
+                        ShowBImage(6); // end07 叠到 AfterAB 上
                 }
+                return;
             }
 
             // Ending A 对话期间点击不处理（只推进对话，不切图）
@@ -315,18 +318,10 @@ namespace Gameplay.Ending
 
             if (!clicked) return;
 
-            // AfterAB 点击 → 回主页（A/B 共用）
+            // AfterAB 点击 → 回主页
             if (_showingAfter)
             {
                 ReturnToMainMenu();
-                return;
-            }
-
-            // Ending B：对话播完 + 所有图展示完 + 动画结束 → 点一下切 AfterAB
-            if (_endingType == GamePhase.Phase7_Epilogue_B &&
-                _dialogueFinished && IsAllShown() && !_transitioning && !_showingAfter)
-            {
-                ShowAfter();
                 return;
             }
         }
