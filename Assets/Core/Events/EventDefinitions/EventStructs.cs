@@ -21,6 +21,7 @@ struct StoryBeatCompletedEvent
 struct SceneLoadRequest
 {
     public string ScenePath;
+    public string BgmAddress;
 }
 
 /// <summary>

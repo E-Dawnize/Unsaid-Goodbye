@@ -262,6 +262,9 @@ namespace Gameplay.SceneFlow
             _sceneHandle = Addressables.LoadSceneAsync(e.ScenePath, LoadSceneMode.Single);
             await _sceneHandle.Task;
 
+            if (!string.IsNullOrEmpty(e.BgmAddress))
+                _audio?.PlayBgm(e.BgmAddress);
+
             await FadeFromBlack(1f);
         }
     }

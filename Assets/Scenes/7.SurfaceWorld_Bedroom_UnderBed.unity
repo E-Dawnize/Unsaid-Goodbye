@@ -1033,6 +1033,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Interactions.StoryBeatObjectActivator
   _requiredBeatId: Def_BedCornerSavings
+  _additionalRequiredBeatIds:
+  - Def_CrateLabel
   _targetsToActivate:
   - {fileID: 200005001}
   _hideTargetsOnInitialize: 1

@@ -43,6 +43,8 @@ namespace Gameplay.Interactions
         [Header("场景切换（Trigger 模式下可选）")]
         [Tooltip("触发后加载的目标场景路径，如 Scenes/3.Surface_Balcony")]
         [SerializeField] private string _sceneToLoad;
+        [Tooltip("触发场景切换后播放的 BGM Addressables 地址，留空则保持当前 BGM。")]
+        [SerializeField] private string _bgmToPlayAfterSceneLoad;
 
         [Header("前置条件")]
         [Tooltip("需要先触发此交互物后才能交互")]
@@ -208,7 +210,7 @@ namespace Gameplay.Interactions
             if (!string.IsNullOrEmpty(_sceneToLoad))
             {
                 if (_sceneToLoad.StartsWith("Scenes/"))
-                    _events.Publish(new SceneLoadRequest { ScenePath = _sceneToLoad });
+                    _events.Publish(new SceneLoadRequest { ScenePath = _sceneToLoad, BgmAddress = _bgmToPlayAfterSceneLoad });
                 else
                     Debug.LogWarning($"[Interactable] Invalid scene path '{_sceneToLoad}' on '{_def.name}'. Expected format: Scenes/XXX", this);
             }
