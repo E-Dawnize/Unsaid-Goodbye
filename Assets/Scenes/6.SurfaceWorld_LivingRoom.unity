@@ -175,6 +175,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -5653446334901385570, guid: 551d3590430eca547b658bc86073c355, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: -5525396579245178455, guid: 551d3590430eca547b658bc86073c355, type: 3}
       propertyPath: m_Name
       value: Table
@@ -182,6 +186,10 @@ PrefabInstance:
     - target: {fileID: -4256422170898788669, guid: 551d3590430eca547b658bc86073c355, type: 3}
       propertyPath: m_Name
       value: Sofa
+      objectReference: {fileID: 0}
+    - target: {fileID: -3765739963972153703, guid: 551d3590430eca547b658bc86073c355, type: 3}
+      propertyPath: m_SortingOrder
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: -1760818416528546751, guid: 551d3590430eca547b658bc86073c355, type: 3}
       propertyPath: m_SortingLayer
@@ -191,9 +199,17 @@ PrefabInstance:
       propertyPath: m_SortingLayerID
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 200497128739483244, guid: 551d3590430eca547b658bc86073c355, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 652002934243392673, guid: 551d3590430eca547b658bc86073c355, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 918093286594383227, guid: 551d3590430eca547b658bc86073c355, type: 3}
       propertyPath: m_SortingOrder
-      value: 5
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4155392593071147832, guid: 551d3590430eca547b658bc86073c355, type: 3}
       propertyPath: m_Name
@@ -202,6 +218,10 @@ PrefabInstance:
     - target: {fileID: 5079478018858342862, guid: 551d3590430eca547b658bc86073c355, type: 3}
       propertyPath: m_Name
       value: CatBowl
+      objectReference: {fileID: 0}
+    - target: {fileID: 7276608457956774635, guid: 551d3590430eca547b658bc86073c355, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7995018800391078397, guid: 551d3590430eca547b658bc86073c355, type: 3}
       propertyPath: m_SortingLayer
@@ -285,6 +305,9 @@ MonoBehaviour:
   _interactOnce: 1
   _playerTag: Player
   _sceneToLoad: 
+  _bgmToPlayAfterSceneLoad: 
+  _prerequisite: {fileID: 0}
+  _targetsToActivateOnInteract: []
   _targetsToHideOnInteract: []
   _enableHoverEffect: 1
   _hoverColor: {r: 1, g: 1, b: 0.8, a: 1}
@@ -361,6 +384,9 @@ MonoBehaviour:
   _interactOnce: 1
   _playerTag: Player
   _sceneToLoad: Scenes/3.Surface_Balcony
+  _bgmToPlayAfterSceneLoad: 
+  _prerequisite: {fileID: 0}
+  _targetsToActivateOnInteract: []
   _targetsToHideOnInteract: []
   _enableHoverEffect: 1
   _hoverColor: {r: 1, g: 1, b: 0.8, a: 1}
@@ -427,6 +453,9 @@ MonoBehaviour:
   _interactOnce: 1
   _playerTag: Player
   _sceneToLoad: 
+  _bgmToPlayAfterSceneLoad: 
+  _prerequisite: {fileID: 0}
+  _targetsToActivateOnInteract: []
   _targetsToHideOnInteract: []
   _enableHoverEffect: 1
   _hoverColor: {r: 1, g: 1, b: 0.8, a: 1}
@@ -503,6 +532,9 @@ MonoBehaviour:
   _interactOnce: 1
   _playerTag: Player
   _sceneToLoad: 
+  _bgmToPlayAfterSceneLoad: 
+  _prerequisite: {fileID: 0}
+  _targetsToActivateOnInteract: []
   _targetsToHideOnInteract: []
   _enableHoverEffect: 1
   _hoverColor: {r: 1, g: 1, b: 0.8, a: 1}
@@ -540,7 +572,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.15691495, y: -0.014511585}
+  m_Offset: {x: -1.21, y: -0.12}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -550,7 +582,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 8.752335, y: 3.4033456}
+  m_Size: {x: 1.02, y: 0.7}
   m_EdgeRadius: 0
 --- !u!114 &359668923
 MonoBehaviour:
@@ -569,6 +601,9 @@ MonoBehaviour:
   _interactOnce: 1
   _playerTag: Player
   _sceneToLoad: 
+  _bgmToPlayAfterSceneLoad: 
+  _prerequisite: {fileID: 0}
+  _targetsToActivateOnInteract: []
   _targetsToHideOnInteract: []
   _enableHoverEffect: 1
   _hoverColor: {r: 1, g: 1, b: 0.8, a: 1}
@@ -647,23 +682,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7552582706839291426, guid: fb2b4ca29db16964db3251753ce33317, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.1
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: -7552582706839291426, guid: fb2b4ca29db16964db3251753ce33317, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.1
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: -7552582706839291426, guid: fb2b4ca29db16964db3251753ce33317, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.1
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: -7552582706839291426, guid: fb2b4ca29db16964db3251753ce33317, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.914
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: -7552582706839291426, guid: fb2b4ca29db16964db3251753ce33317, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.052
+      value: -1.91
       objectReference: {fileID: 0}
     - target: {fileID: -7552582706839291426, guid: fb2b4ca29db16964db3251753ce33317, type: 3}
       propertyPath: m_LocalPosition.z
@@ -775,6 +810,9 @@ MonoBehaviour:
   _interactOnce: 1
   _playerTag: Player
   _sceneToLoad: 
+  _bgmToPlayAfterSceneLoad: 
+  _prerequisite: {fileID: 0}
+  _targetsToActivateOnInteract: []
   _targetsToHideOnInteract: []
   _enableHoverEffect: 1
   _hoverColor: {r: 1, g: 1, b: 0.8, a: 1}
@@ -1156,6 +1194,9 @@ MonoBehaviour:
   _interactOnce: 1
   _playerTag: Player
   _sceneToLoad: 
+  _bgmToPlayAfterSceneLoad: 
+  _prerequisite: {fileID: 0}
+  _targetsToActivateOnInteract: []
   _targetsToHideOnInteract: []
   _enableHoverEffect: 1
   _hoverColor: {r: 1, g: 1, b: 0.8, a: 1}

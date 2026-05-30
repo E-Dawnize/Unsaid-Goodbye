@@ -46,6 +46,7 @@ MonoBehaviour:
   - Type: 0
     Speaker:
     Text: "\u7a97\u5916\u6709\u9633\u5149\u3002\u98ce\u94c3\u5728\u54cd\u3002\u9633\u53f0\u6ca1\u6709\u5c01\u7a97\uff0c\u4f46\u5979\u4e0d\u4f1a\u518d\u517b\u9e1f\u4e86\u3002"
+    SfxKey: SFX/EnterBalconyInner
     TextColor: {r: 0, g: 0, b: 0, a: 0}
     AutoAdvance: 0
     AutoAdvanceDelay: 1.5
@@ -56,7 +57,7 @@ MonoBehaviour:
     TextColor: {r: 0.78, g: 0.62, b: 1, a: 1}
     AutoAdvance: 0
     AutoAdvanceDelay: 1.5
-    HidePanel: 1
+    HidePanel: 0
     Choices: []
   - Type: 1
     Speaker: "\u9ed1\u732b"

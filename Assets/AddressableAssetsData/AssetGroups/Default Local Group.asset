@@ -97,6 +97,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7c1e9d4a6f4b4b5a9d2e8f1a3b6c9d10
+    m_Address: Scenes/6.1.SurfaceWorld_Bedroom
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ca0976b9d6955334dbfb347464492e84
     m_Address: Scenes/9.InnerWorld_Bedroom
     m_ReadOnly: 0
@@ -147,6 +152,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - GamePhaseConfig
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4e6b9a2d8c3f4a51b7d0e9f612345abc
+    m_Address: Assets/Configs/StoryPhase/SurfaceWorld_Bedroom.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - GamePhaseConfig
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 350b38a4ace94b9cb3006c3536962dd1
     m_Address: Assets/Configs/StoryPhase/InnerBedroomMirror.asset
     m_ReadOnly: 0
@@ -182,7 +193,7 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 5fdaafedfa5bdf54c92a244157376de9
+  - m_GUID: a1b802aab42e00b48bf67491f8c6c9a0
     m_Address: Arts/open-items/open-h1
     m_ReadOnly: 0
     m_SerializedLabels: []
@@ -355,6 +366,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - InteractionDef
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dc2801f973304999b58811217cb5ff64
+    m_Address: InteractionDef/Def_SurfaceBedroomBedHint
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - InteractionDef
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7216f64db6964fe88d914ab95418b04d
     m_Address: InteractionDef/Def_BuryOrangeCat
     m_ReadOnly: 0
@@ -435,6 +452,18 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 02b4b489f88746aba0b258c90de738e7
     m_Address: Assets/Configs/Dialogue/Phase1_LivingRoom/KnockOverPillBottle.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - DialogueSequence
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a050811df6cd455ea8c7dbbc8bd92683
+    m_Address: Assets/Configs/Dialogue/Phase4_Bedroom/SurfaceBedroomIntro.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - DialogueSequence
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4754707dbc164e9a8a73d214660509da
+    m_Address: Assets/Configs/Dialogue/Phase4_Bedroom/SurfaceBedroomBedHintComplete.asset
     m_ReadOnly: 0
     m_SerializedLabels:
     - DialogueSequence

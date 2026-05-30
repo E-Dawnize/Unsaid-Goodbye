@@ -133,6 +133,7 @@ namespace Gameplay.Dialogue
                     await ApplySpeakerVisual(entry);
                 _dialogueText.text = entry.Text ?? string.Empty;
                 _audio?.PlaySfx(DialogueAdvanceSfxKey);
+                await PlayEntrySfx(entry.SfxKey);
                 OnLineDisplayed?.Invoke(_currentLineIndex, _totalLines);
                 _currentLineIndex++;
                 ClearChoices();
@@ -355,6 +356,64 @@ namespace Gameplay.Dialogue
         private static Color ResolveTextColor(DialogueEntryData entry, Color fallback)
             => entry.TextColor.a > 0f ? entry.TextColor : fallback;
 
+        private async Task PlayEntrySfx(string sfxKey)
+        {
+            if (string.IsNullOrWhiteSpace(sfxKey))
+                return;
+
+            var configuredVolume = Mathf.Clamp01(PlayerPrefs.GetFloat("SfxVolume", 0.5f));
+            await PlayEntrySfxDirect(sfxKey, configuredVolume);
+        }
+
+        private static async Task PlayEntrySfxDirect(string sfxKey, float volume)
+        {
+            if (volume <= 0f)
+                return;
+
+            var handle = Addressables.LoadAssetAsync<AudioClip>(sfxKey);
+            await handle.Task;
+
+            if (handle.Status != AsyncOperationStatus.Succeeded || handle.Result == null)
+            {
+                Debug.LogWarning($"[Dialogue] Entry SFX not found: {sfxKey}");
+                if (handle.IsValid())
+                    Addressables.Release(handle);
+                return;
+            }
+
+            var clip = handle.Result;
+            Debug.Log($"[Dialogue] Playing entry SFX: {sfxKey} vol={volume}");
+
+            var go = new GameObject("DialogueEntrySfx");
+            Object.DontDestroyOnLoad(go);
+
+            var source = go.AddComponent<AudioSource>();
+            source.playOnAwake = false;
+            source.loop = false;
+            source.spatialBlend = 0f;
+            source.volume = volume;
+            source.clip = clip;
+            source.Play();
+
+            _ = CleanupEntrySfx(go, handle, clip.length);
+        }
+
+        private static async Task CleanupEntrySfx(GameObject go, AsyncOperationHandle<AudioClip> handle, float delay)
+        {
+            var elapsed = 0f;
+            while (elapsed < delay)
+            {
+                elapsed += Time.deltaTime;
+                await Task.Yield();
+            }
+
+            if (go != null)
+                Object.Destroy(go);
+
+            if (handle.IsValid())
+                Addressables.Release(handle);
+        }
+
         private static string BuildSpeakerText(DialogueEntryData entry)
         {
             if (!string.IsNullOrWhiteSpace(entry.Speaker))
@@ -576,6 +635,7 @@ namespace Gameplay.Dialogue
             public DialogueLineType Type;
             public string Speaker;
             public string Text;
+            public string SfxKey;
             public Color TextColor;
             public bool AutoAdvance;
             public float AutoAdvanceDelay;
@@ -589,6 +649,7 @@ namespace Gameplay.Dialogue
                     Type = entry.Type,
                     Speaker = entry.Speaker,
                     Text = entry.Text,
+                    SfxKey = entry.SfxKey,
                     TextColor = entry.TextColor,
                     AutoAdvance = entry.AutoAdvance,
                     AutoAdvanceDelay = entry.AutoAdvanceDelay,

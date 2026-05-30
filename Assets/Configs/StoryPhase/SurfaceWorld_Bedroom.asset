@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92d24d3ed91b43ac84aa5dc98c5bfeb0, type: 3}
+  m_Name: SurfaceWorld_Bedroom
+  m_EditorClassIdentifier:
+  PhaseId: 12
+  DisplayName: SurfaceWorld_Bedroom
+  SceneAssetPath: Scenes/6.1.SurfaceWorld_Bedroom
+  BackgroundMusic: BGM/SurfaceBedroom
+  BgmVolume: 1
+  EntryDialogueId: dialogue_surface_bedroom_intro
+  ExitDialogueId:
+  RequiredBeats:
+  - {fileID: 11400000, guid: dc2801f973304999b58811217cb5ff64, type: 2}
+  DefaultNextPhase: 5
+  AltNextPhase: 0
+  IsEndingBranch: 0
+  TransitionSFX:
+  TransitionDuration: 2

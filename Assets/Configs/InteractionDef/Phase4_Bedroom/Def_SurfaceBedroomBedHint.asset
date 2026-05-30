@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 76318d37cfabf10458b2b392b256d322, type: 3}
-  m_Name: Def_DogLookBack
+  m_Name: Def_SurfaceBedroomBedHint
   m_EditorClassIdentifier: 
-  _description: "\u56DE\u5934\u770B \u2014 \u5973\u5B69\u80F6\u978B\u5370\u548C\u72D7\u722A\u5370\u6D88\u5931\u5728\u9EC4\u660F\u65B9\u5411"
-  Dialogue: {fileID: 11400000, guid: a757d12da90a4ac7a40ab57ed7d8e00d, type: 2}
+  _description: "\u8868\u4e16\u754c\u5367\u5ba4\u5e8a\u5e95\u5165\u53e3 - \u65e0\u53ef\u89c1\u5bf9\u8bdd\uff0c\u4ec5\u5b8c\u6210\u8282\u70b9\u5e76\u8fdb\u5165\u5e8a\u5e95"
+  Dialogue: {fileID: 11400000, guid: 4754707dbc164e9a8a73d214660509da, type: 2}
   OneShot: 1
-  PromptIconKey: InteractUI/Lookback1
-  SfxKey: SFX/EnterPark
+  PromptIconKey: InteractUI/Investigate1
+  SfxKey: 

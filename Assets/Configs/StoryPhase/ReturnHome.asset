@@ -22,7 +22,7 @@ MonoBehaviour:
   RequiredBeats:
   - {fileID: 11400000, guid: ea2dc7bc462a4f7993bf783940d62265, type: 2}
   - {fileID: 11400000, guid: d10d680d45104780a960443304192084, type: 2}
-  DefaultNextPhase: 5
+  DefaultNextPhase: 12
   AltNextPhase: 0
   IsEndingBranch: 0
   TransitionSFX: 

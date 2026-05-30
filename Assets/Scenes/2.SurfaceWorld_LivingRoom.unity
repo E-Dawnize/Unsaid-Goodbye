@@ -366,6 +366,7 @@ MonoBehaviour:
   _interactOnce: 1
   _playerTag: Player
   _sceneToLoad: 
+  _bgmToPlayAfterSceneLoad: 
   _prerequisite: {fileID: 0}
   _targetsToActivateOnInteract: []
   _targetsToHideOnInteract: []
@@ -584,6 +585,7 @@ MonoBehaviour:
   _interactOnce: 1
   _playerTag: Player
   _sceneToLoad: 
+  _bgmToPlayAfterSceneLoad: 
   _prerequisite: {fileID: 0}
   _targetsToActivateOnInteract: []
   _targetsToHideOnInteract: []
@@ -811,6 +813,7 @@ MonoBehaviour:
   _interactOnce: 1
   _playerTag: Player
   _sceneToLoad: 
+  _bgmToPlayAfterSceneLoad: 
   _prerequisite: {fileID: 0}
   _targetsToActivateOnInteract: []
   _targetsToHideOnInteract: []
@@ -879,6 +882,7 @@ MonoBehaviour:
   _interactOnce: 1
   _playerTag: Player
   _sceneToLoad: 
+  _bgmToPlayAfterSceneLoad: 
   _prerequisite: {fileID: 0}
   _targetsToActivateOnInteract: []
   _targetsToHideOnInteract: []
@@ -1359,6 +1363,7 @@ MonoBehaviour:
   _interactOnce: 1
   _playerTag: Player
   _sceneToLoad: 
+  _bgmToPlayAfterSceneLoad: 
   _prerequisite: {fileID: 0}
   _targetsToActivateOnInteract: []
   _targetsToHideOnInteract: []

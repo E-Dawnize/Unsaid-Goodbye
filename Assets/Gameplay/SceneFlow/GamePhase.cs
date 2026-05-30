@@ -11,6 +11,7 @@
         Phase3_SurfaceLivingRoom_Photo = 4,        // 发现照片L2，猫碗返回
         Phase4_SurfaceBedroom = 5,                 // 表世界卧室/床底：航空箱L3，存钱罐H4，安葬橘猫
         Phase4_InnerBedroomUnderBed = 6,           // 里世界床底：阅读日记L4
+        Phase3_SurfaceBedroomTransition = 12,      // 表世界卧室：进入床底前过渡
         Phase4_InnerBedroomMirror = 7,             // 里世界卧室：镜子里少了什么
         Phase5_InnerBalcony = 8,                   // 鹦鹉记忆，鸟笼与羽毛
         Phase6_InnerLivingRoom_Mirror = 9,         // 镜子无倒影，揭示真相，结局判定

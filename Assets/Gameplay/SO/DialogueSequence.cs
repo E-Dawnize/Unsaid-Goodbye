@@ -30,6 +30,7 @@ namespace Gameplay.SO
         [TextArea(2, 4)]
         public string Text;
 
+        public string SfxKey;
         public Color TextColor = Color.clear;
         public bool AutoAdvance;
         public float AutoAdvanceDelay = 1.5f;
