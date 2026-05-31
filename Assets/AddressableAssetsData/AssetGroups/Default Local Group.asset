@@ -294,6 +294,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - InteractionDef
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e6e3ecf8b5d14f69a40d11958c9bd015
+    m_Address: InteractionDef/Def_PhotoLightPuzzle
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - InteractionDef
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 019d131cf3c14aff9ee4c5582821229d
     m_Address: InteractionDef/Def_CrateLabel
     m_ReadOnly: 0

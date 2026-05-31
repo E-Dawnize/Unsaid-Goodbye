@@ -270,6 +270,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -4256422170898788669, guid: 551d3590430eca547b658bc86073c355, type: 3}
       insertIndex: -1
       addedObject: {fileID: 359668921}
+    - targetCorrespondingSourceObject: {fileID: -4256422170898788669, guid: 551d3590430eca547b658bc86073c355, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 359668926}
     - targetCorrespondingSourceObject: {fileID: 4155392593071147832, guid: 551d3590430eca547b658bc86073c355, type: 3}
       insertIndex: -1
       addedObject: {fileID: 73289275}
@@ -298,7 +301,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5d1e79154ff427344bde47ad48b6f439, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Interactions.InteractableObject
   _def: {fileID: 11400000, guid: d10d680d45104780a960443304192084, type: 2}
   _mode: 1
@@ -448,9 +451,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d1e79154ff427344bde47ad48b6f439, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Interactions.InteractableObject
-  _def: {fileID: 11400000, guid: ea2dc7bc462a4f7993bf783940d62265, type: 2}
+  _def: {fileID: 11400000, guid: e6e3ecf8b5d14f69a40d11958c9bd015, type: 2}
   _mode: 2
-  _interactOnce: 1
+  _interactOnce: 0
   _playerTag: Player
   _sceneToLoad: 
   _bgmToPlayAfterSceneLoad: 
@@ -527,9 +530,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d1e79154ff427344bde47ad48b6f439, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Interactions.InteractableObject
-  _def: {fileID: 11400000, guid: ea2dc7bc462a4f7993bf783940d62265, type: 2}
+  _def: {fileID: 11400000, guid: e6e3ecf8b5d14f69a40d11958c9bd015, type: 2}
   _mode: 2
-  _interactOnce: 1
+  _interactOnce: 0
   _playerTag: Player
   _sceneToLoad: 
   _bgmToPlayAfterSceneLoad: 
@@ -584,6 +587,34 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1.02, y: 0.7}
   m_EdgeRadius: 0
+--- !u!114 &359668926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 359668919}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c68b053467a4507bfa860a88e4ffbec, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Puzzles.PhotoLightPuzzleController
+  _puzzleTriggerDef: {fileID: 11400000, guid: e6e3ecf8b5d14f69a40d11958c9bd015, type: 2}
+  _successDef: {fileID: 11400000, guid: ea2dc7bc462a4f7993bf783940d62265, type: 2}
+  _artworkRootName: Photo-light
+  _photoLayerName: photoback
+  _lightLayerName: light1
+  _wordLayerName: word
+  _fireLayerName: fire
+  _targetLayerName: fire
+  _panelWidthRatio: 0.67
+  _panelHeightRatio: 0.67
+  _targetRadius: 70
+  _revealRadius: 260
+  _requiredHoldTime: 0.2
+  _solvedClickDelay: 0.5
+  _targetOffset: {x: 0, y: 0}
+  _initialLightOffsetFromTarget: {x: -420, y: -180}
 --- !u!114 &359668923
 MonoBehaviour:
   m_ObjectHideFlags: 0
