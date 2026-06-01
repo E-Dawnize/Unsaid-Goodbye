@@ -6,6 +6,7 @@ using Core.Events.EventInterfaces;
 using DG.Tweening;
 using Gameplay.Dialogue;
 using Gameplay.Interfaces;
+using Gameplay.Interstitial;
 using Gameplay.SceneFlow;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -26,6 +27,7 @@ namespace Gameplay.Ending
         [Inject] private IDialogueManager _dialogue;
         [Inject] private IEventCenter _events;
         [Inject] private Audio.IAudioManager _audio;
+        [Inject, InjectOptional] private IInterstitialScreen _interstitial;
 
         private const string PopupLayer = "Popup";
         private const string MasterKey = "Ending/Master";
@@ -540,6 +542,12 @@ namespace Gameplay.Ending
         {
             _flow.GetSaveState();
             _audio?.StopBgm(0.5f);
+
+            // 制作人员名单插屏 — 先隐藏结局 overlay 避免闪烁
+            _overlayGo.SetActive(false);
+            if (_interstitial != null)
+                await _interstitial.ShowAsync("UI/Credits", 2f);
+
             // 恢复 SFX 音量
             _audio.SfxVolume = PlayerPrefs.GetFloat("SfxVolume", 1f);
             // 恢复摇杆

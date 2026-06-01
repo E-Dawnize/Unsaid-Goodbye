@@ -9,6 +9,7 @@ using Core.DI;
 using Core.Events.EventInterfaces;
 using Gameplay.Ending;
 using Gameplay.Interactions;
+using Gameplay.Interstitial;
 using Gameplay.SceneFlow;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -149,6 +150,12 @@ namespace Core.Boot
             DontDestroyOnLoad(promptViewObject);
             promptViewObject.AddComponent<InteractionPromptView>();
             Debug.Log("[ProjectContext] Global InteractionPromptView created");
+
+            var interstitialObject = new GameObject("InterstitialScreen");
+            DontDestroyOnLoad(interstitialObject);
+            var interstitial = interstitialObject.AddComponent<InterstitialScreen>();
+            _globalContainer.RegisterSingleton<IInterstitialScreen>(interstitial);
+            Debug.Log("[ProjectContext] Global InterstitialScreen created");
 
             var endingDirectorObject = new GameObject("EndingDirector");
             DontDestroyOnLoad(endingDirectorObject);

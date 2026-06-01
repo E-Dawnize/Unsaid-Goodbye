@@ -416,6 +416,10 @@ namespace Gameplay.SceneFlow
                 Debug.LogWarning($"[GameFlow] {GameData.CollectedItemIds.Count} item(s) not found in known defs, not restored: {string.Join(", ", GameData.CollectedItemIds)}");
             }
 
+            // 从背包重新同步，避免 Restore→Remove 后 CollectedItemIds 为空，
+            // 导致 EndingDirector.ShowEndingChoice() 误判 B 结局不可用
+            GameData.CollectedItemIds = new HashSet<string>(_inventory.CollectedItems.Select(d => d.name));
+
             Debug.Log($"[GameFlow] Restored {count} items from save");
         }
 

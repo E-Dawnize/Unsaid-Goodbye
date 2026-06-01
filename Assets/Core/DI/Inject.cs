@@ -78,7 +78,8 @@ namespace Core.DI
             {
                 foreach (var f in t.GetFields(InjectFlags))
                 {
-                    if (!f.IsDefined(typeof(InjectAttribute), true)) continue;
+                    if (!f.IsDefined(typeof(InjectAttribute), true) &&
+                        !f.IsDefined(typeof(InjectOptionalAttribute), true)) continue;
                     if (f.IsInitOnly) continue; // 跳过 readonly
                     var optional = f.IsDefined(typeof(InjectOptionalAttribute), true);
                     list.Add(new InjectMember(
@@ -90,7 +91,8 @@ namespace Core.DI
 
                 foreach (var p in t.GetProperties(InjectFlags))
                 {
-                    if (!p.IsDefined(typeof(InjectAttribute), true)) continue;
+                    if (!p.IsDefined(typeof(InjectAttribute), true) &&
+                        !p.IsDefined(typeof(InjectOptionalAttribute), true)) continue;
                     if (!p.CanWrite) continue;
                     if (p.GetIndexParameters().Length != 0) continue;
                     var set = p.GetSetMethod(true);

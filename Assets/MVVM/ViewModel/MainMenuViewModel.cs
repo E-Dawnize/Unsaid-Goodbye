@@ -3,6 +3,7 @@ using System.Windows.Input;
 using Core.Architecture;
 using Core.DI;
 using Gameplay.Interfaces;
+using Gameplay.Interstitial;
 using Gameplay.Save;
 using Gameplay.SceneFlow;
 using Gameplay.SO;
@@ -23,6 +24,7 @@ namespace MVVM.ViewModel
     {
         [Inject] private ISaveManager _saveManager;
         [Inject] private IGameFlowManager _gameFlow;
+        [Inject, InjectOptional] private IInterstitialScreen _interstitial;
         private AsyncOperationHandle<SceneInstance> _sceneHandle;
         private bool _sceneLoaded;
 
@@ -42,9 +44,13 @@ namespace MVVM.ViewModel
             ContinueGameCommand = new AsyncCommand(ContinueGameAsync);
         }
 
-        /// <summary>新游戏：强制创建新存档，从 Phase1 开始</summary>
+        /// <summary>新游戏：展示引导图 → 创建新存档 → 加载场景</summary>
         private async Task StartGameAsync()
         {
+            // 新手引导插屏：等待至少 3 秒后点击继续
+            if (_interstitial != null)
+                await _interstitial.ShowAsync("UI/Guide", 3f);
+
             var save = _saveManager.CreateNewSave();
             Debug.Log("[MainMenu] 新游戏开始");
 
