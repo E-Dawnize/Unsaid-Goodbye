@@ -299,13 +299,13 @@ PolygonCollider2D:
       - {x: -9.315059, y: 0.9721515}
       - {x: -9.251984, y: -1.5355268}
       - {x: 8.863517, y: -1.527813}
-    - - {x: -6.2682223, y: -0.37349057}
-      - {x: -1.9602704, y: -0.30065894}
-      - {x: -1.7267642, y: -0.9005296}
-      - {x: 2.2470284, y: -0.8453469}
-      - {x: 4.2731423, y: -0.13940954}
-      - {x: 4.1748195, y: 0.77068543}
-      - {x: -6.078243, y: 0.77312803}
+    - - {x: -6.135316, y: -0.6924665}
+      - {x: -2.2260833, y: -0.65950656}
+      - {x: -1.806509, y: -1.1131809}
+      - {x: 2.379935, y: -0.9782529}
+      - {x: 4.4857917, y: -0.3254795}
+      - {x: 4.4406343, y: 1.129534}
+      - {x: -6.091534, y: 1.0123599}
   m_UseDelaunayMesh: 1
 --- !u!4 &829112118
 Transform:
@@ -692,6 +692,7 @@ MonoBehaviour:
   _interactOnce: 1
   _playerTag: Player
   _sceneToLoad: 
+  _bgmToPlayAfterSceneLoad: 
   _prerequisite: {fileID: 0}
   _targetsToActivateOnInteract: []
   _targetsToHideOnInteract: []
@@ -1335,6 +1336,7 @@ MonoBehaviour:
   _interactOnce: 1
   _playerTag: Player
   _sceneToLoad: 
+  _bgmToPlayAfterSceneLoad: 
   _prerequisite: {fileID: 0}
   _targetsToActivateOnInteract:
   - {fileID: 1094742718}
@@ -1523,6 +1525,7 @@ MonoBehaviour:
   _interactOnce: 1
   _playerTag: Player
   _sceneToLoad: 
+  _bgmToPlayAfterSceneLoad: 
   _prerequisite: {fileID: 0}
   _targetsToActivateOnInteract: []
   _targetsToHideOnInteract: []

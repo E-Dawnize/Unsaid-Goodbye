@@ -119,6 +119,46 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &270664732 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -6122910275969937973, guid: e09654058096dfb48a549f2b1899b5b2, type: 3}
+  m_PrefabInstance: {fileID: 1534504043}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &270664735
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 270664732}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Rendering.DepthSortable
+  _sortingAnchor: {fileID: 0}
+  _orderOffset: 0
+  _sortPrecision: 100
+--- !u!1 &599294925 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -2692415568647333918, guid: e09654058096dfb48a549f2b1899b5b2, type: 3}
+  m_PrefabInstance: {fileID: 1534504043}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &599294928
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 599294925}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Rendering.DepthSortable
+  _sortingAnchor: {fileID: 0}
+  _orderOffset: 0
+  _sortPrecision: 100
 --- !u!1 &865869523
 GameObject:
   m_ObjectHideFlags: 0
@@ -430,20 +470,23 @@ PolygonCollider2D:
       - {x: 3.1202161, y: 2.040417}
       - {x: 2.1520476, y: 2.1053195}
       - {x: -0.69656897, y: 2.1902564}
+      - {x: -5.325838, y: 2.1174965}
       - {x: -5.9096184, y: 2.1089957}
       - {x: -8.396411, y: 2.0111673}
       - {x: -8.17481, y: 0.97855186}
       - {x: -9.315059, y: 0.9721515}
       - {x: -9.251984, y: -1.5355268}
       - {x: 9.508276, y: -1.527813}
-    - - {x: -6.2682223, y: -0.37349057}
-      - {x: -1.9602704, y: -0.30065894}
-      - {x: -0.62529993, y: -0.30950093}
-      - {x: -0.32606733, y: -0.38305187}
-      - {x: 2.3410542, y: -0.48266983}
-      - {x: 4.2731423, y: -0.13940954}
-      - {x: 4.1748195, y: 0.77068543}
-      - {x: -6.078243, y: 0.77312803}
+    - - {x: -6.29705, y: -0.77707934}
+      - {x: -1.9698796, y: -0.87721324}
+      - {x: -0.40428704, y: -0.78035474}
+      - {x: 1.211415, y: -0.7770314}
+      - {x: 3.415906, y: -0.91400766}
+      - {x: 4.5088954, y: -0.71930456}
+      - {x: 4.853809, y: -0.29834795}
+      - {x: 4.7573366, y: 0.9218645}
+      - {x: -4.9624243, y: 0.88228846}
+      - {x: -5.876448, y: 0.8884392}
   m_UseDelaunayMesh: 1
 --- !u!4 &1251120863
 Transform:
@@ -564,14 +607,38 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: -4376178920546752568, guid: 3e51b98aa200e1c4db71b91c6ed7b646, type: 3}
+    - target: {fileID: 776156488786512985, guid: e09654058096dfb48a549f2b1899b5b2, type: 3}
+      propertyPath: m_SortingLayer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 776156488786512985, guid: e09654058096dfb48a549f2b1899b5b2, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 6474266512953432919, guid: e09654058096dfb48a549f2b1899b5b2, type: 3}
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 9219659520815286333, guid: 3e51b98aa200e1c4db71b91c6ed7b646, type: 3}
+    - target: {fileID: 6474266512953432919, guid: e09654058096dfb48a549f2b1899b5b2, type: 3}
+      propertyPath: m_SortingLayer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6474266512953432919, guid: e09654058096dfb48a549f2b1899b5b2, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 7918968050304613830, guid: e09654058096dfb48a549f2b1899b5b2, type: 3}
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 7829540889992457910, guid: 3e51b98aa200e1c4db71b91c6ed7b646, type: 3}
+    - target: {fileID: 7918968050304613830, guid: e09654058096dfb48a549f2b1899b5b2, type: 3}
+      propertyPath: m_SortingLayer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7918968050304613830, guid: e09654058096dfb48a549f2b1899b5b2, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 8091321035456404379, guid: e09654058096dfb48a549f2b1899b5b2, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -579,7 +646,16 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: -2692415568647333918, guid: e09654058096dfb48a549f2b1899b5b2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 599294928}
+    - targetCorrespondingSourceObject: {fileID: -6122910275969937973, guid: e09654058096dfb48a549f2b1899b5b2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 270664735}
+    - targetCorrespondingSourceObject: {fileID: -5202978257090850845, guid: e09654058096dfb48a549f2b1899b5b2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2054654763}
   m_SourcePrefab: {fileID: 4843985084834002234, guid: e09654058096dfb48a549f2b1899b5b2, type: 3}
 --- !u!1001 &1928962589
 PrefabInstance:
@@ -710,6 +786,26 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 08079728d43edd346a5a6aebc9e2e87b, type: 3}
+--- !u!1 &2054654760 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -5202978257090850845, guid: e09654058096dfb48a549f2b1899b5b2, type: 3}
+  m_PrefabInstance: {fileID: 1534504043}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2054654763
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2054654760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Rendering.DepthSortable
+  _sortingAnchor: {fileID: 0}
+  _orderOffset: 0
+  _sortPrecision: 100
 --- !u!1 &2100000001
 GameObject:
   m_ObjectHideFlags: 0
