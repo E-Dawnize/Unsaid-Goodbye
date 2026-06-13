@@ -17,7 +17,14 @@
       "Bash(ls \"D:/Unity Project/Unsaid Goodbye/Assets/Gameplay/SceneFlow/GameFlow\"*)",
       "Bash(unzip -p \"Assets/内容大纲.docx\" word/document.xml)",
       "Bash(sed 's/<[^>]*>//g')",
-      "Bash(unzip -p \"Assets/V1.docx\" word/document.xml)"
+      "Bash(unzip -p \"Assets/V1.docx\" word/document.xml)",
+      "Bash(grep -v \"//\\\\|///\")",
+      "Bash(grep -n \"m_EditorVersion\\\\|m_EditorVersionWithRevision\" ProjectSettings/ProjectVersion.txt)",
+      "Bash(cat ProjectSettings/ProjectVersion.txt)",
+      "Bash(ls \"C:/Program Files/Unity/Hub/Editor/6000.3.10f1/Editor/Data/PlaybackEngines/WebGLSupport/BuildTools/WebGLTemplates/\" 2>/dev/null || echo \"Path not found\")",
+      "Read(//c/Program Files/Unity/Hub/Editor/6000.3.10f1/Editor/Data/PlaybackEngines/WebGLSupport/BuildTools/WebGLTemplates/**)",
+      "Bash(find \"C:/Program Files/Unity/Hub/Editor/6000.3.10f1/Editor/Data/PlaybackEngines/WebGLSupport\" -name \"index.html\" -type f 2>/dev/null | head -10)",
+      "Read(//c/Program Files/Unity/Hub/Editor/6000.3.10f1/Editor/Data/PlaybackEngines/WebGLSupport/**)"
     ]
   }
 }

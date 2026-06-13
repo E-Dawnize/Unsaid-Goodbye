@@ -12,6 +12,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.SceneManagement;
 using Object = UnityEngine.Object;
 using Gameplay.SceneFlow;
+using Input;
 
 namespace Gameplay.Pause
 {
@@ -316,30 +317,10 @@ namespace Gameplay.Pause
 
             UpdateTogglePosition();
 
-            var mouse = Mouse.current;
-            var touch = Touchscreen.current;
-
-            // 获取指针位置和按下状态
-            Vector2 pointerPos;
-            bool isPointerDown;
-            bool isPointerClicked;
-            if (mouse != null)
-            {
-                pointerPos = mouse.position.ReadValue();
-                isPointerDown = mouse.leftButton.isPressed;
-                isPointerClicked = mouse.leftButton.wasPressedThisFrame;
-            }
-            else if (touch != null && touch.primaryTouch.press.isPressed)
-            {
-                pointerPos = touch.primaryTouch.position.ReadValue();
-                isPointerDown = true;
-                isPointerClicked = touch.primaryTouch.press.wasPressedThisFrame;
-            }
-            else
-            {
-                return;
-            }
-
+            // 跨平台指针输入（PointerInputHelper 内部处理 Mouse/Pointer/Touch 优先级）
+            var pointerPos = PointerInputHelper.ScreenPosition;
+            var isPointerDown = PointerInputHelper.IsPressed;
+            var isPointerClicked = PointerInputHelper.WasClickedThisFrame;
             var worldPos = (Vector2)_cam.ScreenToWorldPoint(pointerPos);
             var hits = new List<Collider2D>();
             Physics2D.OverlapPoint(worldPos, new ContactFilter2D().NoFilter(), hits);

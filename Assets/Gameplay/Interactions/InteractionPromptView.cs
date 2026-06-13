@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Core.Architecture;
 using UnityEngine;
+using Input;
 using UnityEngine.AddressableAssets;
 using UnityEngine.InputSystem;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -116,28 +117,10 @@ namespace Gameplay.Interactions
 
         private void CheckClicks()
         {
-            var mouse = Mouse.current;
-            var touch = Touchscreen.current;
-            bool clicked;
+            if (!PointerInputHelper.WasClickedThisFrame) return;
+            if (_cam == null) return;
 
-            Vector2 pointerPos;
-            if (mouse != null)
-            {
-                pointerPos = mouse.position.ReadValue();
-                clicked = mouse.leftButton.wasPressedThisFrame;
-            }
-            else if (touch != null && touch.primaryTouch.press.isPressed)
-            {
-                pointerPos = touch.primaryTouch.position.ReadValue();
-                clicked = touch.primaryTouch.press.wasPressedThisFrame;
-            }
-            else
-            {
-                return;
-            }
-
-            if (!clicked || _cam == null) return;
-
+            var pointerPos = PointerInputHelper.ScreenPosition;
             var worldPos = (Vector2)_cam.ScreenToWorldPoint(pointerPos);
             var hits = new List<Collider2D>();
             Physics2D.OverlapPoint(worldPos, new ContactFilter2D().NoFilter(), hits);

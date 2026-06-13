@@ -311,6 +311,10 @@ namespace Core.DI
             var ctor= _constructorsCache.GetOrAdd(implementationType, type =>
             {
                 var constructors = type.GetConstructors();
+                if (constructors.Length == 0)
+                    throw new InvalidOperationException(
+                        $"DI cannot instantiate '{type.FullName}': no public constructors found. " +
+                        $"This may indicate the type was stripped by IL2CPP. Add it to link.xml or disable managed stripping.");
                 return constructors.FirstOrDefault(c
                     => c.GetCustomAttributes(typeof(InjectAttribute), false).Length != 0) ??
                     constructors.OrderByDescending(c => c.GetParameters().Length).First();

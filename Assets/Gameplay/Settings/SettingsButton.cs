@@ -1,6 +1,7 @@
 using System;
 using Gameplay.Ending;
 using UnityEngine;
+using Input;
 using UnityEngine.InputSystem;
 
 namespace Gameplay.Settings
@@ -40,27 +41,11 @@ namespace Gameplay.Settings
             // 结局动画期间屏蔽，但不屏蔽暂停菜单
             if (_cam == null || EndingDirector.IsAnimating) return;
 
-            var mouse = Mouse.current;
-            var touch = Touchscreen.current;
-            Vector2 screenPos;
-            bool isDown;
-            bool clicked;
-
-            if (mouse != null)
-            {
-                screenPos = mouse.position.ReadValue();
-                isDown = mouse.leftButton.isPressed;
-                clicked = mouse.leftButton.wasPressedThisFrame;
-            }
-            else if (touch != null)
-            {
-                screenPos = touch.primaryTouch.position.ReadValue();
-                isDown = touch.primaryTouch.press.isPressed;
-                clicked = touch.primaryTouch.press.wasPressedThisFrame;
-            }
-            else return;
-
-            var worldPos = (Vector2)_cam.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, -_cam.transform.position.z));
+            // 跨平台指针输入
+            var screenPos = PointerInputHelper.ScreenPosition;
+            var isDown = PointerInputHelper.IsPressed;
+            var clicked = PointerInputHelper.WasClickedThisFrame;
+            var worldPos = PointerInputHelper.ScreenToWorld(screenPos);
             var col = GetComponent<Collider2D>();
             var isOver = col != null && col.OverlapPoint(worldPos);
 

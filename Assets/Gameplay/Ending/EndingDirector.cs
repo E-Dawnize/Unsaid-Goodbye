@@ -9,6 +9,7 @@ using Gameplay.Interfaces;
 using Gameplay.Interstitial;
 using Gameplay.SceneFlow;
 using UnityEngine;
+using Input;
 using UnityEngine.AddressableAssets;
 using UnityEngine.InputSystem;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -311,14 +312,7 @@ namespace Gameplay.Ending
             if (_endingType == GamePhase.Phase7_Epilogue_A && !_showingAfter)
                 return;
 
-            var mouse = Mouse.current;
-            var touch = Touchscreen.current;
-            bool clicked;
-            if (mouse != null) clicked = mouse.leftButton.wasPressedThisFrame;
-            else if (touch != null) clicked = touch.primaryTouch.press.wasPressedThisFrame;
-            else return;
-
-            if (!clicked) return;
+            if (!PointerInputHelper.WasClickedThisFrame) return;
 
             // AfterAB 点击 → 回主页
             if (_showingAfter)

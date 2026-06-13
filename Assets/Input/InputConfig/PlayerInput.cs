@@ -202,8 +202,41 @@ namespace Input.InputConfig
                 },
                 {
                     ""name"": """",
+                    ""id"": ""f9d8e7b6-5c4a-4321-9876-fedcba012345"",
+                    ""path"": ""<Pointer>/press"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Click"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""1b050321-d4ee-44eb-be7d-7750eb47db62"",
                     ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MousePosition"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a1b2c3d4-5e6f-7890-abcd-ef0123456789"",
+                    ""path"": ""<Pointer>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MousePosition"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b2c3d4e5-6f70-8901-bcde-f01234567890"",
+                    ""path"": ""<Touchscreen>/primaryTouch/position"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",

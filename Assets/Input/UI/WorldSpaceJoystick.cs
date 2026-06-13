@@ -1,13 +1,13 @@
 using Gameplay.Player;
 using Input.Manager;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace Input.UI
 {
     /// <summary>
     /// 世界空间摇杆——N4 内摇杆随触摸/鼠标拖动，底圈 D1-D4 固定不动。
     /// 通过 VirtualJoystickInput 接入现有输入管线，PlayerView.Tick 中自动屏蔽。
+    /// H5/WebGL 兼容：Pointer 设备作为 Mouse/Touchscreen 的跨平台回退。
     /// </summary>
     public class WorldSpaceJoystick : MonoBehaviour
     {
@@ -32,17 +32,13 @@ namespace Input.UI
                 return;
             }
 
-            var mouse = Mouse.current;
-            var touch = Touchscreen.current;
+            // 跨平台指针输入：PointerInputHelper 内部按 Mouse → Pointer → Touch 优先级处理
+            var screenPos = PointerInputHelper.ScreenPosition;
+            var isPressed = PointerInputHelper.IsPressed;
 
-            if (mouse != null)
+            if (isPressed || _pointerId >= 0)
             {
-                HandlePointer(mouse.position.ReadValue(), mouse.leftButton.isPressed);
-            }
-            else if (touch != null)
-            {
-                var t = touch.primaryTouch;
-                HandlePointer(t.position.ReadValue(), t.press.isPressed);
+                HandlePointer(screenPos, isPressed);
             }
             else
             {

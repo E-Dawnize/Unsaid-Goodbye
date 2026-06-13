@@ -556,25 +556,9 @@ namespace Gameplay.Inventory
 
             private void Update()
             {
-                var mouse = UnityEngine.InputSystem.Mouse.current;
-                var touch = UnityEngine.InputSystem.Touchscreen.current;
-
-                Vector2 pointerPos;
-                bool isPointerClicked;
-                if (mouse != null)
-                {
-                    pointerPos = mouse.position.ReadValue();
-                    isPointerClicked = mouse.leftButton.wasPressedThisFrame;
-                }
-                else if (touch != null && touch.primaryTouch.press.isPressed)
-                {
-                    pointerPos = touch.primaryTouch.position.ReadValue();
-                    isPointerClicked = touch.primaryTouch.press.wasPressedThisFrame;
-                }
-                else
-                {
-                    return;
-                }
+                // 跨平台指针输入
+                var pointerPos = Input.PointerInputHelper.ScreenPosition;
+                var isPointerClicked = Input.PointerInputHelper.WasClickedThisFrame;
 
                 var cam = Camera.main;
                 if (cam == null) return;
@@ -639,25 +623,9 @@ namespace Gameplay.Inventory
                 if (Camera.main != null) _cam = Camera.main;
                 if (_cam == null) return;
 
-                var mouse = UnityEngine.InputSystem.Mouse.current;
-                var touch = UnityEngine.InputSystem.Touchscreen.current;
-
-                Vector2 pointerPos;
-                bool isPointerClicked;
-                if (mouse != null)
-                {
-                    pointerPos = mouse.position.ReadValue();
-                    isPointerClicked = mouse.leftButton.wasPressedThisFrame;
-                }
-                else if (touch != null && touch.primaryTouch.press.isPressed)
-                {
-                    pointerPos = touch.primaryTouch.position.ReadValue();
-                    isPointerClicked = touch.primaryTouch.press.wasPressedThisFrame;
-                }
-                else
-                {
-                    return;
-                }
+                // 跨平台指针输入
+                var pointerPos = Input.PointerInputHelper.ScreenPosition;
+                var isPointerClicked = Input.PointerInputHelper.WasClickedThisFrame;
 
                 var worldPos = (Vector2)_cam.ScreenToWorldPoint(pointerPos);
                 var hits = new List<Collider2D>();

@@ -1,6 +1,7 @@
 using System;
 using Gameplay.Ending;
 using UnityEngine;
+using Input;
 using UnityEngine.InputSystem;
 
 namespace Gameplay.Settings
@@ -47,22 +48,8 @@ namespace Gameplay.Settings
             if (_cam == null) _cam = Camera.main;
             if (_cam == null || EndingDirector.IsAnimating) return;
 
-            var mouse = Mouse.current;
-            var touch = Touchscreen.current;
-            Vector2 screenPos;
-            bool pressed;
-
-            if (mouse != null)
-            {
-                screenPos = mouse.position.ReadValue();
-                pressed = mouse.leftButton.isPressed;
-            }
-            else if (touch != null)
-            {
-                screenPos = touch.primaryTouch.position.ReadValue();
-                pressed = touch.primaryTouch.press.isPressed;
-            }
-            else return;
+            var screenPos = PointerInputHelper.ScreenPosition;
+            var pressed = PointerInputHelper.IsPressed;
 
             if (pressed)
             {

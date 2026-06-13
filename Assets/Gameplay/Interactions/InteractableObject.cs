@@ -5,15 +5,18 @@ using Core.Events.EventInterfaces;
 using Core.Identity;
 using Gameplay.Audio;
 using Gameplay.Dialogue;
+using Input;
 using Input.InputInterface;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Gameplay.Interactions
 {
     /// <summary>
     /// 挂到场景物体上，通过 Collider2D 检测交互，将事件发布到 IEventCenter。
     /// 零耦合，只发布 InteractionEvent，各系统自行从 InteractionDef 读取所需数据。
-    ///
+    /// Click 模式通过新 Input System (Pointer/Mouse/Touch) 轮询替代 OnMouseDown，
+    /// 确保 WebGL/H5 平台兼容。
     /// </summary>
     public enum InteractMode
     {
@@ -98,10 +101,14 @@ namespace Gameplay.Interactions
         private SpriteRenderer _sprite;
         private Color _defaultColor;
         private bool _used;
+        private Collider2D _collider;
+        private Camera _cachedCamera;
+        private bool _isHovered;
 
         #region Lifecycle
         protected override void OnInitialize()
         {
+            _collider = GetComponent<Collider2D>();
             if (_enableHoverEffect)
                 _sprite = GetComponent<SpriteRenderer>();
 
@@ -110,13 +117,40 @@ namespace Gameplay.Interactions
         #endregion
 
         #region 交互入口
-        // Proximity 模式的点击交互已迁移到 InteractionPromptView，
-        // Tick 保留以便后续扩展其他每帧逻辑。
-
-        private void OnMouseDown()
+        /// <summary>
+        /// Click 模式：每帧通过新 Input System 轮询点击，替代旧版 OnMouseDown。
+        /// 设备优先级：Mouse → Touchscreen → Pointer (H5/WebGL 回退)。
+        /// </summary>
+        protected override void Tick(float dt)
         {
-            if (_mode == InteractMode.Click)
+            if (_mode != InteractMode.Click) return;
+            if (_used && _interactOnce) return;
+            if (_dialogue != null && _dialogue.IsPlaying) return;
+
+            // 刷新摄像机引用
+            if (_cachedCamera == null || !_cachedCamera.gameObject.activeInHierarchy)
+                _cachedCamera = Camera.main;
+            if (_cachedCamera == null) return;
+
+            // 跨平台指针输入
+            var pointerPos = PointerInputHelper.ScreenPosition;
+            var clicked = PointerInputHelper.WasClickedThisFrame;
+            var worldPos = (Vector2)_cachedCamera.ScreenToWorldPoint(pointerPos);
+
+            // 悬停检测（视觉反馈）
+            if (_enableHoverEffect && CanInteract)
+            {
+                var wasHovered = _isHovered;
+                _isHovered = _collider != null && _collider.OverlapPoint(worldPos);
+                if (wasHovered != _isHovered)
+                    SetHover(_isHovered);
+            }
+
+            // 点击检测
+            if (clicked && CanInteract && _collider != null && _collider.OverlapPoint(worldPos))
+            {
                 Fire();
+            }
         }
 
         private void OnTriggerEnter2D(Collider2D other)
@@ -153,18 +187,6 @@ namespace Gameplay.Interactions
         #endregion
 
         #region 视觉反馈
-        private void OnMouseEnter()
-        {
-            if (_mode != InteractMode.Click || !_enableHoverEffect || _sprite == null) return;
-            SetHover(true);
-        }
-
-        private void OnMouseExit()
-        {
-            if (_mode != InteractMode.Click || !_enableHoverEffect || _sprite == null) return;
-            SetHover(false);
-        }
-
         private void SetHover(bool hover)
         {
             if (_sprite != null)

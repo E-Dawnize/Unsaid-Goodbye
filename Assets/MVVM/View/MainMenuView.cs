@@ -3,9 +3,9 @@ using Core.Architecture;
 using Core.DI;
 using Gameplay.Audio;
 using Gameplay.Pause;
+using Input;
 using MVVM.ViewModel;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using Object = UnityEngine.Object;
 
 namespace MVVM.View
@@ -17,11 +17,9 @@ namespace MVVM.View
         [Inject] private IAudioManager _audio;
 
         private readonly List<MenuButton> _buttons = new();
-        private Camera _cam;
 
         protected override void OnStartExternal()
         {
-            _cam = Camera.main;
             _audio?.PlayBgm("BGM/Title");
             BuildButtons();
         }
@@ -40,32 +38,11 @@ namespace MVVM.View
                 _audio?.PlayBgm("BGM/Title");
             }
 
-            var mouse = Mouse.current;
-            var touch = Touchscreen.current;
-            if (_cam == null) return;
-
-            // 获取指针位置（优先鼠标，其次触摸）
-            Vector2 pointerPos;
-            bool isPointerDown;
-            bool isPointerClicked;
-            if (mouse != null)
-            {
-                pointerPos = mouse.position.ReadValue();
-                isPointerDown = mouse.leftButton.isPressed;
-                isPointerClicked = mouse.leftButton.wasPressedThisFrame;
-            }
-            else if (touch != null && touch.primaryTouch.press.isPressed)
-            {
-                pointerPos = touch.primaryTouch.position.ReadValue();
-                isPointerDown = true;
-                isPointerClicked = touch.primaryTouch.press.wasPressedThisFrame;
-            }
-            else
-            {
-                return;
-            }
-
-            var worldPos = (Vector2)_cam.ScreenToWorldPoint(pointerPos);
+            // 跨平台指针输入（PointerInputHelper 内部处理 Mouse/Pointer/Touch 优先级）
+            var pointerPos = PointerInputHelper.ScreenPosition;
+            var isPointerDown = PointerInputHelper.IsPressed;
+            var isPointerClicked = PointerInputHelper.WasClickedThisFrame;
+            var worldPos = PointerInputHelper.ScreenToWorld(pointerPos);
             var hits = new List<Collider2D>();
             Physics2D.OverlapPoint(worldPos, new ContactFilter2D().NoFilter(), hits);
 

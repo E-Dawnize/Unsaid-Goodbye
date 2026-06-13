@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Core.Architecture;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using Input;
 using UnityEngine.InputSystem;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.UI;
@@ -34,14 +35,7 @@ namespace Gameplay.Interstitial
         {
             if (!_isShowing) return;
 
-            var mouse = Mouse.current;
-            var touch = Touchscreen.current;
-            bool pressed;
-            if (mouse != null) pressed = mouse.leftButton.wasPressedThisFrame;
-            else if (touch != null) pressed = touch.primaryTouch.press.wasPressedThisFrame;
-            else return;
-
-            if (pressed)
+            if (PointerInputHelper.WasClickedThisFrame)
                 _clicked = true;
         }
 

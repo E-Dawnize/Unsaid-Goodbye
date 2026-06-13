@@ -1,0 +1,113 @@
+<linker>
+  <!--
+    防止 IL2CPP 裁剪 DI 容器注册的实现类。
+    这些类在代码中仅通过接口引用（如 RegisterSingleton<IAudioManager, AudioManager>()），
+    IL2CPP 看不到直接引用会将其裁剪，导致 DI 验证失败。
+    此文件位于 Assets/link.xml（Unity 标准路径），不会被 Addressables 构建流程覆盖。
+  -->
+  <assembly fullname="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <!-- DI Installers — Addressables 加载，必须保留 -->
+    <type fullname="Core.Architecture.InstallerConfig" preserve="all" />
+    <type fullname="Core.Architecture.Installers.CoreInstaller" preserve="all" />
+    <type fullname="Gameplay.Installer.GamePlayInstaller" preserve="all" />
+    <type fullname="Gameplay.Installer.StartSceneInstaller" preserve="all" />
+
+    <!-- DI 容器 RegisterSingleton<TInterface, TImpl> 注册的实现类 — 必须保留构造函数 -->
+    <type fullname="Core.Architecture.ScopeProvider" preserve="all" />
+    <type fullname="Core.Events.EventManager" preserve="all" />
+    <type fullname="Gameplay.Audio.AudioManager" preserve="all" />
+    <type fullname="Gameplay.Dialogue.DialogueManager" preserve="all" />
+    <type fullname="Gameplay.Inventory.InventoryManager" preserve="all" />
+    <type fullname="Gameplay.Inventory.InventoryUIManager" preserve="all" />
+    <type fullname="Gameplay.Pause.PauseMenuManager" preserve="all" />
+    <type fullname="Gameplay.Player.PlayerManager" preserve="all" />
+    <type fullname="Gameplay.Save.SaveManager" preserve="all" />
+    <type fullname="Gameplay.SceneFlow.GameFlowManager" preserve="all" />
+    <type fullname="Gameplay.SceneFlow.GameFlowModel" preserve="all" />
+    <type fullname="Gameplay.Settings.SettingsManager" preserve="all" />
+    <type fullname="Input.Manager.PlayerInputManager" preserve="all" />
+    <type fullname="MVVM.ViewModel.Factory.ViewModelFactory" preserve="all" />
+    <type fullname="MVVM.ViewModel.MainMenuViewModel" preserve="all" />
+
+    <!-- MonoBehaviour 子类（通过 AddComponent 或场景预制体实例化） -->
+    <type fullname="Gameplay.Interactions.InteractableObject" preserve="all" />
+    <type fullname="Gameplay.Interactions.InteractionPromptView" preserve="all" />
+    <type fullname="Gameplay.Interactions.SequentialBeatActivator" preserve="all" />
+    <type fullname="Gameplay.Interactions.StoryBeatObjectActivator" preserve="all" />
+    <type fullname="Gameplay.Player.PlayerView" preserve="all" />
+    <type fullname="Gameplay.Player.WalkableArea" preserve="all" />
+    <type fullname="Gameplay.Puzzles.PhotoLightPuzzleController" preserve="all" />
+    <type fullname="Gameplay.Rendering.CharacterDepthSorter" preserve="all" />
+    <type fullname="Gameplay.Rendering.DepthSortable" preserve="all" />
+    <type fullname="MVVM.View.MainMenuView" preserve="all" />
+    <type fullname="MVVM.View.StartNewSceneStartTrigger" preserve="all" />
+    <type fullname="Gameplay.Interstitial.InterstitialScreen" preserve="all" />
+    <type fullname="Gameplay.Ending.EndingDirector" preserve="all" />
+    <type fullname="Gameplay.SceneFlow.GameFlowView" preserve="all" />
+
+    <!-- ScriptableObject 子类 — 需要序列化支持 -->
+    <type fullname="Core.Identity.InteractionDef" preserve="all" />
+    <type fullname="Gameplay.SO.DialogueSequence" preserve="all" />
+    <type fullname="Gameplay.SO.GamePhaseConfig" preserve="all" />
+    <type fullname="Gameplay.SO.GameSaveDataRuntime" preserve="all" />
+    <type fullname="Gameplay.SO.DialogueChoice" preserve="nothing" serialized="true" />
+    <type fullname="Gameplay.SO.DialogueEntry" preserve="nothing" serialized="true" />
+
+    <!-- 静态辅助类（直接引用，通常不需要保留但显式声明更安全） -->
+    <type fullname="Input.PointerInputHelper" preserve="all" />
+  </assembly>
+
+  <!-- Unity 引擎类型保留（来自原 AddressableAssetsData/link.xml） -->
+  <assembly fullname="Unity.2D.Animation.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <type fullname="UnityEngine.U2D.Animation.SkeletonAsset" preserve="all" />
+    <type fullname="UnityEngine.U2D.Animation.SpriteSkin" preserve="all" />
+  </assembly>
+  <assembly fullname="Unity.Addressables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" preserve="all">
+    <type fullname="UnityEngine.AddressableAssets.Addressables" preserve="all" />
+  </assembly>
+  <assembly fullname="Unity.RenderPipelines.Universal.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <type fullname="UnityEngine.Rendering.Universal.UniversalAdditionalCameraData" preserve="all" />
+    <type fullname="UnityEngine.Rendering.Universal.TemporalAA/Settings" preserve="nothing" serialized="true" />
+  </assembly>
+  <assembly fullname="Unity.ResourceManager, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" preserve="all">
+    <type fullname="UnityEngine.ResourceManagement.ResourceProviders.AssetBundleProvider" preserve="all" />
+    <type fullname="UnityEngine.ResourceManagement.ResourceProviders.BundledAssetProvider" preserve="all" />
+    <type fullname="UnityEngine.ResourceManagement.ResourceProviders.InstanceProvider" preserve="all" />
+    <type fullname="UnityEngine.ResourceManagement.ResourceProviders.LegacyResourcesProvider" preserve="all" />
+    <type fullname="UnityEngine.ResourceManagement.ResourceProviders.SceneProvider" preserve="all" />
+  </assembly>
+  <assembly fullname="UnityEngine.AnimationModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <type fullname="UnityEngine.AnimationClip" preserve="all" />
+    <type fullname="UnityEngine.Animator" preserve="all" />
+    <type fullname="UnityEngine.RuntimeAnimatorController" preserve="all" />
+  </assembly>
+  <assembly fullname="UnityEngine.AudioModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <type fullname="UnityEngine.AudioClip" preserve="all" />
+    <type fullname="UnityEngine.AudioListener" preserve="all" />
+  </assembly>
+  <assembly fullname="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <type fullname="UnityEngine.Camera" preserve="all" />
+    <type fullname="UnityEngine.Cubemap" preserve="all" />
+    <type fullname="UnityEngine.GameObject" preserve="all" />
+    <type fullname="UnityEngine.LightmapSettings" preserve="all" />
+    <type fullname="UnityEngine.Material" preserve="all" />
+    <type fullname="UnityEngine.Object" preserve="all" />
+    <type fullname="UnityEngine.Rendering.SortingGroup" preserve="all" />
+    <type fullname="UnityEngine.RenderSettings" preserve="all" />
+    <type fullname="UnityEngine.Shader" preserve="all" />
+    <type fullname="UnityEngine.Sprite" preserve="all" />
+    <type fullname="UnityEngine.SpriteRenderer" preserve="all" />
+    <type fullname="UnityEngine.Texture2D" preserve="all" />
+    <type fullname="UnityEngine.Transform" preserve="all" />
+  </assembly>
+  <assembly fullname="UnityEngine.Physics2DModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <type fullname="UnityEngine.BoxCollider2D" preserve="all" />
+    <type fullname="UnityEngine.CapsuleCollider2D" preserve="all" />
+    <type fullname="UnityEngine.PolygonCollider2D" preserve="all" />
+    <type fullname="UnityEngine.Rigidbody2D" preserve="all" />
+  </assembly>
+  <assembly fullname="UnityEngine.VideoModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <type fullname="UnityEngine.Video.VideoClip" preserve="all" />
+  </assembly>
+  <assembly fullname="Unity.InputSystem, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" preserve="all" />
+</linker>

@@ -4,6 +4,7 @@ using Core.Architecture;
 using Input.UI;
 
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem.EnhancedTouch;
 using UnityEngine.InputSystem.UI;
 using UnityEngine.SceneManagement;
 
@@ -24,6 +25,9 @@ namespace Core.Boot
         {
             if (!Application.isPlaying) return;
             Debug.Log("Boot");
+
+            // 开启 EnhancedTouch，确保 WebGL/H5 触摸设备能被 Touchscreen.current 识别
+            EnhancedTouchSupport.Enable();
 
             // 横屏设置（BeforeSceneLoad 阶段先设一次）
 

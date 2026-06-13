@@ -5,6 +5,7 @@ using Core.DI;
 using Core.Events.EventInterfaces;
 using Core.Identity;
 using Gameplay.Interactions;
+using Input;
 using Input.InputInterface;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -387,10 +388,7 @@ namespace Gameplay.Puzzles
 
         private static bool IsPrimaryClickPressed()
         {
-            if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
-                return true;
-
-            return Touchscreen.current != null && Touchscreen.current.primaryTouch.press.wasPressedThisFrame;
+            return PointerInputHelper.WasClickedThisFrame;
         }
 
         private static GameObject NewUI(string name, Transform parent)
