@@ -68,6 +68,10 @@ namespace Input.UI
                 return;
             }
 
+            // 旋钮必须渲染在底圈之上（同 SortingLayer 按 order 排序）
+            var knobSr = knob.GetComponent<SpriteRenderer>();
+            if (knobSr != null) knobSr.sortingOrder = 901;
+
             var joystick = go.AddComponent<WorldSpaceJoystick>();
             go.transform.position = JoystickPosition;
             go.transform.localScale = Vector3.one * JoystickScale;
