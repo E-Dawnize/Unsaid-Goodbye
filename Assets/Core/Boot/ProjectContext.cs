@@ -61,9 +61,14 @@ namespace Core.Boot
             _instance = null;
         }
 
+        private GameObject _loadingOverlay;
+
         private async void Boot()
         {
             Debug.Log("[ProjectContext] Starting boot sequence...");
+
+            // 立即显示加载遮罩——防止 Boot 异步等待期间玩家看到未就绪的主页
+            ShowLoadingOverlay();
 
             // 阶段1: 创建DI容器和Scope
             CreateDIContainer();
@@ -277,6 +282,9 @@ namespace Core.Boot
 
         private void PublishGameReady()
         {
+            // 移除加载遮罩——初始化完成，游戏可交互
+            HideLoadingOverlay();
+
             var events = _globalContainer.GetService<IEventCenter>();
             if (events == null)
             {
@@ -285,6 +293,59 @@ namespace Core.Boot
             }
             events.Publish(new GameReadyEvent());
             Debug.Log("[ProjectContext] GameReadyEvent published");
+        }
+
+        private void ShowLoadingOverlay()
+        {
+            if (_loadingOverlay != null) return;
+
+            _loadingOverlay = new GameObject("LoadingOverlay");
+            DontDestroyOnLoad(_loadingOverlay);
+
+            // 全屏 Canvas + 黑色背景
+            var canvas = _loadingOverlay.AddComponent<Canvas>();
+            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+            canvas.sortingOrder = short.MaxValue; // 最顶层
+
+            _loadingOverlay.AddComponent<UnityEngine.UI.CanvasScaler>();
+            _loadingOverlay.AddComponent<UnityEngine.UI.GraphicRaycaster>();
+
+            var imgGo = new GameObject("Background");
+            imgGo.transform.SetParent(_loadingOverlay.transform, false);
+
+            var img = imgGo.AddComponent<UnityEngine.UI.Image>();
+            img.color = Color.black;
+
+            var rect = img.GetComponent<RectTransform>();
+            rect.anchorMin = Vector2.zero;
+            rect.anchorMax = Vector2.one;
+            rect.offsetMin = Vector2.zero;
+            rect.offsetMax = Vector2.zero;
+
+            // "加载中..." 文字
+            var textGo = new GameObject("Text");
+            textGo.transform.SetParent(_loadingOverlay.transform, false);
+            var text = textGo.AddComponent<UnityEngine.UI.Text>();
+            text.text = "Loading...";
+            text.fontSize = 24;
+            text.alignment = TextAnchor.MiddleCenter;
+            text.color = new Color(1f, 1f, 1f, 0.6f);
+            text.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+
+            var textRect = text.GetComponent<RectTransform>();
+            textRect.anchorMin = new Vector2(0.5f, 0.45f);
+            textRect.anchorMax = new Vector2(0.5f, 0.55f);
+            textRect.sizeDelta = new Vector2(400, 60);
+
+            Debug.Log("[ProjectContext] Loading overlay displayed");
+        }
+
+        private void HideLoadingOverlay()
+        {
+            if (_loadingOverlay == null) return;
+            Destroy(_loadingOverlay);
+            _loadingOverlay = null;
+            Debug.Log("[ProjectContext] Loading overlay removed");
         }
 
         #region 清理
